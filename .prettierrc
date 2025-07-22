@@ -1,10 +1,10 @@
 {
-  "singleQuote": true, // 使用单引号
-  "semi": true, // 语句末尾不加分号
-  "trailingComma": "all", // 多行对象/数组最后一个元素后加逗号
-  "printWidth": 100, // 每行最大长度 100
-  "tabWidth": 2, // 缩进 2 个空格
-  "jsxSingleQuote": false, // JSX 属性使用双引号
-  "arrowParens": "always", // 箭头函数参数总是加括号
-  "endOfLine": "lf" // 换行符使用 LF（Unix 风格）
+  "singleQuote": true,
+  "semi": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "jsxSingleQuote": false,
+  "arrowParens": "always",
+  "endOfLine": "lf"
 }
