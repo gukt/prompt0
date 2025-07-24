@@ -1,10 +1,23 @@
-import { useState } from "react";
 import reactLogo from "@/assets/react.svg";
-import wxtLogo from "/wxt.svg";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import wxtLogo from "/wxt.svg";
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const openSidePanel = async () => {
+    try {
+      // 获取当前活动标签页
+      const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+      if (tab.id) {
+        // 打开 side panel
+        await browser.sidePanel.open({ tabId: tab.id });
+      }
+    } catch (error) {
+      console.error('打开 side panel 失败:', error);
+    }
+  };
 
   return (
     <div className="w-80 p-4 space-y-4 bg-white rounded-md shadow-md">
@@ -25,6 +38,15 @@ function App() {
         <Button onClick={() => setCount((count) => count + 1)}>
           Count is {count}
         </Button>
+
+        <Button 
+          onClick={openSidePanel}
+          variant="outline"
+          className="w-full"
+        >
+          打开 Side Panel
+        </Button>
+        
         <p className="text-sm mt-2 text-gray-600 text-center">
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
