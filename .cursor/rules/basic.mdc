@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+
+- 我在使用 WXT + React + Shadcn + TailwindCSS 开发一个浏览器扩展。
+- 请使用最新版本的语法
+- 如果需要检索文档，请使用 Context 7
