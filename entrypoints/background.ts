@@ -1,32 +1,29 @@
 export default defineBackground(() => {
-  // Executed when background is loaded
-  console.log('Hello background!!!!', { id: browser.runtime.id });
-
-  // 首次安装扩展时，打开欢迎页面
-  browser.runtime.onInstalled.addListener(async ({ reason }) => {
-    if (reason !== "install") return;
-
-    // Open a tab on install
-    await browser.tabs.create({
-      url: browser.runtime.getURL("/get-started.html"),
-      active: true, // default is true
+  // 监听 popup 的打开事件
+  browser.action.onClicked.addListener((tab) => {
+    // Check auth status and open popup or toggle memory UI
+    browser.storage.sync.get(["apiKey", "access_token"], function (data) {
+      if (data.apiKey || data.access_token) {
+        browser.tabs.sendMessage(tab.id!, { action: "toggleMemoryUI" });
+      } else {
+        browser.action.openPopup();
+      }
     });
   });
 
-  // 当点击 action 时，如果当前 tab 显示的是 chatgpt.com 页面，则将该页面的输入框的上面加上一行字（我是执行脚本注入到这里来的）
-  browser.action.onClicked.addListener(async (tab) => {
-    if (tab.id && tab.url?.includes("chatgpt.com")) {
-      const res = await browser.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ['/content-scripts/content.js'],
-        // func: () => {
-        //   const input = document.querySelector("textarea");
-        //   if (input) {
-        //     input.value = "我是执行脚本注入到这里来的";
-        //   }
-        // },
-      });
-      console.log("res", res);
+
+  // Initial setting when extension is installed or updated
+  browser.runtime.onInstalled.addListener(() => {
+    browser.storage.sync.set({ memory_enabled: true }, function () {
+      console.log('Memory enabled set to true on install/update');
+    });
+  });
+
+
+  // Keep the existing message listener for opening dashboard
+  browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "openDashboard") {
+      browser.tabs.create({ url: request.url });
     }
   });
 });
