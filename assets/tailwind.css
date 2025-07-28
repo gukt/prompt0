@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,49 +117,93 @@
   body {
     @apply bg-background text-foreground;
   }
-  
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-5 {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   /* 现代化的滚动条样式 */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
     border-radius: 3px;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: oklch(0.556 0 0 / 0.3);
     border-radius: 3px;
     transition: background-color 0.2s ease;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: oklch(0.556 0 0 / 0.5);
   }
-  
+
   /* 暗色主题下的滚动条 */
   .dark ::-webkit-scrollbar-thumb {
     background: oklch(0.708 0 0 / 0.3);
   }
-  
+
   .dark ::-webkit-scrollbar-thumb:hover {
     background: oklch(0.708 0 0 / 0.5);
   }
-  
+
   /* 滚动条角落 */
   ::-webkit-scrollbar-corner {
     background: transparent;
   }
-  
+
   /* Firefox 滚动条样式 - 只应用到有滚动的容器 */
-  [class*="overflow-"], .overflow-auto, .overflow-scroll, .overflow-x-auto, .overflow-y-auto {
+  [class*='overflow-'],
+  .overflow-auto,
+  .overflow-scroll,
+  .overflow-x-auto,
+  .overflow-y-auto {
     scrollbar-width: thin;
     scrollbar-color: oklch(0.556 0 0 / 0.3) transparent;
   }
-  
-  .dark [class*="overflow-"], .dark .overflow-auto, .dark .overflow-scroll, .dark .overflow-x-auto, .dark .overflow-y-auto {
+
+  .dark [class*='overflow-'],
+  .dark .overflow-auto,
+  .dark .overflow-scroll,
+  .dark .overflow-x-auto,
+  .dark .overflow-y-auto {
     scrollbar-color: oklch(0.708 0 0 / 0.3) transparent;
   }
 }

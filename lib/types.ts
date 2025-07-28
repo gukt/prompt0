@@ -1,7 +1,26 @@
 export interface Prompt {
-  id: number;
+  id: string;
   title: string;
-  category: string;
   content: string;
-  timestamp: string;
+  categories: string[];
+  createdAt: Date;
+  updatedAt?: Date;
+  isPinned?: boolean;
+  isFavorite?: boolean;
+  usage?: number;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  color?: string;
+  isPinned?: boolean;
+}
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  icon?: string;
+  count?: number;
+  color?: string;
 } 
