@@ -1,4 +1,4 @@
-export interface Memory {
+export interface Prompt {
   id: number;
   title: string;
   category: string;

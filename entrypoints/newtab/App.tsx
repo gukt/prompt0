@@ -1,41 +1,83 @@
 import '@/assets/tailwind.css';
-import { Memory } from '@/backup/MemoryCard';
+import { Prompt } from '@/backup/PromptCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowUpRight as ArrowUpRightIcon, Brain as BrainIcon, X as XIcon } from 'lucide-react';
+import { Brain as BrainIcon, X as XIcon } from 'lucide-react';
 import { useState } from 'react';
+import { PromptsTab } from './components/PromptsTab';
+import { SettingsTab } from './components/SettingsTab';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'memories' | 'settings'>('memories');
-  const [memories, setMemories] = useState<Memory[]>([
+  const [activeTab, setActiveTab] = useState<'prompts' | 'settings'>('prompts');
+  const [prompts, setPrompts] = useState<Prompt[]>([
     {
       id: '1',
-      content: '熟悉 TailwindCSS 和 Shadcn 技术',
-      category: 'technology',
+      title: '代码审查提示词',
+      content: '请审查以下代码的质量、性能和安全性。关注点包括：1) 代码结构和可读性 2) 潜在的性能问题 3) 安全漏洞 4) 最佳实践的遵循情况。请提供具体的改进建议。请审查以下代码的质量、性能和安全性。关注点包括：1) 代码结构和可读性 2) 潜在的性能问题 3) 安全漏洞 4) 最佳实践的遵循情况。请提供具体的改进建议。请审查以下代码的质量、性能和安全性。关注点包括：1) 代码结构和可读性 2) 潜在的性能问题 3) 安全漏洞 4) 最佳实践的遵循情况。请提供具体的改进建议。请审查以下代码的质量、性能和安全性。关注点包括：1) 代码结构和可读性 2) 潜在的性能问题 3) 安全漏洞 4) 最佳实践的遵循情况。请提供具体的改进建议。请审查以下代码的质量、性能和安全性。关注点包括：1) 代码结构和可读性 2) 潜在的性能问题 3) 安全漏洞 4) 最佳实践的遵循情况。请提供具体的改进建议。',
+      categories: ['开发', '代码审查', '质量保证'],
       createdAt: new Date(),
     },
     {
       id: '2',
-      content: '正在考虑 React/Next 生态系统，因为其强大的海外使用和生态系统',
-      category: 'technology',
+      title: '技术文档写作助手',
+      content: '请帮我为这个 API 接口编写详细的技术文档。包括：1) 接口描述和用途 2) 请求参数和响应格式 3) 错误码说明 4) 使用示例和最佳实践。确保文档清晰易懂，便于开发者集成。',
+      categories: ['文档', 'API', '技术写作'],
       createdAt: new Date(),
     },
     {
       id: '3',
-      content: '熟悉 TailwindCSS',
-      category: 'technology',
+      title: '产品需求分析师',
+      content: '作为产品需求分析师，请帮我分析这个功能需求。从用户价值、技术可行性、资源投入、优先级等维度进行评估，并提出具体的实现方案和时间规划。',
+      categories: ['产品', '需求分析', '项目管理'],
       createdAt: new Date(),
     },
     {
       id: '4',
-      content: '计划使用 React/Next 生态系统，因为其强大的海外使用和生态系统',
-      category: 'technology',
+      title: 'UI/UX 设计顾问',
+      content: '请为这个界面提供 UI/UX 设计建议。考虑因素包括：1) 用户体验流程优化 2) 界面布局和视觉层次 3) 交互设计最佳实践 4) 响应式设计考虑。提供具体的改进方案。',
+      categories: ['设计', 'UI/UX', '用户体验'],
       createdAt: new Date(),
     },
     {
       id: '5',
-      content: '熟悉 Tailwind',
-      category: 'technology',
+      title: '数据库优化专家',
+      content: '请分析这个数据库查询的性能问题，并提供优化建议。包括：1) 索引策略优化 2) SQL 查询改写 3) 表结构调整建议 4) 缓存策略。确保在保持数据一致性的前提下提升性能。',
+      categories: ['数据库', '性能优化', '后端'],
+      createdAt: new Date(),
+    },
+    {
+      id: '6',
+      title: '项目架构师',
+      content: '请为这个项目设计技术架构方案。考虑：1) 系统边界和模块划分 2) 技术栈选型和理由 3) 可扩展性和可维护性 4) 部署和运维策略。提供详细的架构图和技术选型说明。',
+      categories: ['架构', '系统设计', '技术选型'],
+      createdAt: new Date(),
+    },
+    {
+      id: '7',
+      title: '前端性能优化专家',
+      content: '请分析这个前端应用的性能瓶颈，并提供优化方案。关注点：1) 首屏加载时间 2) 运行时性能 3) 内存使用优化 4) 打包体积优化。提供具体的优化策略和实施步骤。',
+      categories: ['前端', '性能优化', 'Web 性能'],
+      createdAt: new Date(),
+    },
+    {
+      id: '8',
+      title: 'API 接口设计师',
+      content: '请帮我设计这个功能的 RESTful API 接口。包括：1) 资源路径规划 2) HTTP 方法选择 3) 请求/响应数据结构 4) 错误处理机制 5) 版本控制策略。确保接口设计符合 REST 规范。',
+      categories: ['API 设计', 'RESTful', '后端'],
+      createdAt: new Date(),
+    },
+    {
+      id: '9',
+      title: 'DevOps 运维专家',
+      content: '请为这个项目设计 CI/CD 流水线和部署策略。包括：1) 自动化构建和测试 2) 部署环境管理 3) 监控和日志策略 4) 回滚机制。确保部署的可靠性和可追溯性。',
+      categories: ['DevOps', 'CI/CD', '部署'],
+      createdAt: new Date(),
+    },
+    {
+      id: '10',
+      title: '安全测试专家',
+      content: '请对这个应用进行安全评估。检查项目包括：1) 常见 Web 安全漏洞 (OWASP Top 10) 2) 数据传输和存储安全 3) 身份认证和授权机制 4) 输入验证和防护措施。提供安全加固建议。',
+      categories: ['安全', '测试', 'Web 安全'],
       createdAt: new Date(),
     },
   ]);
@@ -54,50 +96,50 @@ export default function App() {
     });
   };
 
-  const copyMemory = (content: string) => {
+  const copyPrompt = (content: string) => {
     navigator.clipboard.writeText(content);
   };
 
-  const viewMemory = (memory: Memory) => {
-    console.log('查看记忆:', memory);
+  const viewPrompt = (prompt: Prompt) => {
+    console.log('查看提示词:', prompt);
   };
 
   return (
     <div
-      className="fixed top-15 right-12 w-100 h-auto max-h-[85vh] bg-primary text-white rounded-2xl shadow-lg z-[2147483647] overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
+      className="flex flex-col fixed top-15 text-base w-120 h-[85vh] max-h-[85vh] rounded-2xl border shadow-lg z-[2147483647] overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
       style={{ right: `${right}px` }}
     >
-      {/* 头部 */}
+      {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-2">
           <BrainIcon className="w-6 h-6" />
-          <h1 className="text-[20px] font-semibold">OpenMemory</h1>
+          <h1 className="text-[20px] font-semibold">OpenPrompt</h1>
         </div>
         <button
           onClick={handleClose}
-          className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+          className="text-primary/50 hover:text-primary transition-colors cursor-pointer"
         >
           <XIcon className="w-5 h-5" />
         </button>
       </div>
 
-      {/* 标签页导航 */}
-      <div className="flex border-b">
+      {/* Tabs */}
+      <div className="px-4 flex border-b">
         <button
-          onClick={() => setActiveTab('memories')}
+          onClick={() => setActiveTab('prompts')}
           className={cn(
-            'flex-1 px-4 py-3 text-sm font-medium transition-colors relative',
-            activeTab === 'memories'
+            'flex-1 px-4 py-3 text-sm font-medium transition-colors relative cursor-pointer',
+            activeTab === 'prompts'
               ? 'text-blue-400 border-b-2 border-blue-400'
               : 'text-gray-400 hover:text-white',
           )}
         >
-          Recent Memories
+          Recents
         </button>
         <button
           onClick={() => setActiveTab('settings')}
           className={cn(
-            'flex-1 px-4 py-3 text-sm font-medium transition-colors relative',
+            'flex-1 px-4 py-3 text-sm font-medium transition-colors relative cursor-pointer',
             activeTab === 'settings'
               ? 'text-blue-400 border-b-2 border-blue-400'
               : 'text-gray-400 hover:text-white',
@@ -107,74 +149,26 @@ export default function App() {
         </button>
       </div>
 
-      {/* 内容区域 */}
-      <div className="p-4">
-        {activeTab === 'memories' ? (
-          <div className="space-y-4">
-            {/* 总数统计 */}
-            <div className="bg-gray-800 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-400 text-sm">Total Memories</p>
-                  <p className="text-2xl font-semibold">{memories.length} Memories</p>
-                </div>
-                <Button onClick={handleOpenDashboard} size="sm">
-                  Open Dashboard
-                  <ArrowUpRightIcon className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* 记忆列表 */}
-            <div className="space-y-3 max-h-64 overflow-y-auto">
-              <h3 className="text-lg font-medium">Recent Memories</h3>
-              {/* {memories.map((memory) => (
-                <MemoryCard
-                  key={memory.id}
-                  memory={memory}
-                  onCopy={copyMemory}
-                  onView={viewMemory}
-                />
-              ))} */}
-            </div>
-          </div>
+      {/* Content */}
+      <div className="p-4 flex-1 overflow-y-auto">
+        {activeTab === 'prompts' ? (
+          <PromptsTab
+            prompts={prompts}
+            onOpenDashboard={handleOpenDashboard}
+            onCopyPrompt={copyPrompt}
+            onViewPrompt={viewPrompt}
+          />
         ) : (
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Settings</h3>
-            <div className="space-y-3">
-              <div className="bg-gray-800 rounded-lg p-3">
-                <label className="block text-sm font-medium mb-2">API Key</label>
-                <input
-                  type="password"
-                  placeholder="输入你的 API Key"
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-              <div className="bg-gray-800 rounded-lg p-3">
-                <label className="flex items-center justify-between">
-                  <span className="text-sm font-medium">自动保存记忆</span>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="rounded border-gray-600 bg-gray-700 text-blue-600"
-                  />
-                </label>
-              </div>
-              <div className="bg-gray-800 rounded-lg p-3">
-                <label className="block text-sm font-medium mb-2">快捷键</label>
-                <div className="text-xs text-gray-400 bg-gray-700 rounded px-2 py-1 inline-block">
-                  ⌘ + M (或 Ctrl + M)
-                </div>
-              </div>
-            </div>
-          </div>
+          <SettingsTab />
         )}
       </div>
 
-      {/* 底部 */}
+      {/* Footer */}
       <div className="p-4 flex items-center justify-between">
-        <div className="text-xs text-gray-400">Shortcut: ⌘ + M</div>
-        <Button variant="secondary" size="sm">
+        <Button variant="outline" size="sm" className="text-primary/50">
+          Shortcut: ^ + M
+        </Button>
+        <Button variant="outline" size="sm">
           Logout
         </Button>
       </div>

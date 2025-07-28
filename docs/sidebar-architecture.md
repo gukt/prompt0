@@ -35,9 +35,9 @@ components/
 ├── sidebar-app.tsx      # 主 Sidebar 应用组件
 ├── sidebar-header.tsx   # Sidebar 头部组件
 ├── sidebar-tabs.tsx     # 标签页切换组件
-├── memory-list.tsx      # 记忆列表组件
-├── memory-item.tsx      # 单个记忆项组件
-├── memory-stats.tsx     # 记忆统计组件
+├── prompt-list.tsx      # 提示词列表组件
+├── prompt-item.tsx      # 单个提示词项组件
+├── prompt-stats.tsx     # 提示词统计组件
 └── sidebar-settings.tsx # 设置页面组件
 ```
 
@@ -57,9 +57,9 @@ lib/
 SidebarApp (主容器)
 ├── SidebarHeader (头部)
 ├── SidebarTabs (标签页)
-├── MemoryList (记忆列表)
-│   ├── MemoryStats (统计信息)
-│   └── MemoryItem[] (记忆项列表)
+├── PromptList (提示词列表)
+│   ├── PromptStats (统计信息)
+│   └── PromptItem[] (提示词项列表)
 └── SidebarSettings (设置页面)
 ```
 
@@ -132,8 +132,8 @@ pnpm run build
 
 ### 界面功能
 
-- ✅ Recent Memories 和 Settings 两个标签页
-- ✅ 记忆项的展示和交互
+- ✅ Recent Prompts 和 Settings 两个标签页
+- ✅ 提示词的展示和交互
 - ✅ 统计信息显示
 - ✅ 设置页面的各种配置选项
 
