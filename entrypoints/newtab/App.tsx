@@ -128,14 +128,14 @@ export default function App() {
             {/* 记忆列表 */}
             <div className="space-y-3 max-h-64 overflow-y-auto">
               <h3 className="text-lg font-medium">Recent Memories</h3>
-              {memories.map((memory) => (
+              {/* {memories.map((memory) => (
                 <MemoryCard
                   key={memory.id}
                   memory={memory}
                   onCopy={copyMemory}
                   onView={viewMemory}
                 />
-              ))}
+              ))} */}
             </div>
           </div>
         ) : (
