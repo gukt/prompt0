@@ -15,7 +15,7 @@ export function PromptsTab({
   onViewPrompt 
 }: PromptsTabProps) {
   return (
-      <div className="space-y-3 overflow-y-auto">
+      <div className="space-y-4 overflow-y-auto">
         <h3 className="text-lg font-medium">Recent Prompts</h3>
         {prompts.map((prompt) => (
           <PromptCard
