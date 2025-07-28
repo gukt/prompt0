@@ -1,29 +1,27 @@
 export default defineBackground(() => {
-  // 监听 popup 的打开事件
-  browser.action.onClicked.addListener((tab) => {
-    // Check auth status and open popup or toggle memory UI
-    browser.storage.sync.get(["apiKey", "access_token"], function (data) {
-      if (data.apiKey || data.access_token) {
-        browser.tabs.sendMessage(tab.id!, { action: "toggleMemoryUI" });
-      } else {
-        browser.action.openPopup();
+  // Executed when background is loaded
+  console.log('Hello background!!!!', { id: browser.runtime.id });
+
+  // // 首次安装扩展时，打开欢迎页面
+  // browser.runtime.onInstalled.addListener(async ({ reason }) => {
+  //   if (reason !== "install") return;
+
+  //   // Open a tab on install
+  //   await browser.tabs.create({
+  //     url: browser.runtime.getURL("/get-started.html"),
+  //     active: true, // default is true
+  //   });
+  // });
+
+  // 当点击 action 时，在任何页面显示 sidebar
+  browser.action.onClicked.addListener(async (tab) => {
+    if (tab.id) {
+      // 向当前 tab 发送消息，触发 sidebar 显示
+      try {
+        await browser.tabs.sendMessage(tab.id, { action: 'toggle-sidebar' });
+      } catch (error) {
+        console.log('无法向页面发送消息，可能是受限页面:', error);
       }
-    });
-  });
-
-
-  // Initial setting when extension is installed or updated
-  browser.runtime.onInstalled.addListener(() => {
-    browser.storage.sync.set({ memory_enabled: true }, function () {
-      console.log('Memory enabled set to true on install/update');
-    });
-  });
-
-
-  // Keep the existing message listener for opening dashboard
-  browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "openDashboard") {
-      browser.tabs.create({ url: request.url });
     }
   });
 });
