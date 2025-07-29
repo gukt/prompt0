@@ -16,15 +16,15 @@ export default function App() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! I\'m your AI assistant. How can I help you today?',
+      content: "Hello! I'm your AI assistant. How can I help you today?",
       sender: 'assistant',
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    },
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   // Prompt 搜索相关状态
   const [showPromptDropdown, setShowPromptDropdown] = useState(false);
   const [filteredPrompts, setFilteredPrompts] = useState<Prompt[]>([]);
@@ -49,12 +49,15 @@ export default function App() {
     if (!query) {
       return mockPrompts.slice(0, 8); // 显示前 8 个
     }
-    
-    return mockPrompts.filter(prompt => 
-      prompt.title.toLowerCase().includes(query.toLowerCase()) ||
-      prompt.content.toLowerCase().includes(query.toLowerCase()) ||
-      prompt.categories.some(cat => cat.toLowerCase().includes(query.toLowerCase()))
-    ).slice(0, 8);
+
+    return mockPrompts
+      .filter(
+        (prompt) =>
+          prompt.title.toLowerCase().includes(query.toLowerCase()) ||
+          prompt.content.toLowerCase().includes(query.toLowerCase()) ||
+          prompt.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase())),
+      )
+      .slice(0, 8);
   };
 
   // 计算下拉框位置
@@ -63,7 +66,7 @@ export default function App() {
 
     const textarea = textareaRef.current;
     const textBeforeAt = inputValue.substring(0, atPosition);
-    
+
     // 创建一个临时元素来测量文本宽度和高度
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -71,30 +74,30 @@ export default function App() {
 
     const computedStyle = window.getComputedStyle(textarea);
     context.font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-    
+
     const textareaPadding = parseInt(computedStyle.paddingLeft) || 12;
     const lineHeight = parseInt(computedStyle.lineHeight) || 24;
-    
+
     // 计算 @ 符号的精确位置
     const lines = textBeforeAt.split('\n');
     const currentLineText = lines[lines.length - 1];
     const currentLineWidth = context.measureText(currentLineText).width;
     const lineNumber = lines.length - 1;
-    
+
     // @ 符号的左侧位置 (相对于 textarea)
     const atLeft = textareaPadding + currentLineWidth;
     // @ 符号的垂直位置 (相对于 textarea)
-    const atTop = textareaPadding + (lineNumber * lineHeight);
-    
+    const atTop = textareaPadding + lineNumber * lineHeight;
+
     // 判断是否有足够的空间在下方显示
     const textareaRect = textarea.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const spaceBelow = viewportHeight - (textareaRect.top + atTop + lineHeight);
     const spaceAbove = textareaRect.top + atTop;
     const dropdownHeight = Math.min(filteredPrompts.length * 36 + 16, 300); // 估算下拉框高度 (36px per item + padding)
-    
+
     const side = spaceBelow < dropdownHeight && spaceAbove > dropdownHeight ? 'top' : 'bottom';
-    
+
     setDropdownPosition({ left: atLeft, top: atTop });
     setDropdownSide(side);
   };
@@ -103,16 +106,16 @@ export default function App() {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     const cursorPos = e.target.selectionStart;
-    
+
     setInputValue(value);
-    
+
     // 检查是否输入了 @
     const textBeforeCursor = value.substring(0, cursorPos);
     const lastAtIndex = textBeforeCursor.lastIndexOf('@');
-    
+
     if (lastAtIndex !== -1) {
       const textAfterAt = textBeforeCursor.substring(lastAtIndex + 1);
-      
+
       // 检查 @ 后面是否只有字母、数字、空格或为空
       if (/^[a-zA-Z0-9\u4e00-\u9fa5\s]*$/.test(textAfterAt)) {
         setAtPosition(lastAtIndex);
@@ -120,7 +123,7 @@ export default function App() {
         setFilteredPrompts(searchPrompts(textAfterAt));
         setShowPromptDropdown(true);
         setSelectedPromptIndex(0);
-        
+
         // 延迟计算位置，确保 DOM 更新完成
         setTimeout(calculateDropdownPosition, 0);
       } else {
@@ -137,15 +140,11 @@ export default function App() {
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault();
-          setSelectedPromptIndex(prev => 
-            prev < filteredPrompts.length - 1 ? prev + 1 : 0
-          );
+          setSelectedPromptIndex((prev) => (prev < filteredPrompts.length - 1 ? prev + 1 : 0));
           break;
         case 'ArrowUp':
           e.preventDefault();
-          setSelectedPromptIndex(prev => 
-            prev > 0 ? prev - 1 : filteredPrompts.length - 1
-          );
+          setSelectedPromptIndex((prev) => (prev > 0 ? prev - 1 : filteredPrompts.length - 1));
           break;
         case 'Enter':
           if (!e.shiftKey) {
@@ -163,7 +162,7 @@ export default function App() {
             const afterAtQuery = inputValue.substring(atPosition + 1 + searchQuery.length);
             const newValue = beforeAt + '@' + afterAtQuery;
             setInputValue(newValue);
-            
+
             // 设置光标位置到 @ 后面
             setTimeout(() => {
               if (textareaRef.current) {
@@ -184,15 +183,15 @@ export default function App() {
   // 选择 prompt
   const selectPrompt = (prompt: Prompt) => {
     if (atPosition === -1) return;
-    
+
     const beforeAt = inputValue.substring(0, atPosition);
     const afterAtQuery = inputValue.substring(atPosition + 1 + searchQuery.length);
-    
+
     // 插入选中的 prompt 内容
     const newValue = beforeAt + prompt.content + afterAtQuery;
     setInputValue(newValue);
     setShowPromptDropdown(false);
-    
+
     // 设置光标位置到插入内容的后面
     setTimeout(() => {
       if (textareaRef.current) {
@@ -210,10 +209,10 @@ export default function App() {
       id: Date.now().toString(),
       content: inputValue.trim(),
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
     setShowPromptDropdown(false);
@@ -223,9 +222,9 @@ export default function App() {
         id: (Date.now() + 1).toString(),
         content: 'I received your message: "' + userMessage.content + '". This is a demo response.',
         sender: 'assistant',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
     }, 1000);
   };
@@ -233,8 +232,12 @@ export default function App() {
   // 点击外部关闭下拉框
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) &&
-          textareaRef.current && !textareaRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        textareaRef.current &&
+        !textareaRef.current.contains(event.target as Node)
+      ) {
         setShowPromptDropdown(false);
       }
     };
@@ -248,7 +251,7 @@ export default function App() {
       {/* 聊天输入框区域 */}
       <form
         className="flex items-end gap-2 mt-2 relative"
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           handleSendMessage();
         }}
@@ -266,7 +269,7 @@ export default function App() {
               disabled={isLoading}
               style={{ minHeight: 40, maxHeight: 120 }}
             />
-            
+
             {/* Prompt 下拉选择框 */}
             {showPromptDropdown && filteredPrompts.length > 0 && (
               <DropdownMenuContent
@@ -277,42 +280,41 @@ export default function App() {
                 style={{
                   position: 'absolute',
                   left: dropdownPosition.left,
-                  [dropdownSide === 'bottom' ? 'top' : 'bottom']: dropdownSide === 'bottom' 
-                    ? dropdownPosition.top + 24 
-                    : dropdownPosition.top - 8
+                  [dropdownSide === 'bottom' ? 'top' : 'bottom']:
+                    dropdownSide === 'bottom'
+                      ? dropdownPosition.top + 24
+                      : dropdownPosition.top - 8,
                 }}
               >
                 {filteredPrompts.map((prompt, index) => (
                   <DropdownMenuItem
                     key={prompt.id}
                     className={cn(
-                      "cursor-pointer px-3 py-2 my-0.5 rounded-sm",
-                      index === selectedPromptIndex 
-                        ? "bg-accent text-accent-foreground" 
-                        : "text-foreground hover:bg-accent/50"
+                      'cursor-pointer px-3 py-2 my-0.5 rounded-sm',
+                      index === selectedPromptIndex
+                        ? 'bg-accent text-accent-foreground'
+                        : 'text-foreground hover:bg-accent/50',
                     )}
                     onClick={() => selectPrompt(prompt)}
                     onMouseEnter={() => setSelectedPromptIndex(index)}
                   >
-                    <div className="font-medium text-sm truncate w-full">
-                      {prompt.title}
-                    </div>
+                    <div className="font-medium text-sm truncate w-full">{prompt.title}</div>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             )}
           </DropdownMenu>
         </div>
-        
+
         <button
           type="submit"
           className={cn(
-            "shadcn-btn shadcn-btn-primary px-4 py-2 rounded-lg",
-            isLoading || !inputValue.trim() ? "opacity-60 cursor-not-allowed" : ""
+            'shadcn-btn shadcn-btn-primary px-4 py-2 rounded-lg',
+            isLoading || !inputValue.trim() ? 'opacity-60 cursor-not-allowed' : '',
           )}
           disabled={isLoading || !inputValue.trim()}
         >
-          {isLoading ? "发送中…" : "发送"}
+          {isLoading ? '发送中…' : '发送'}
         </button>
       </form>
     </div>

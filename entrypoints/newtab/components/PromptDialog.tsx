@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
-import { mockCategories } from '@/lib/mock-data';
+import { mockTags } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Edit, X } from 'lucide-react';
@@ -17,7 +17,7 @@ interface PromptDialogProps {
 export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialogProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [isPinned, setIsPinned] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [titleEditing, setTitleEditing] = useState(false);
@@ -34,9 +34,9 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
 
   const availableTags = [
     ...new Set([
-      ...mockCategories.map((cat) => cat.name),
+      ...mockTags.map((cat) => cat.name),
       // 从现有提示词中提取标签
-      ...mockCategories.flatMap((cat) => [cat.name]),
+      ...mockTags.flatMap((cat) => [cat.name]),
     ]),
   ];
 
@@ -44,13 +44,13 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
     if (prompt) {
       setTitle(prompt.title);
       setContent(prompt.content);
-      setCategories(prompt.categories);
+      setTags(prompt.tags);
       setIsPinned(prompt.isPinned || false);
       setIsFavorite(prompt.isFavorite || false);
     } else {
       setTitle('New Prompt');
       setContent('');
-      setCategories([]);
+      setTags([]);
       setIsPinned(false);
       setIsFavorite(false);
     }
@@ -62,7 +62,7 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
   useEffect(() => {
     if (tagInput.trim()) {
       const filtered = availableTags.filter(
-        (tag) => tag.toLowerCase().includes(tagInput.toLowerCase()) && !categories.includes(tag),
+        (tag) => tag.toLowerCase().includes(tagInput.toLowerCase()) && !tags.includes(tag),
       );
       setFilteredTags(filtered);
       setShowSuggestions(filtered.length > 0);
@@ -72,7 +72,7 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
       setShowSuggestions(false);
       setSelectedTagIndex(-1);
     }
-  }, [tagInput, categories]);
+  }, [tagInput, tags]);
 
   const handleTitleClick = () => {
     setTitleEditing(true);
@@ -99,14 +99,14 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
     if (e.key === ' ') {
       e.preventDefault();
       const trimmedInput = tagInput.trim();
-      if (trimmedInput && !categories.includes(trimmedInput)) {
-        setCategories((prev) => [...prev, trimmedInput]);
+      if (trimmedInput && !tags.includes(trimmedInput)) {
+        setTags((prev) => [...prev, trimmedInput]);
         setTagInput('');
       }
-    } else if (e.key === 'Backspace' && !tagInput && categories.length > 0) {
+    } else if (e.key === 'Backspace' && !tagInput && tags.length > 0) {
       // 当输入框为空且按退格键时，删除最后一个标签
       e.preventDefault();
-      setCategories((prev) => prev.slice(0, -1));
+      setTags((prev) => prev.slice(0, -1));
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (showSuggestions) {
@@ -121,14 +121,14 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
       e.preventDefault();
       if (showSuggestions && selectedTagIndex >= 0) {
         const selectedTag = filteredTags[selectedTagIndex];
-        if (!categories.includes(selectedTag)) {
-          setCategories((prev) => [...prev, selectedTag]);
+        if (!tags.includes(selectedTag)) {
+          setTags((prev) => [...prev, selectedTag]);
           setTagInput('');
         }
       } else {
         const trimmedInput = tagInput.trim();
-        if (trimmedInput && !categories.includes(trimmedInput)) {
-          setCategories((prev) => [...prev, trimmedInput]);
+        if (trimmedInput && !tags.includes(trimmedInput)) {
+          setTags((prev) => [...prev, trimmedInput]);
           setTagInput('');
         }
       }
@@ -139,14 +139,14 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
   };
 
   const handleSuggestionClick = (tag: string) => {
-    if (!categories.includes(tag)) {
-      setCategories((prev) => [...prev, tag]);
+    if (!tags.includes(tag)) {
+      setTags((prev) => [...prev, tag]);
       setTagInput('');
     }
   };
 
-  const removeCategory = (categoryToRemove: string) => {
-    setCategories((prev) => prev.filter((cat) => cat !== categoryToRemove));
+  const removeTag = (tagToRemove: string) => {
+    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   };
 
   const handleSave = () => {
@@ -158,10 +158,9 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
     onSave({
       title: title.trim(),
       content: content.trim(),
-      categories,
+      tags,
       isPinned,
       isFavorite,
-      usage: prompt?.usage || 0,
     });
 
     onOpenChange(false);
@@ -211,16 +210,16 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
             <div className="relative">
               <div className="flex items-center gap-2 p-3 border border-border rounded-md min-h-[44px] bg-background overflow-x-auto">
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  {categories.map((category) => (
+                  {tags.map((tag) => (
                     <Badge
-                      key={category}
+                      key={tag}
                       variant="secondary"
                       className="flex items-center gap-1 whitespace-nowrap"
                     >
-                      {category}
+                      {tag}
                       <button
                         type="button"
-                        onClick={() => removeCategory(category)}
+                        onClick={() => removeTag(tag)}
                         className="hover:bg-destructive/20 rounded-full p-0.5"
                       >
                         <X className="w-3 h-3" />
@@ -234,7 +233,7 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleTagInputKeyDown}
-                  placeholder={categories.length === 0 ? 'Type tags, separate with space...' : ''}
+                  placeholder={tags.length === 0 ? 'Type tags, separate with space...' : ''}
                   className="flex-1 min-w-[120px] bg-transparent outline-none text-sm"
                 />
               </div>

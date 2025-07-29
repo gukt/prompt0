@@ -59,6 +59,15 @@ export default function App() {
     setSidebarVisible((prev) => !prev);
   };
 
+  const handleImportPrompts = (importedPrompts: Prompt[]) => {
+    // 过滤掉重复的 ID，避免冲突
+    const existingIds = new Set(prompts.map((p) => p.id));
+    const uniquePrompts = importedPrompts.filter((p) => !existingIds.has(p.id));
+
+    // 将导入的提示词添加到现有列表的开头
+    setPrompts((prev) => [...uniquePrompts, ...prev]);
+  };
+
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-background text-foreground">
@@ -88,6 +97,7 @@ export default function App() {
             onDeletePrompt={handleDeletePrompt}
             onAddPrompt={handleAddPrompt}
             onToggleSidebar={handleToggleSidebar}
+            onImportPrompts={handleImportPrompts}
           />
         </div>
 

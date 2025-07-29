@@ -148,17 +148,17 @@ export default function PromptCard({
         {prompt.content}
       </div>
 
-      {/* Footer - Only Categories */}
+      {/* Footer - Only Tags */}
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap gap-1">
-          {prompt.categories.slice(0, 3).map((category) => (
-            <Badge key={category} variant="secondary" className="text-xs">
-              {category}
+          {prompt.tags.slice(0, 3).map((tag) => (
+            <Badge key={tag} variant="secondary" className="text-xs">
+              {tag}
             </Badge>
           ))}
-          {prompt.categories.length > 3 && (
+          {prompt.tags.length > 3 && (
             <Badge variant="secondary" className="text-xs">
-              +{prompt.categories.length - 3}
+              +{prompt.tags.length - 3}
             </Badge>
           )}
         </div>

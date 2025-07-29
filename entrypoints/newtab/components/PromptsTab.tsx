@@ -1,4 +1,4 @@
-import { Prompt } from '@/backup/PromptCard';
+import { Prompt } from '@/lib/types';
 import PromptCard from './PromptCard';
 
 interface PromptsTabProps {
@@ -8,23 +8,18 @@ interface PromptsTabProps {
   onViewPrompt: (prompt: Prompt) => void;
 }
 
-export function PromptsTab({ 
-  prompts, 
-  onOpenDashboard, 
-  onCopyPrompt, 
-  onViewPrompt 
+export function PromptsTab({
+  prompts,
+  onOpenDashboard,
+  onCopyPrompt,
+  onViewPrompt,
 }: PromptsTabProps) {
   return (
-      <div className="space-y-4 overflow-y-auto">
-        <h3 className="text-lg font-medium">Recent Prompts</h3>
-        {prompts.map((prompt) => (
-          <PromptCard
-            key={prompt.id}
-            prompt={prompt}
-            onCopy={onCopyPrompt}
-            onView={onViewPrompt}
-          />
-        ))}
-      </div>
+    <div className="space-y-4 overflow-y-auto">
+      <h3 className="text-lg font-medium">Recent Prompts</h3>
+      {prompts.map((prompt) => (
+        <PromptCard key={prompt.id} prompt={prompt} onCopy={onCopyPrompt} onView={onViewPrompt} />
+      ))}
+    </div>
   );
-} 
+}

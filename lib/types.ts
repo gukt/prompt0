@@ -2,15 +2,15 @@ export interface Prompt {
   id: string;
   title: string;
   content: string;
-  categories: string[];
+  tags: string[];
   createdAt: Date;
   updatedAt?: Date;
+  usedAt?: Date;
   isPinned?: boolean;
   isFavorite?: boolean;
-  usage?: number;
 }
 
-export interface Category {
+export interface Tag {
   id: string;
   name: string;
   color?: string;
