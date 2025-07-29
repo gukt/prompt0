@@ -2,6 +2,7 @@ import '@/assets/tailwind.css';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { ContentArea } from './components/ContentArea';
 import { PromptDialog } from './components/PromptDialog';
@@ -12,6 +13,8 @@ export default function App() {
   const [prompts, setPrompts] = useState<Prompt[]>(mockPrompts);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   const handleAddPrompt = () => {
     setEditingPrompt(null);
@@ -52,6 +55,10 @@ export default function App() {
     }
   };
 
+  const handleToggleSidebar = () => {
+    setSidebarVisible((prev) => !prev);
+  };
+
   const handleImportPrompts = (importedPrompts: Prompt[]) => {
     // 过滤掉重复的 ID，避免冲突
     const existingIds = new Set(prompts.map((p) => p.id));
@@ -63,44 +70,35 @@ export default function App() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background dark">
-        {/* 居中容器 */}
-        <div className="max-w-7xl mx-auto">
-          {/* 顶部导航栏 */}
-          <header className="bg-background">
-            <div className="px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="text-primary-foreground font-bold text-sm">P</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          {/* 主要内容区域 */}
-          <div className="flex min-h-[calc(100vh-80px)]">
-            {/* 左侧边栏 */}
-            <div className="w-64">
-              <Sidebar activeItem={activeItem} onItemChange={setActiveItem} />
-            </div>
-
-            {/* 右侧内容区域 */}
-            <div className="flex-1">
-              <ContentArea
-                activeItem={activeItem}
-                prompts={prompts}
-                searchQuery=""
-                sidebarVisible={true}
-                onEditPrompt={handleEditPrompt}
-                onDeletePrompt={handleDeletePrompt}
-                onAddPrompt={handleAddPrompt}
-                onToggleSidebar={() => {}}
-                onImportPrompts={handleImportPrompts}
-              />
-            </div>
+      <div className="min-h-screen bg-background text-foreground">
+        <div className="flex h-screen">
+          {/* 左侧边栏 */}
+          <div
+            className={cn(
+              'transition-all duration-300 ease-in-out border-r border-border',
+              sidebarVisible ? 'w-64' : 'w-0 overflow-hidden',
+            )}
+          >
+            <Sidebar
+              activeItem={activeItem}
+              onItemChange={setActiveItem}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+            />
           </div>
+
+          {/* 右侧内容区域 */}
+          <ContentArea
+            activeItem={activeItem}
+            prompts={prompts}
+            searchQuery={searchQuery}
+            sidebarVisible={sidebarVisible}
+            onEditPrompt={handleEditPrompt}
+            onDeletePrompt={handleDeletePrompt}
+            onAddPrompt={handleAddPrompt}
+            onToggleSidebar={handleToggleSidebar}
+            onImportPrompts={handleImportPrompts}
+          />
         </div>
 
         {/* 新增/编辑对话框 */}

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
-import { ChevronDownIcon, DownloadIcon, PanelLeftIcon, PlusIcon, UploadIcon } from 'lucide-react';
+import { ChevronDownIcon, DownloadIcon, PlusIcon, UploadIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import PromptCard from './PromptCard';
 
@@ -20,11 +20,9 @@ export function ContentArea({
   activeItem,
   prompts,
   searchQuery,
-  sidebarVisible,
   onEditPrompt,
   onDeletePrompt,
   onAddPrompt,
-  onToggleSidebar,
   onImportPrompts,
 }: ContentAreaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -97,7 +95,7 @@ export function ContentArea({
       case 'all':
         return 'All Prompts';
       default:
-        return `${activeItem} Tag`;
+        return `${activeItem} Prompts`;
     }
   };
 
@@ -392,114 +390,103 @@ ${prompt.content}
       />
 
       {/* Header */}
-      <div className="px-4 border-b border-border h-12 flex items-center justify-between">
-        {/* Left */}
-        <div className="flex items-center gap-3">
-          {/* 侧边栏开关图标 */}
-          <Button variant="ghost" size="sm" onClick={onToggleSidebar} className="p-1 h-8 w-8">
-            {sidebarVisible ? (
-              <PanelLeftIcon className="w-4 h-4" />
-            ) : (
-              <PanelLeftIcon className="w-4 h-4" />
-            )}
-          </Button>
-          {/* 分割线 */}
-          <div className="w-px h-6 bg-border"></div>
+      <div className="px-6 py-4">
+        <div className="flex items-center justify-between">
           {/* 标题 */}
-          <h1 className="text-base font-medium">{getTitle()}</h1>
-        </div>
-        {/* Right */}
-        <div className="flex items-center gap-2">
-          {/* 导入导出按钮组 */}
-          <div className="relative" ref={exportMenuRef}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setShowExportMenu(!showExportMenu);
-                setShowImportMenu(false);
-              }}
-            >
-              <DownloadIcon className="w-4 h-4" />
-              导出
-              <ChevronDownIcon className="w-3 h-3 ml-1" />
-            </Button>
-            {showExportMenu && (
-              <div className="absolute right-0 mt-1 min-w-48 w-max bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                <div className="py-1">
-                  <button
-                    onClick={exportToJSON}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    导出为 JSON
-                  </button>
-                  <button
-                    onClick={exportToHTML}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    导出为 HTML
-                  </button>
-                  <button
-                    onClick={exportToMarkdown}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    导出为 Markdown
-                  </button>
-                  <button
-                    onClick={exportToCSV}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    导出为 CSV
-                  </button>
+          <h1 className="text-xl font-semibold text-foreground">{getTitle()}</h1>
+
+          {/* 操作按钮组 */}
+          <div className="flex items-center gap-3">
+            {/* 导入导出按钮组 */}
+            <div className="relative" ref={exportMenuRef}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setShowExportMenu(!showExportMenu);
+                  setShowImportMenu(false);
+                }}
+              >
+                <DownloadIcon />
+                导出
+                <ChevronDownIcon />
+              </Button>
+              {showExportMenu && (
+                <div className="absolute right-0 mt-1 min-w-48 w-max bg-popover border border-border rounded-md shadow-lg z-50">
+                  <div className="py-1">
+                    <button
+                      onClick={exportToJSON}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      导出为 JSON
+                    </button>
+                    <button
+                      onClick={exportToHTML}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      导出为 HTML
+                    </button>
+                    <button
+                      onClick={exportToMarkdown}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      导出为 Markdown
+                    </button>
+                    <button
+                      onClick={exportToCSV}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      导出为 CSV
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className="relative" ref={importMenuRef}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setShowImportMenu(!showImportMenu);
-                setShowExportMenu(false);
-              }}
-            >
-              <UploadIcon className="w-4 h-4" />
-              导入
-              <ChevronDownIcon className="w-3 h-3 ml-1" />
-            </Button>
-            {showImportMenu && (
-              <div className="absolute right-0 mt-1 min-w-48 w-max bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                <div className="py-1">
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    从 JSON 导入
-                  </button>
-                  <button
-                    onClick={() => csvInputRef.current?.click()}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    从 CSV 导入
-                  </button>
-                  <button
-                    onClick={downloadCSVTemplate}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    下载 CSV 模板
-                  </button>
+            <div className="relative" ref={importMenuRef}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setShowImportMenu(!showImportMenu);
+                  setShowExportMenu(false);
+                }}
+              >
+                <UploadIcon />
+                导入
+                <ChevronDownIcon />
+              </Button>
+              {showImportMenu && (
+                <div className="absolute right-0 mt-1 min-w-48 w-max bg-popover border border-border rounded-md shadow-lg z-50">
+                  <div className="py-1">
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      从 JSON 导入
+                    </button>
+                    <button
+                      onClick={() => csvInputRef.current?.click()}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      从 CSV 导入
+                    </button>
+                    <button
+                      onClick={downloadCSVTemplate}
+                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
+                    >
+                      下载 CSV 模板
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <Button variant="outline" onClick={onAddPrompt} size="sm">
+              <PlusIcon />
+              Add Prompt
+            </Button>
           </div>
-
-          <div className="w-px h-6 bg-border"></div>
-
-          <Button variant="secondary" onClick={onAddPrompt} size="sm">
-            <PlusIcon /> Add Prompt
-          </Button>
         </div>
       </div>
 
@@ -518,12 +505,12 @@ ${prompt.content}
             </p>
             {!searchQuery && (
               <Button onClick={onAddPrompt} size="sm">
-                <PlusIcon /> Add Prompt1
+                <PlusIcon className="w-4 h-4" /> Add Prompt
               </Button>
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
             {filteredPrompts.map((prompt) => (
               <PromptCard
                 key={prompt.id}

@@ -54,7 +54,7 @@ export default function PromptCard({
 
   return (
     <div
-      className="bg-card rounded-lg p-4 border border-border shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col gap-3 cursor-pointer relative"
+      className="bg-card/50 rounded-lg p-4 border border-border shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col gap-3 cursor-pointer relative"
       onClick={handleEdit}
     >
       {/* Header */}
