@@ -163,8 +163,8 @@ export function PromptEditPage({ prompt, onSave, onBack }: PromptEditPageProps) 
   };
 
   return (
-    <div className="p-4 border flex flex-col overflow-y-auto">
-      {/* Header */}
+    <div className="flex-1 flex flex-col">
+      {/* Breadcrumb */}
       <div>
         <div className="flex items-center">
           <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
@@ -196,17 +196,17 @@ export function PromptEditPage({ prompt, onSave, onBack }: PromptEditPageProps) 
       </div>
 
       {/* Content */}
-      <div className="space-y-4">
+      <div className="space-y-6 mt-4">
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Enter prompt content..."
           rows={12}
-          className="px-3 h-16 py-2 border rounded-md"
+          className="px-3 py-2 min-h-64"
         />
 
         {/* Smart Tags Input */}
-        <div className="space-y-2">
+        <div>
           <label className="block text-sm font-medium">Tags</label>
           <div className="relative">
             <div className="flex items-center gap-2 min-h-[44px] overflow-x-auto">

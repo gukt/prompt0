@@ -251,9 +251,9 @@ export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProp
       />
 
       {/* Header */}
-      <div className="px-6 py-4 border-b border-border">
+      {/* <div className="px-6 py-4 border-b border-border">
         <h1 className="text-xl font-semibold text-foreground">设置</h1>
-      </div>
+      </div> */}
 
       {/* Content */}
       <section className="flex-1 p-6 overflow-y-auto space-y-8">
@@ -263,54 +263,52 @@ export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProp
             <h2 className="text-[20px] leading-[25px] font-semibold ">Basic</h2>
             <p className="text-sm text-muted-foreground">Manage your basic preferences</p>
           </div>
-          <Card>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="text-sm font-medium">Auto Complete</div>
-                  <p className="text-sm text-muted-foreground">Enable auto-complete feature</p>
-                </div>
-                <Switch
-                  checked={autoComplete}
-                  onCheckedChange={(checked) => setAutoComplete(checked)}
-                />
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="text-sm font-medium">Auto Complete</div>
+                <p className="text-sm text-muted-foreground">Enable auto-complete feature</p>
               </div>
+              <Switch
+                checked={autoComplete}
+                onCheckedChange={(checked) => setAutoComplete(checked)}
+              />
+            </div>
 
-              <Separator className="my-4" />
+            <Separator className="my-2" />
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="text-sm font-medium">Notifications</div>
-                  <p className="text-sm text-muted-foreground">
-                    Receive updates and important notifications
-                  </p>
-                </div>
-                <Switch
-                  checked={notifications}
-                  onCheckedChange={(checked) => setNotifications(checked)}
-                />
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="text-sm font-medium">Notifications</div>
+                <p className="text-sm text-muted-foreground">
+                  Receive updates and important notifications
+                </p>
               </div>
+              <Switch
+                checked={notifications}
+                onCheckedChange={(checked) => setNotifications(checked)}
+              />
+            </div>
 
-              <Separator className="my-4" />
+            <Separator className="my-2" />
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="text-sm font-medium">Dark Mode</div>
-                  <p className="text-sm text-muted-foreground">Enable dark mode</p>
-                </div>
-                <Switch checked={darkMode} onCheckedChange={(checked) => setDarkMode(checked)} />
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="text-sm font-medium">Dark Mode</div>
+                <p className="text-sm text-muted-foreground">Enable dark mode</p>
               </div>
+              <Switch checked={darkMode} onCheckedChange={(checked) => setDarkMode(checked)} />
+            </div>
 
-              <Separator className="my-4" />
+            <Separator className="my-2" />
 
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <div className="text-sm font-medium">Language</div>
-                  <p className="text-sm text-muted-foreground">Select the interface language</p>
-                </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <div className="text-sm font-medium">Language</div>
+                <p className="text-sm text-muted-foreground">Select the interface language</p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
 
         {/* 数据管理 */}

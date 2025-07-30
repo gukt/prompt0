@@ -1,33 +1,42 @@
 import '@/assets/tailwind.css';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { BrainIcon, LogOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ContactDialog } from './components/ContactDialog';
 import { ContentArea } from './components/ContentArea';
 import { DocsPage } from './components/DocsPage';
 import { PromptEditPage } from './components/PromptEditPage';
+import { PublicPromptsPage } from './components/PublicPromptsPage';
 import { SettingsPage } from './components/SettingsTab';
 import { Sidebar } from './components/Sidebar';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('all');
+  const [activeMenuItem, setActiveMenuItem] = useState('all');
   const [prompts, setPrompts] = useState<Prompt[]>(mockPrompts);
   const [currentPage, setCurrentPage] = useState<'main' | 'edit'>('main');
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
-
-  const handleAddPrompt = () => {
-    setEditingPrompt(null);
+const handleAddPrompt = () => { setEditingPrompt(null);
     setCurrentPage('edit');
   };
 
   const handleEditPrompt = (prompt: Prompt) => {
     setEditingPrompt(prompt);
     setCurrentPage('edit');
-  };
-
-  const handleBackToMain = () => {
+  }; const handleBackToMain = () => {
     setCurrentPage('main');
     setEditingPrompt(null);
   };
@@ -89,6 +98,17 @@ export default function App() {
       );
     }
 
+    // 如果是 Public Prompts 页面，显示不同的布局
+    if (activeMenuItem === 'public') {
+      return (
+        <PublicPromptsPage
+          onImportPrompt={(prompt: Prompt) => {
+            setPrompts((prev) => [prompt, ...prev]);
+          }}
+        />
+      );
+    }
+
     switch (activeItem) {
       case 'settings':
         return <SettingsPage prompts={prompts} onImportPrompts={handleImportPrompts} />;
@@ -113,31 +133,66 @@ export default function App() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background dark">
-        {/* 居中容器 */}
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-background text-base">
+        <div>
           {/* 顶部导航栏 */}
-          <header className="bg-background">
-            <div className="px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="text-primary-foreground font-bold text-sm">P</span>
-                  </div>
-                </div>
+          <header className="grid grid-cols-3 items-center px-16 w-full h-16 mt-4 mb-16 ">
+            <BrainIcon />
+            {/* Dashboard 和 Public Prompts tabs */}
+            <div className="flex items-center justify-center gap-8 ">
+              <div
+                onClick={() => setActiveMenuItem('dashboard')}
+                className={cn(
+                  'cursor-pointer hover:text-primary',
+                  activeMenuItem === 'dashboard' ? '' : 'text-muted-foreground',
+                )}
+              >
+                Dashboard
               </div>
+              <div
+                onClick={() => setActiveMenuItem('public')}
+                className={cn(
+                  'cursor-pointer hover:text-primary',
+                  activeMenuItem === 'public' ? '' : 'text-muted-foreground',
+                )}
+              >
+                Public Prompts
+              </div>
+            </div>
+            <div className="ml-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                    <AvatarFallback>G</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 text-sm" align="end">
+                  <DropdownMenuLabel className="text-xs text-muted-foreground">
+                    gukaitong@gmail.com
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="flex justify-between">
+                    Logout <LogOutIcon />
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </header>
 
           {/* 主要内容区域 */}
-          <div className="flex min-h-[calc(100vh-80px)]">
-            {/* 左侧边栏 */}
-            <div className="w-64">
-              <Sidebar activeItem={activeItem} onItemChange={handleItemChange} />
-            </div>
+          <div className="flex min-h-[calc(100vh-80px)] max-w-6xl mx-auto">
+            {/* 左侧边栏 - 只在 dashboard 页面显示 */}
+            {activeMenuItem === 'dashboard' && (
+              <div className="w-76">
+                <Sidebar activeItem={activeItem} onItemChange={handleItemChange} />
+              </div>
+            )}
 
             {/* 右侧内容区域 */}
-            <div className="flex-1">{renderMainContent()}</div>
+            <div className={`flex-1 ${activeMenuItem === 'dashboard' ? 'ml-12' : ''}`}>
+              {renderMainContent()}
+            </div>
           </div>
         </div>
 

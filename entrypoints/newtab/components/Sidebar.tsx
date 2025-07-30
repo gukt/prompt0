@@ -1,8 +1,8 @@
+import { Separator } from '@/components/ui/separator';
 import { mockTags } from '@/lib/mock-data';
 import { MenuItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import {
-  ChevronDownIcon,
   FileTextIcon,
   HelpCircleIcon,
   ListIcon,
@@ -71,67 +71,9 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
   };
 
   return (
-    <div className="w-64 h-full flex flex-col">
-      {/* 用户信息下拉菜单 */}
-      <div className="p-6 pb-4" ref={menuRef}>
-        <div className="relative">
-          <div 
-            className="flex items-center space-x-3 p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors cursor-pointer"
-            onClick={() => setShowUserMenu(!showUserMenu)}
-          >
-            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-              <span className="text-muted-foreground text-sm font-medium">G</span>
-            </div>
-            <div className="flex-1 min-w-0 text-left">
-              <div className="text-foreground text-sm font-medium">Gu Kaitong</div>
-              <div className="text-muted-foreground text-xs truncate">gukaitong@gmail.com</div>
-            </div>
-            <ChevronDownIcon className={cn(
-              "w-4 h-4 text-muted-foreground transition-transform",
-              showUserMenu && "rotate-180"
-            )} />
-          </div>
-          
-          {/* 下拉菜单 */}
-          {showUserMenu && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg z-50">
-              <button
-                onClick={() => {
-                  onItemChange('settings');
-                  setShowUserMenu(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-              >
-                <SettingsIcon className="w-4 h-4" />
-                设置
-              </button>
-              <button
-                onClick={() => {
-                  onItemChange('docs');
-                  setShowUserMenu(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-              >
-                <FileTextIcon className="w-4 h-4" />
-                文档
-              </button>
-              <button
-                onClick={() => {
-                  onItemChange('contact');
-                  setShowUserMenu(false);
-                }}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-              >
-                <MailIcon className="w-4 h-4" />
-                联系我们
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
+    <div className="h-full flex flex-col">
       {/* 主要分类 - 去掉分组标题 */}
-      <div className="flex-1 px-6">
+      <div className="flex-1">
         <div className="mb-6">
           <div className="space-y-1">
             {categoryItems.map((item) => (
@@ -164,33 +106,30 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
               </button>
             ))}
           </div>
-          
-          {/* 标签分组 - 移到 frequent 下面，采用简洁样式 */}
-          <div className="mt-4 pt-4 border-t border-border/60">
-            <div className="px-3 py-2">
-              <div className="text-xs font-medium text-muted-foreground mb-2">Tags</div>
-              <div className="flex flex-wrap gap-1.5">
-                {mockTags.slice(0, 8).map((tag) => (
-                  <button
-                    key={tag.id}
-                    onClick={() => onItemChange(tag.name.toLowerCase())}
-                    className={cn(
-                      'px-2 py-1 text-xs rounded-md border transition-colors',
-                      activeItem === tag.name.toLowerCase()
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'bg-background hover:bg-accent border-border text-muted-foreground hover:text-foreground'
-                    )}
-                  >
-                    {tag.name}
-                  </button>
-                ))}
-              </div>
+
+          {/* 标签分组 */}
+          <div className="mt-4 pt-4">
+            <div className="text-xs font-medium text-muted-foreground mb-2">标签</div>
+            <div className="px-3 py-2 flex flex-wrap gap-2">
+              {mockTags.slice(0, 8).map((tag) => (
+                <button
+                  key={tag.id}
+                  onClick={() => onItemChange(tag.name.toLowerCase())}
+                  className={cn(
+                    'px-2 py-1 text-xs rounded-md border transition-colors',
+                    activeItem === tag.name.toLowerCase()
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-background hover:bg-accent border-border text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  {tag.name}
+                </button>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* 分割线 */}
-        <div className="border-t border-border mb-6"></div>
+        <Separator className="my-4" />
 
         {/* 其他分组 - 移到下面 */}
         <div className="mb-6">
