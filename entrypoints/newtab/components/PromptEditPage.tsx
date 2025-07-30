@@ -1,25 +1,24 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { mockTags } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Edit, X } from 'lucide-react';
+import { ArrowLeftIcon, Edit, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-interface PromptDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+interface PromptEditPageProps {
   prompt?: Prompt | null;
   onSave: (prompt: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onBack: () => void;
 }
 
-export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialogProps) {
+export function PromptEditPage({ prompt, onSave, onBack }: PromptEditPageProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [isPinned, setIsPinned] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+
   const [titleEditing, setTitleEditing] = useState(false);
   const [titleHovered, setTitleHovered] = useState(false);
 
@@ -46,13 +45,11 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
       setContent(prompt.content);
       setTags(prompt.tags);
       setIsPinned(prompt.isPinned || false);
-      setIsFavorite(prompt.isFavorite || false);
     } else {
       setTitle('New Prompt');
       setContent('');
       setTags([]);
       setIsPinned(false);
-      setIsFavorite(false);
     }
     setTitleEditing(false);
     setTagInput('');
@@ -160,16 +157,20 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
       content: content.trim(),
       tags,
       isPinned,
-      isFavorite,
     });
 
-    onOpenChange(false);
+    onBack();
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
+    <div className="p-4 border flex flex-col overflow-y-auto">
+      {/* Header */}
+      <div>
+        <div className="flex items-center">
+          <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
+            <ArrowLeftIcon />
+          </Button>
+
           {titleEditing ? (
             <input
               ref={titleInputRef}
@@ -178,120 +179,95 @@ export function PromptDialog({ open, onOpenChange, prompt, onSave }: PromptDialo
               onChange={(e) => setTitle(e.target.value)}
               onBlur={handleTitleSubmit}
               onKeyDown={handleTitleKeyDown}
-              className="text-lg font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary"
+              className="text-xl font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary flex-1"
             />
           ) : (
             <div
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center gap-2 cursor-pointer flex-1"
               onClick={handleTitleClick}
               onMouseEnter={() => setTitleHovered(true)}
               onMouseLeave={() => setTitleHovered(false)}
             >
-              <span className="text-lg font-semibold">{title}</span>
+              <h1 className="text-xl font-semibold">{title}</h1>
               {titleHovered && <Edit className="w-4 h-4 text-muted-foreground" />}
             </div>
           )}
-        </DialogHeader>
+        </div>
+      </div>
 
-        <div className="space-y-6">
-          {/* Content */}
-          <div>
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter prompt content..."
-              rows={8}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-            />
-          </div>
+      {/* Content */}
+      <div className="space-y-4">
+        <Textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Enter prompt content..."
+          rows={12}
+          className="px-3 h-16 py-2 border rounded-md"
+        />
 
-          {/* Smart Tags Input - Single Row */}
-          <div className="space-y-2">
-            <div className="relative">
-              <div className="flex items-center gap-2 p-3 border border-border rounded-md min-h-[44px] bg-background overflow-x-auto">
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="flex items-center gap-1 whitespace-nowrap"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
-                        className="hover:bg-destructive/20 rounded-full p-0.5"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-                <input
-                  ref={tagInputRef}
-                  type="text"
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={handleTagInputKeyDown}
-                  placeholder={tags.length === 0 ? 'Type tags, separate with space...' : ''}
-                  className="flex-1 min-w-[120px] bg-transparent outline-none text-sm"
-                />
-              </div>
-
-              {/* Suggestions Dropdown */}
-              {showSuggestions && (
-                <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-popover border border-border rounded-md shadow-lg max-h-40 overflow-y-auto">
-                  {filteredTags.map((tag, index) => (
+        {/* Smart Tags Input */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium">Tags</label>
+          <div className="relative">
+            <div className="flex items-center gap-2 min-h-[44px] overflow-x-auto">
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {tags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="flex items-center gap-1 whitespace-nowrap"
+                  >
+                    {tag}
                     <button
-                      key={tag}
                       type="button"
-                      onClick={() => handleSuggestionClick(tag)}
-                      className={cn(
-                        'w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors',
-                        index === selectedTagIndex && 'bg-accent',
-                      )}
+                      onClick={() => removeTag(tag)}
+                      className="hover:bg-destructive/20 rounded-full p-0.5"
                     >
-                      {tag}
+                      <X className="w-3 h-3" />
                     </button>
-                  ))}
-                </div>
-              )}
+                  </Badge>
+                ))}
+              </div>
+              <input
+                ref={tagInputRef}
+                type="text"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleTagInputKeyDown}
+                placeholder={tags.length === 0 ? 'Type tags, separate with space...' : ''}
+                className="flex-1 min-w-[120px] bg-transparent outline-none text-sm"
+              />
             </div>
-          </div>
 
-          {/* Options */}
-          <div className="space-y-3">
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isPinned}
-                  onChange={(e) => setIsPinned(e.target.checked)}
-                  className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary focus:ring-2"
-                />
-                <span className="text-sm">Pin as frequent</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isFavorite}
-                  onChange={(e) => setIsFavorite(e.target.checked)}
-                  className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary focus:ring-2"
-                />
-                <span className="text-sm">Mark as favorite</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t border-border">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>{prompt ? 'Save' : 'Create'}</Button>
+            {/* Suggestions Dropdown */}
+            {showSuggestions && (
+              <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-popover border border-border rounded-md shadow-lg max-h-40 overflow-y-auto">
+                {filteredTags.map((tag, index) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => handleSuggestionClick(tag)}
+                    className={cn(
+                      'w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors',
+                      index === selectedTagIndex && 'bg-accent',
+                    )}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end gap-3">
+        <Button variant="outline" onClick={onBack}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave}>{prompt ? 'Save Changes' : 'Create Prompt'}</Button>
+      </div>
+    </div>
   );
 }

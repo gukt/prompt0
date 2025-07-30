@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Heart, MoreHorizontal, Pin, Share2, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Pin, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface PromptCardProps {
@@ -12,7 +12,6 @@ interface PromptCardProps {
   onEdit: (prompt: Prompt) => void;
   onDelete?: (promptId: string) => void;
   onTogglePin?: (promptId: string) => void;
-  onShare?: (prompt: Prompt) => void;
 }
 
 export default function PromptCard({
@@ -21,7 +20,6 @@ export default function PromptCard({
   onEdit,
   onDelete,
   onTogglePin,
-  onShare,
 }: PromptCardProps) {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -34,10 +32,7 @@ export default function PromptCard({
     onTogglePin?.(prompt.id);
   };
 
-  const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onShare?.(prompt);
-  };
+
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -61,7 +56,6 @@ export default function PromptCard({
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <span className="truncate font-medium text-sm">{prompt.title}</span>
-          {prompt.isFavorite && <Heart className="w-3 h-3 text-red-500 fill-current" />}
         </div>
 
         {/* Action Icons */}
@@ -85,19 +79,7 @@ export default function PromptCard({
             <TooltipContent>{prompt.isPinned ? 'Unpin' : 'Pin'}</TooltipContent>
           </Tooltip>
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 p-0 hover:bg-accent"
-                onClick={handleShare}
-              >
-                <Share2 className="w-3 h-3" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Share</TooltipContent>
-          </Tooltip>
+
 
           {/* Menu */}
           <div className="relative">
@@ -152,12 +134,12 @@ export default function PromptCard({
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap gap-1">
           {prompt.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <Badge key={tag} variant="secondary" className="text-xs bg-muted/80 text-muted-foreground hover:bg-muted">
               {tag}
             </Badge>
           ))}
           {prompt.tags.length > 3 && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge variant="secondary" className="text-xs bg-muted/80 text-muted-foreground hover:bg-muted">
               +{prompt.tags.length - 3}
             </Badge>
           )}

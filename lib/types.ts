@@ -7,7 +7,6 @@ export interface Prompt {
   updatedAt?: Date;
   usedAt?: Date;
   isPinned?: boolean;
-  isFavorite?: boolean;
 }
 
 export interface Tag {

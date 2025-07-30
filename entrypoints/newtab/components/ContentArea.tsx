@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
-import { ChevronDownIcon, DownloadIcon, PlusIcon, UploadIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import PromptCard from './PromptCard';
 
@@ -58,9 +58,6 @@ export function ContentArea({
       case 'frequent':
         filtered = prompts.filter((p) => p.isPinned);
         break;
-      case 'favorites':
-        filtered = prompts.filter((p) => p.isFavorite);
-        break;
       case 'all':
         filtered = prompts;
         break;
@@ -90,8 +87,6 @@ export function ContentArea({
     switch (activeItem) {
       case 'frequent':
         return 'Frequent Prompts';
-      case 'favorites':
-        return 'Favorite Prompts';
       case 'all':
         return 'All Prompts';
       default:
@@ -109,10 +104,7 @@ export function ContentArea({
     console.log('Toggle pin for prompt:', promptId);
   };
 
-  const handleShare = (prompt: Prompt) => {
-    // TODO: Implement share functionality
-    console.log('Share prompt:', prompt);
-  };
+
 
   // 导出工具函数
   const downloadFile = (content: string, filename: string, mimeType: string) => {
@@ -174,7 +166,6 @@ export function ContentArea({
         <div class="meta">
             创建时间: ${new Date(prompt.createdAt).toLocaleString('zh-CN')}
             ${prompt.isPinned ? ' | 📌 已置顶' : ''}
-            ${prompt.isFavorite ? ' | ⭐ 已收藏' : ''}
         </div>
     </div>`,
       )
@@ -205,7 +196,7 @@ ${prompt.content}
 
 **创建时间:** ${new Date(prompt.createdAt).toLocaleString('zh-CN')}${
       prompt.isPinned ? ' | 📌 已置顶' : ''
-    }${prompt.isFavorite ? ' | ⭐ 已收藏' : ''}
+    }
 
 ---
 `,
@@ -217,7 +208,7 @@ ${prompt.content}
 
   // 导出为 CSV
   const exportToCSV = () => {
-    const headers = ['ID', '标题', '内容', '标签', '创建时间', '是否置顶', '是否收藏'];
+    const headers = ['ID', '标题', '内容', '标签', '创建时间', '是否置顶'];
     const csvContent = [
       headers.join(','),
       ...filteredPrompts.map((prompt) =>
@@ -228,7 +219,6 @@ ${prompt.content}
           `"${prompt.tags.join('; ')}"`,
           new Date(prompt.createdAt).toISOString(),
           prompt.isPinned ? '是' : '否',
-          prompt.isFavorite ? '是' : '否',
         ].join(','),
       ),
     ].join('\n');
@@ -285,7 +275,6 @@ ${prompt.content}
             createdAt: prompt.createdAt ? new Date(prompt.createdAt) : new Date(),
             updatedAt: new Date(),
             isPinned: Boolean(prompt.isPinned),
-            isFavorite: Boolean(prompt.isFavorite),
           }));
 
         if (validPrompts.length > 0) {
@@ -397,91 +386,6 @@ ${prompt.content}
 
           {/* 操作按钮组 */}
           <div className="flex items-center gap-3">
-            {/* 导入导出按钮组 */}
-            <div className="relative" ref={exportMenuRef}>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setShowExportMenu(!showExportMenu);
-                  setShowImportMenu(false);
-                }}
-              >
-                <DownloadIcon />
-                导出
-                <ChevronDownIcon />
-              </Button>
-              {showExportMenu && (
-                <div className="absolute right-0 mt-1 min-w-48 w-max bg-popover border border-border rounded-md shadow-lg z-50">
-                  <div className="py-1">
-                    <button
-                      onClick={exportToJSON}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      导出为 JSON
-                    </button>
-                    <button
-                      onClick={exportToHTML}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      导出为 HTML
-                    </button>
-                    <button
-                      onClick={exportToMarkdown}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      导出为 Markdown
-                    </button>
-                    <button
-                      onClick={exportToCSV}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      导出为 CSV
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="relative" ref={importMenuRef}>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setShowImportMenu(!showImportMenu);
-                  setShowExportMenu(false);
-                }}
-              >
-                <UploadIcon />
-                导入
-                <ChevronDownIcon />
-              </Button>
-              {showImportMenu && (
-                <div className="absolute right-0 mt-1 min-w-48 w-max bg-popover border border-border rounded-md shadow-lg z-50">
-                  <div className="py-1">
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      从 JSON 导入
-                    </button>
-                    <button
-                      onClick={() => csvInputRef.current?.click()}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      从 CSV 导入
-                    </button>
-                    <button
-                      onClick={downloadCSVTemplate}
-                      className="block w-full text-left px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground whitespace-nowrap"
-                    >
-                      下载 CSV 模板
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
             <Button variant="outline" onClick={onAddPrompt} size="sm">
               <PlusIcon />
               Add Prompt
@@ -519,7 +423,6 @@ ${prompt.content}
                 onEdit={onEditPrompt}
                 onDelete={onDeletePrompt}
                 onTogglePin={handleTogglePin}
-                onShare={handleShare}
               />
             ))}
           </div>

@@ -3,24 +3,33 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { useState } from 'react';
+import { ContactDialog } from './components/ContactDialog';
 import { ContentArea } from './components/ContentArea';
-import { PromptDialog } from './components/PromptDialog';
+import { DocsPage } from './components/DocsPage';
+import { PromptEditPage } from './components/PromptEditPage';
+import { SettingsPage } from './components/SettingsTab';
 import { Sidebar } from './components/Sidebar';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('all');
   const [prompts, setPrompts] = useState<Prompt[]>(mockPrompts);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'main' | 'edit'>('main');
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
 
   const handleAddPrompt = () => {
     setEditingPrompt(null);
-    setDialogOpen(true);
+    setCurrentPage('edit');
   };
 
   const handleEditPrompt = (prompt: Prompt) => {
     setEditingPrompt(prompt);
-    setDialogOpen(true);
+    setCurrentPage('edit');
+  };
+
+  const handleBackToMain = () => {
+    setCurrentPage('main');
+    setEditingPrompt(null);
   };
 
   const handleDeletePrompt = (promptId: string) => {
@@ -61,6 +70,47 @@ export default function App() {
     setPrompts((prev) => [...uniquePrompts, ...prev]);
   };
 
+  const handleItemChange = (itemId: string) => {
+    if (itemId === 'contact') {
+      setContactDialogOpen(true);
+    } else {
+      setActiveItem(itemId);
+    }
+  };
+
+  const renderMainContent = () => {
+    if (currentPage === 'edit') {
+      return (
+        <PromptEditPage
+          prompt={editingPrompt}
+          onSave={handleSavePrompt}
+          onBack={handleBackToMain}
+        />
+      );
+    }
+
+    switch (activeItem) {
+      case 'settings':
+        return <SettingsPage prompts={prompts} onImportPrompts={handleImportPrompts} />;
+      case 'docs':
+        return <DocsPage />;
+      default:
+        return (
+          <ContentArea
+            activeItem={activeItem}
+            prompts={prompts}
+            searchQuery=""
+            sidebarVisible={true}
+            onEditPrompt={handleEditPrompt}
+            onDeletePrompt={handleDeletePrompt}
+            onAddPrompt={handleAddPrompt}
+            onToggleSidebar={() => {}}
+            onImportPrompts={handleImportPrompts}
+          />
+        );
+    }
+  };
+
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-background dark">
@@ -83,33 +133,16 @@ export default function App() {
           <div className="flex min-h-[calc(100vh-80px)]">
             {/* 左侧边栏 */}
             <div className="w-64">
-              <Sidebar activeItem={activeItem} onItemChange={setActiveItem} />
+              <Sidebar activeItem={activeItem} onItemChange={handleItemChange} />
             </div>
 
             {/* 右侧内容区域 */}
-            <div className="flex-1">
-              <ContentArea
-                activeItem={activeItem}
-                prompts={prompts}
-                searchQuery=""
-                sidebarVisible={true}
-                onEditPrompt={handleEditPrompt}
-                onDeletePrompt={handleDeletePrompt}
-                onAddPrompt={handleAddPrompt}
-                onToggleSidebar={() => {}}
-                onImportPrompts={handleImportPrompts}
-              />
-            </div>
+            <div className="flex-1">{renderMainContent()}</div>
           </div>
         </div>
 
-        {/* 新增/编辑对话框 */}
-        <PromptDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          prompt={editingPrompt}
-          onSave={handleSavePrompt}
-        />
+        {/* Contact Us 对话框 */}
+        <ContactDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
       </div>
     </TooltipProvider>
   );
