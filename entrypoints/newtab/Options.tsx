@@ -29,14 +29,16 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<'main' | 'edit'>('main');
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
-const handleAddPrompt = () => { setEditingPrompt(null);
+  const handleAddPrompt = () => {
+    setEditingPrompt(null);
     setCurrentPage('edit');
   };
 
   const handleEditPrompt = (prompt: Prompt) => {
     setEditingPrompt(prompt);
     setCurrentPage('edit');
-  }; const handleBackToMain = () => {
+  };
+  const handleBackToMain = () => {
     setCurrentPage('main');
     setEditingPrompt(null);
   };
@@ -98,8 +100,8 @@ const handleAddPrompt = () => { setEditingPrompt(null);
       );
     }
 
-    // 如果是 Public Prompts 页面，显示不同的布局
-    if (activeMenuItem === 'public') {
+    // 如果是 Prompt Library 页面，显示不同的布局
+    if (activeMenuItem === 'library') {
       return (
         <PublicPromptsPage
           onImportPrompt={(prompt: Prompt) => {
@@ -138,7 +140,7 @@ const handleAddPrompt = () => { setEditingPrompt(null);
           {/* 顶部导航栏 */}
           <header className="grid grid-cols-3 items-center px-16 w-full h-16 mt-4 mb-16 ">
             <BrainIcon />
-            {/* Dashboard 和 Public Prompts tabs */}
+            {/* Dashboard & Prompt Library Tabs */}
             <div className="flex items-center justify-center gap-8 ">
               <div
                 onClick={() => setActiveMenuItem('dashboard')}
@@ -150,13 +152,13 @@ const handleAddPrompt = () => { setEditingPrompt(null);
                 Dashboard
               </div>
               <div
-                onClick={() => setActiveMenuItem('public')}
+                onClick={() => setActiveMenuItem('library')}
                 className={cn(
                   'cursor-pointer hover:text-primary',
-                  activeMenuItem === 'public' ? '' : 'text-muted-foreground',
+                  activeMenuItem === 'library' ? '' : 'text-muted-foreground',
                 )}
               >
-                Public Prompts
+                Prompt Library
               </div>
             </div>
             <div className="ml-auto">

@@ -1,10 +1,9 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { getSampleTags, sampleAgents } from '@/lib/sample-agents';
 import { Prompt } from '@/lib/types';
-import { CopyIcon, DownloadIcon, SearchIcon, TagIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 interface PublicPromptsPageProps {
@@ -96,18 +95,12 @@ export function PublicPromptsPage({ onImportPrompt }: PublicPromptsPageProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold mb-2">Prompt Library</h1>
-          <p className="text-muted-foreground">
-            探索来自 Cherry Studio 的精选提示词库，包含 {publicPrompts.length} 个专业提示词
-          </p>
+          <p className="text-muted-foreground">探索来自 Cherry Studio 的精选提示词库。</p>
         </div>
-        <Button onClick={handleImportFromFile} variant="outline">
-          <DownloadIcon className="h-4 w-4 mr-2" />
-          导入完整数据
-        </Button>
       </div>
 
       {/* 搜索和筛选 */}
-      <div className="space-y-4">
+      <div className="space-y-8">
         {/* 搜索框 */}
         <div className="relative">
           <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -121,10 +114,6 @@ export function PublicPromptsPage({ onImportPrompt }: PublicPromptsPageProps) {
 
         {/* 标签筛选 */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <TagIcon className="h-4 w-4" />
-            <span className="text-sm font-medium">标签筛选:</span>
-          </div>
           <div className="flex flex-wrap gap-2">
             <Badge
               variant={selectedTag === '' ? 'default' : 'secondary'}
@@ -150,58 +139,33 @@ export function PublicPromptsPage({ onImportPrompt }: PublicPromptsPageProps) {
         </div>
       </div>
 
-      {/* 结果统计 */}
-      <div className="text-sm text-muted-foreground">
-        显示 {filteredPrompts.length} 个提示词
-        {selectedTag && ` (标签: ${selectedTag})`}
-        {searchQuery && ` (搜索: "${searchQuery}")`}
-      </div>
-
       {/* 提示词网格 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPrompts.map((prompt) => (
-          <Card key={prompt.id} className="h-fit">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base leading-tight">{prompt.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {/* 标签 */}
-              <div className="flex flex-wrap gap-1">
-                {prompt.tags.slice(0, 3).map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
-                {prompt.tags.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{prompt.tags.length - 3}
-                  </Badge>
-                )}
-              </div>
-
-              {/* 内容预览 */}
-              <p className="text-sm text-muted-foreground line-clamp-3">
-                {prompt.content.replace(/\r\n/g, ' ').slice(0, 120)}
-                {prompt.content.length > 120 && '...'}
-              </p>
-
-              {/* 操作按钮 */}
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleCopyPrompt(prompt)}
-                  className="flex-1"
-                >
-                  <CopyIcon className="h-3 w-3 mr-1" />
-                  复制
-                </Button>
-                <Button size="sm" onClick={() => handleImportPrompt(prompt)} className="flex-1">
-                  导入
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div
+            key={prompt.id}
+            className="space-y-3 border rounded-lg p-4 hover:bg-accent hover:cursor-pointer"
+          >
+            {/* Title */}
+            <div className="text-base leading-tight">{prompt.title}</div>
+            {/* Content */}
+            <p className="text-sm text-muted-foreground line-clamp-3 text-ellipsis">
+              {prompt.content}
+            </p>
+            {/* Tags */}
+            <div className="flex flex-wrap gap-1">
+              {prompt.tags.slice(0, 3).map((tag) => (
+                <Badge key={tag} variant="outline" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+              {prompt.tags.length > 3 && (
+                <Badge variant="outline" className="text-xs">
+                  +{prompt.tags.length - 3}
+                </Badge>
+              )}
+            </div>
+          </div>
         ))}
       </div>
 
