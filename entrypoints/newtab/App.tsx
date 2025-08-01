@@ -1,5 +1,5 @@
 import '@/assets/tailwind.css';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -117,8 +117,15 @@ export default function App() {
     if (lastAtIndex !== -1) {
       const textAfterAt = textBeforeCursor.substring(lastAtIndex + 1);
 
-      // 检查 @ 后面是否只有字母、数字、空格或为空
-      if (/^[a-zA-Z0-9\u4e00-\u9fa5\s]*$/.test(textAfterAt)) {
+      // 添加调试信息
+      console.log('@ 位置:', lastAtIndex);
+      console.log('@ 后面的文本:', textAfterAt);
+      console.log('正则匹配结果:', /^[a-zA-Z0-9\u4e00-\u9fa5\s\-_\.]*$/.test(textAfterAt));
+      console.log('搜索结果:', searchPrompts(textAfterAt));
+      console.log('mockPrompts 长度:', mockPrompts.length);
+
+      // 放宽正则表达式限制，允许更多字符
+      if (/^[a-zA-Z0-9\u4e00-\u9fa5\s\-_\.]*$/.test(textAfterAt)) {
         setAtPosition(lastAtIndex);
         setSearchQuery(textAfterAt);
         setFilteredPrompts(searchPrompts(textAfterAt));
@@ -127,6 +134,10 @@ export default function App() {
 
         // 延迟计算位置，确保 DOM 更新完成
         setTimeout(calculateDropdownPosition, 0);
+
+        // 添加更多调试信息
+        console.log('设置 showPromptDropdown 为 true');
+        console.log('设置 filteredPrompts:', searchPrompts(textAfterAt));
       } else {
         setShowPromptDropdown(false);
       }
@@ -272,14 +283,16 @@ export default function App() {
             />
 
             {/* Prompt 下拉选择框 */}
+            {/* 调试信息 */}
+            {console.log('渲染条件检查:', {
+              showPromptDropdown,
+              filteredPromptsLength: filteredPrompts.length,
+            })}
             {showPromptDropdown && filteredPrompts.length > 0 && (
-              <DropdownMenuContent
+              <div
                 ref={dropdownRef}
-                side={dropdownSide}
-                align="start"
-                className="w-72 max-h-96 overflow-y-auto p-1"
+                className="absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-card text-card-foreground shadow-md w-72 max-h-96 overflow-y-auto p-1"
                 style={{
-                  position: 'absolute',
                   left: dropdownPosition.left,
                   [dropdownSide === 'bottom' ? 'top' : 'bottom']:
                     dropdownSide === 'bottom'
@@ -288,7 +301,7 @@ export default function App() {
                 }}
               >
                 {filteredPrompts.map((prompt, index) => (
-                  <DropdownMenuItem
+                  <div
                     key={prompt.id}
                     className={cn(
                       'cursor-pointer px-3 py-2 my-0.5 rounded-sm',
@@ -300,9 +313,9 @@ export default function App() {
                     onMouseEnter={() => setSelectedPromptIndex(index)}
                   >
                     <div className="font-medium text-sm truncate w-full">{prompt.title}</div>
-                  </DropdownMenuItem>
+                  </div>
                 ))}
-              </DropdownMenuContent>
+              </div>
             )}
           </DropdownMenu>
         </div>
