@@ -24,7 +24,7 @@ export const MainLayout = ({
           <Header activeMenuItem={activeMenuItem} onMenuItemChange={onMenuItemChange} />
 
           {/* 主要内容区域 */}
-          {children}
+          <main className="max-w-6xl mx-auto min-h-[calc(100vh-80px)]">{children}</main>
         </div>
 
         {/* Contact Us 对话框 */}

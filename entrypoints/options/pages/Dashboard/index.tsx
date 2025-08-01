@@ -48,27 +48,23 @@ export const DashboardPage = ({
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-80px)] max-w-6xl mx-auto">
+    <div className="grid grid-cols-[19rem_1fr] gap-6">
       {/* 左侧边栏 */}
-      <div className="w-76">
-        <Sidebar activeItem={activeItem} onItemChange={onItemChange} />
-      </div>
+      <Sidebar activeItem={activeItem} onItemChange={onItemChange} />
 
       {/* 右侧内容区域 */}
-      <div className="flex-1 ml-12">
-        {currentView === 'edit' ? (
-          <PromptEditor prompt={editingPrompt} onSave={handleSave} onBack={handleBackToList} />
-        ) : (
-          <PromptList
-            activeItem={activeItem}
-            prompts={prompts}
-            onEditPrompt={handleEditPrompt}
-            onDeletePrompt={onDeletePrompt}
-            onAddPrompt={handleAddPrompt}
-            onImportPrompts={onImportPrompts}
-          />
-        )}
-      </div>
+      {currentView === 'edit' ? (
+        <PromptEditor prompt={editingPrompt} onSave={handleSave} onBack={handleBackToList} />
+      ) : (
+        <PromptList
+          activeItem={activeItem}
+          prompts={prompts}
+          onEditPrompt={handleEditPrompt}
+          onDeletePrompt={onDeletePrompt}
+          onAddPrompt={handleAddPrompt}
+          onImportPrompts={onImportPrompts}
+        />
+      )}
     </div>
   );
 };

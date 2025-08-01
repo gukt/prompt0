@@ -68,7 +68,7 @@ export function PromptList({
   };
 
   return (
-    <div className="p-6">
+    <div className="px-6">
       {/* 头部操作栏 */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
