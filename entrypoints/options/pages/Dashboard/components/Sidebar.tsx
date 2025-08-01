@@ -10,6 +10,7 @@ import {
   PinIcon,
   SettingsIcon,
 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 interface SidebarProps {
   activeItem: string;
@@ -33,12 +34,10 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   // 主要分类菜单项
   const categoryItems: MenuItem[] = [
     { id: 'all', name: 'All Prompts', icon: 'List', count: 45 },
-    // { id: 'writing', name: 'Writing', icon: 'List', count: 14 },
-    // { id: 'tech', name: 'Tech', icon: 'List', count: 12 },
-    // { id: 'ai', name: 'AI', icon: 'List', count: 8 },
     { id: 'frequent', name: 'Frequent', icon: 'Pin', count: 6 },
   ];
 
@@ -72,7 +71,7 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
 
   return (
     <div className="h-full flex flex-col">
-      {/* 主要分类 - 去掉分组标题 */}
+      {/* 主要分类 */}
       <div className="flex-1">
         <div className="mb-6">
           <div className="space-y-1">
@@ -131,7 +130,7 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
 
         <Separator className="my-4" />
 
-        {/* 其他分组 - 移到下面 */}
+        {/* 其他分组 */}
         <div className="mb-6">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             其他
