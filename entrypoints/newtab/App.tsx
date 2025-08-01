@@ -4,6 +4,7 @@ import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
+import SidePanel from './views/side-panel/SidePanel';
 
 interface Message {
   id: string;
@@ -317,6 +318,7 @@ export default function App() {
           {isLoading ? '发送中…' : '发送'}
         </button>
       </form>
+      <SidePanel />
     </div>
   );
 }

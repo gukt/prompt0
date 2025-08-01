@@ -10,7 +10,7 @@ interface PublicPromptsPageProps {
   onImportPrompt?: (prompt: Prompt) => void;
 }
 
-export function PublicPromptsPage({ onImportPrompt }: PublicPromptsPageProps) {
+export function DiscoverPage({ onImportPrompt }: PublicPromptsPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [publicPrompts, setPublicPrompts] = useState<Prompt[]>(sampleAgents);

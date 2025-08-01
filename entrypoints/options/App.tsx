@@ -16,11 +16,11 @@ import { BrainIcon, LogOutIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ContactDialog } from './components/ContactDialog';
 import { ContentArea } from './components/ContentArea';
-import { DocsPage } from './components/DocsPage';
-import { PromptEditPage } from './components/PromptEditPage';
-import { PublicPromptsPage } from './components/PublicPromptsPage';
-import { SettingsPage } from './components/SettingsTab';
 import { Sidebar } from './components/Sidebar';
+import { DiscoverPage } from './views/Discover';
+import { DocsPage } from './views/Docs';
+import { PromptEditor } from './views/PromptEditor';
+import { SettingsPage } from './views/Settings';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('all');
@@ -92,18 +92,14 @@ export default function App() {
   const renderMainContent = () => {
     if (currentPage === 'edit') {
       return (
-        <PromptEditPage
-          prompt={editingPrompt}
-          onSave={handleSavePrompt}
-          onBack={handleBackToMain}
-        />
+        <PromptEditor prompt={editingPrompt} onSave={handleSavePrompt} onBack={handleBackToMain} />
       );
     }
 
     // 如果是 Prompt Library 页面，显示不同的布局
     if (activeMenuItem === 'library') {
       return (
-        <PublicPromptsPage
+        <DiscoverPage
           onImportPrompt={(prompt: Prompt) => {
             setPrompts((prev) => [prompt, ...prev]);
           }}
