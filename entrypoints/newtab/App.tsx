@@ -4,7 +4,7 @@ import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
-import SidePanel from './views/side-panel/SidePanel';
+import SidePanel from './pages/side-panel/SidePanel';
 
 interface Message {
   id: string;

@@ -17,10 +17,10 @@ import { useState } from 'react';
 import { ContactDialog } from './components/ContactDialog';
 import { ContentArea } from './components/ContentArea';
 import { Sidebar } from './components/Sidebar';
-import { DiscoverPage } from './views/Discover';
-import { DocsPage } from './views/Docs';
-import { PromptEditor } from './views/PromptEditor';
-import { SettingsPage } from './views/Settings';
+import { DiscoverPage } from './pages/Discover';
+import { DocsPage } from './pages/Docs';
+import { PromptEditor } from './pages/PromptEditor';
+import { SettingsPage } from './pages/Settings';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('all');
