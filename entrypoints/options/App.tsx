@@ -17,10 +17,10 @@ import { useState } from 'react';
 import { ContactDialog } from './components/ContactDialog';
 import { ContentArea } from './components/ContentArea';
 import { Sidebar } from './components/Sidebar';
-import { DiscoverPage } from './pages/Discover';
-import { DocsPage } from './pages/Docs';
-import { PromptEditor } from './pages/PromptEditor';
-import { SettingsPage } from './pages/Settings';
+import { DiscoverPage } from './pages/DiscoverPage';
+import { DocsPage } from './pages/DocsPage';
+import { PromptEditPage } from './pages/PromptEditPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 export default function App() {
   const [activeItem, setActiveItem] = useState('all');
@@ -92,12 +92,16 @@ export default function App() {
   const renderMainContent = () => {
     if (currentPage === 'edit') {
       return (
-        <PromptEditor prompt={editingPrompt} onSave={handleSavePrompt} onBack={handleBackToMain} />
+        <PromptEditPage
+          prompt={editingPrompt}
+          onSave={handleSavePrompt}
+          onBack={handleBackToMain}
+        />
       );
     }
 
-    // 如果是 Prompt Library 页面，显示不同的布局
-    if (activeMenuItem === 'library') {
+    // 如果是 Discover 页面，显示不同的布局
+    if (activeMenuItem === 'discover') {
       return (
         <DiscoverPage
           onImportPrompt={(prompt: Prompt) => {
@@ -136,7 +140,7 @@ export default function App() {
           {/* 顶部导航栏 */}
           <header className="grid grid-cols-3 items-center px-16 w-full h-16 mt-4 mb-16 ">
             <BrainIcon />
-            {/* Dashboard & Prompt Library Tabs */}
+            {/* Dashboard & Discover Tabs */}
             <div className="flex items-center justify-center gap-8 ">
               <div
                 onClick={() => setActiveMenuItem('dashboard')}
@@ -148,13 +152,13 @@ export default function App() {
                 Dashboard
               </div>
               <div
-                onClick={() => setActiveMenuItem('library')}
+                onClick={() => setActiveMenuItem('discover')}
                 className={cn(
                   'cursor-pointer hover:text-primary',
-                  activeMenuItem === 'library' ? '' : 'text-muted-foreground',
+                  activeMenuItem === 'discover' ? '' : 'text-muted-foreground',
                 )}
               >
-                Prompt Library
+                Discover
               </div>
             </div>
             <div className="ml-auto">

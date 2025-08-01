@@ -94,7 +94,7 @@ export function DiscoverPage({ onImportPrompt }: PublicPromptsPageProps) {
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold mb-2">Prompt Library</h1>
+          <h1 className="text-2xl font-bold mb-2">Discovery</h1>
           <p className="text-muted-foreground">探索来自 Cherry Studio 的精选提示词库。</p>
         </div>
       </div>

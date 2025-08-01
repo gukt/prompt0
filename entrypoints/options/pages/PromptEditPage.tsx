@@ -7,13 +7,13 @@ import { cn } from '@/lib/utils';
 import { ArrowLeftIcon, Edit, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-interface PromptEditorProps {
+interface PromptEditPageProps {
   prompt?: Prompt | null;
   onSave: (prompt: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onBack: () => void;
 }
 
-export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
+export function PromptEditPage({ prompt, onSave, onBack }: PromptEditPageProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
