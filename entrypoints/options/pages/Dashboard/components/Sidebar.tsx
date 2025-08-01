@@ -1,4 +1,3 @@
-import { Separator } from '@/components/ui/separator';
 import { mockTags } from '@/lib/mock-data';
 import { MenuItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -104,12 +103,29 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
                 )}
               </button>
             ))}
+            {settingsItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => onItemChange(item.id)}
+                className={cn(
+                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200',
+                  activeItem === item.id
+                    ? 'bg-accent text-accent-foreground'
+                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                )}
+              >
+                <div className="text-current">{getIcon(item.icon || 'List')}</div>
+                <span className="font-medium">{item.name}</span>
+              </button>
+            ))}
           </div>
 
           {/* 标签分组 */}
           <div className="mt-4 pt-4">
-            <div className="text-xs font-medium text-muted-foreground mb-2">标签</div>
-            <div className="px-3 py-2 flex flex-wrap gap-2">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+              标签
+            </h3>
+            <div className="px-2 py-2 flex flex-wrap gap-2">
               {mockTags.slice(0, 8).map((tag) => (
                 <button
                   key={tag.id}
@@ -128,10 +144,10 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
           </div>
         </div>
 
-        <Separator className="my-4" />
+        {/* <Separator className="my-4" /> */}
 
         {/* 其他分组 */}
-        <div className="mb-6">
+        <div className="mb-6 hidden">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             其他
           </h3>

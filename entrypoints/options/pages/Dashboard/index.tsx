@@ -48,7 +48,7 @@ export const DashboardPage = ({
   };
 
   return (
-    <div className="grid grid-cols-[19rem_1fr] gap-6">
+    <div className="grid grid-cols-[16rem_1fr] gap-6">
       {/* 左侧边栏 */}
       <Sidebar activeItem={activeItem} onItemChange={onItemChange} />
 
