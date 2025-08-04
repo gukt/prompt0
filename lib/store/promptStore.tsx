@@ -32,7 +32,7 @@ const initialState: PromptState = {
   initialized: false,
 };
 
-// Reducer 函数
+// Prompt Reducer 函数
 function promptReducer(state: PromptState, action: PromptAction): PromptState {
   switch (action.type) {
     case 'SET_LOADING':
@@ -98,7 +98,7 @@ function promptReducer(state: PromptState, action: PromptAction): PromptState {
   }
 }
 
-// Context 接口
+// PromptContextType 接口
 interface PromptContextType {
   state: PromptState;
   dispatch: Dispatch<PromptAction>;
