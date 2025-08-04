@@ -2,7 +2,7 @@ import { usePrompts } from '@/lib/store/promptStore';
 import { Prompt } from '@/lib/types';
 import { useState } from 'react';
 import { PromptEditor } from './components/PromptEditor';
-import { PromptList } from './components/PromptList';
+import { PromptGrid } from './components/PromptGrid';
 import { Sidebar } from './components/Sidebar';
 
 interface DashboardPageProps {
@@ -54,7 +54,7 @@ export const DashboardPage = ({ activeItem, onItemChange }: DashboardPageProps) 
       {currentView === 'edit' ? (
         <PromptEditor prompt={editingPrompt} onSave={handleSave} onBack={handleBackToList} />
       ) : (
-        <PromptList
+        <PromptGrid
           activeItem={activeItem}
           prompts={prompts}
           onEditPrompt={handleEditPrompt}

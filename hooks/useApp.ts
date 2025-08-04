@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { mockPrompts } from '../mock-data';
-import { usePrompts } from '../store/promptStore';
+import { mockPrompts } from '../lib/mock-data';
+import { usePrompts } from '../lib/store/promptStore';
 
 /**
- * 应用初始化 Hook
- * 负责在应用启动时初始化数据和设置
+ * 应用初始化 Hook。
+ * 负责在应用启动时初始化数据和设置。
  */
-export function useAppInitialization() {
+export function useApp() {
   const { initialize, initialized, loading, error } = usePrompts();
 
   useEffect(() => {

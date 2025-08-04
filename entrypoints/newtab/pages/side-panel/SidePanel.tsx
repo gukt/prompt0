@@ -1,6 +1,5 @@
 import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
-import { useAppInitialization } from '@/lib/hooks/useAppInitialization';
 import { PromptProvider } from '@/lib/store/promptStore';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -15,7 +14,7 @@ function SidePanelContent() {
   const [right, setRight] = useState(0);
 
   // 使用应用初始化 Hook
-  const { initialized, loading } = useAppInitialization();
+  const { initialized, loading } = useApp();
 
   const handleClose = () => {
     setRight(-600);

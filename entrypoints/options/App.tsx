@@ -1,5 +1,4 @@
 import '@/assets/tailwind.css';
-import { useAppInitialization } from '@/lib/hooks/useAppInitialization';
 import { PromptProvider } from '@/lib/store/promptStore';
 import { useState } from 'react';
 import { MainLayout } from './components/layouts/MainLayout';
@@ -15,7 +14,7 @@ function AppContent() {
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
 
   // 使用应用初始化 Hook
-  const { initialized, loading } = useAppInitialization();
+  const { initialized, loading } = useApp();
 
   // 导航处理
   const handleMenuItemChange = (menuItem: string) => {

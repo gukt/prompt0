@@ -2,32 +2,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { useImportExport } from '@/lib/hooks/useImportExport';
 import { usePrompts } from '@/lib/store/promptStore';
-import { ChevronDownIcon, DownloadIcon, UploadIcon } from 'lucide-react';
 import { useState } from 'react';
+import { ExportButton } from '../../../../../components/ExportButton';
+import { ImportButton } from '../../../../../components/ImportButton';
 
 interface SettingsTabProps {}
 
 export function SettingsTab({}: SettingsTabProps) {
-  // 使用新的状态管理和导入导出 Hook
+  // 使用新的状态管理
   const { prompts, getStorageStats, clearAll } = usePrompts();
-  const {
-    showExportMenu,
-    showImportMenu,
-    setShowExportMenu,
-    setShowImportMenu,
-    fileInputRef,
-    csvInputRef,
-    exportToJSON,
-    exportToHTML,
-    exportToMarkdown,
-    exportToCSV,
-    handleJSONImport,
-    handleCSVImport,
-    triggerJSONImport,
-    triggerCSVImport,
-  } = useImportExport();
 
   // 本地设置状态
   const [autoComplete, setAutoComplete] = useState(true);
@@ -134,80 +118,10 @@ export function SettingsTab({}: SettingsTabProps) {
             <div className="text-sm text-muted-foreground">当前共有 {prompts.length} 个提示词</div>
 
             {/* 导出功能 */}
-            <div className="relative">
-              <Button
-                variant="outline"
-                className="w-full justify-between"
-                onClick={() => setShowExportMenu(!showExportMenu)}
-              >
-                <div className="flex items-center gap-2">
-                  <DownloadIcon className="w-4 h-4" />
-                  导出数据
-                </div>
-                <ChevronDownIcon className="w-4 h-4" />
-              </Button>
-
-              {showExportMenu && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg z-10">
-                  <button
-                    onClick={exportToJSON}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    导出为 JSON
-                  </button>
-                  <button
-                    onClick={exportToHTML}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    导出为 HTML
-                  </button>
-                  <button
-                    onClick={exportToMarkdown}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    导出为 Markdown
-                  </button>
-                  <button
-                    onClick={exportToCSV}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    导出为 CSV
-                  </button>
-                </div>
-              )}
-            </div>
+            <ExportButton className="w-full" />
 
             {/* 导入功能 */}
-            <div className="relative">
-              <Button
-                variant="outline"
-                className="w-full justify-between"
-                onClick={() => setShowImportMenu(!showImportMenu)}
-              >
-                <div className="flex items-center gap-2">
-                  <UploadIcon className="w-4 h-4" />
-                  导入数据
-                </div>
-                <ChevronDownIcon className="w-4 h-4" />
-              </Button>
-
-              {showImportMenu && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg z-10">
-                  <button
-                    onClick={triggerJSONImport}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    从 JSON 导入
-                  </button>
-                  <button
-                    onClick={triggerCSVImport}
-                    className="w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
-                  >
-                    从 CSV 导入
-                  </button>
-                </div>
-              )}
-            </div>
+            <ImportButton className="w-full" />
 
             <Separator />
 
@@ -268,43 +182,6 @@ export function SettingsTab({}: SettingsTabProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* 隐藏的文件输入 */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".json"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            handleJSONImport(file);
-          }
-        }}
-      />
-      <input
-        ref={csvInputRef}
-        type="file"
-        accept=".csv"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) {
-            handleCSVImport(file);
-          }
-        }}
-      />
-
-      {/* 点击外部关闭菜单 */}
-      {(showExportMenu || showImportMenu) && (
-        <div
-          className="fixed inset-0 z-0"
-          onClick={() => {
-            setShowExportMenu(false);
-            setShowImportMenu(false);
-          }}
-        />
-      )}
     </div>
   );
 }
