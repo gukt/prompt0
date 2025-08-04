@@ -1,3 +1,4 @@
+import { usePrompts } from '@/lib/store/promptStore';
 import { Prompt } from '@/lib/types';
 import { useState } from 'react';
 import { PromptEditor } from './components/PromptEditor';
@@ -6,26 +7,15 @@ import { Sidebar } from './components/Sidebar';
 
 interface DashboardPageProps {
   activeItem: string;
-  prompts: Prompt[];
-  onDeletePrompt: (id: string) => void;
-  onImportPrompts: (prompts: Prompt[]) => void;
   onItemChange: (itemId: string) => void;
-  onSavePrompt: (
-    promptData: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>,
-    promptId?: string,
-  ) => void;
 }
 
-export const DashboardPage = ({
-  activeItem,
-  prompts,
-  onDeletePrompt,
-  onImportPrompts,
-  onItemChange,
-  onSavePrompt,
-}: DashboardPageProps) => {
+export const DashboardPage = ({ activeItem, onItemChange }: DashboardPageProps) => {
   const [currentView, setCurrentView] = useState<'list' | 'edit'>('list');
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
+
+  // 使用新的状态管理
+  const { prompts, addPrompt, updatePrompt, deletePrompt, importPrompts } = usePrompts();
 
   const handleAddPrompt = () => {
     setEditingPrompt(null);
@@ -42,9 +32,17 @@ export const DashboardPage = ({
     setEditingPrompt(null);
   };
 
-  const handleSave = (promptData: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => {
-    onSavePrompt(promptData, editingPrompt?.id);
-    handleBackToList();
+  const handleSave = async (promptData: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => {
+    try {
+      if (editingPrompt?.id) {
+        await updatePrompt(editingPrompt.id, promptData);
+      } else {
+        await addPrompt(promptData);
+      }
+      handleBackToList();
+    } catch (error) {
+      console.error('保存失败:', error);
+    }
   };
 
   return (
@@ -60,9 +58,9 @@ export const DashboardPage = ({
           activeItem={activeItem}
           prompts={prompts}
           onEditPrompt={handleEditPrompt}
-          onDeletePrompt={onDeletePrompt}
+          onDeletePrompt={deletePrompt}
           onAddPrompt={handleAddPrompt}
-          onImportPrompts={onImportPrompts}
+          onImportPrompts={importPrompts}
         />
       )}
     </div>

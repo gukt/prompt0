@@ -1,6 +1,7 @@
 import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
-import { mockPrompts } from '@/lib/mock-data';
+import { useAppInitialization } from '@/lib/hooks/useAppInitialization';
+import { PromptProvider } from '@/lib/store/promptStore';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { BrainIcon, XIcon } from 'lucide-react';
@@ -8,11 +9,13 @@ import { useState } from 'react';
 import { PromptsTab } from './components/PromptsTab';
 import { SettingsTab } from './components/SettingsTab';
 
-export default function App() {
+function SidePanelContent() {
   const [activeTab, setActiveTab] = useState<'prompts' | 'settings'>('prompts');
-  const [prompts, setPrompts] = useState<Prompt[]>(mockPrompts);
   const [isVisible, setIsVisible] = useState(true);
   const [right, setRight] = useState(0);
+
+  // 使用应用初始化 Hook
+  const { initialized, loading } = useAppInitialization();
 
   const handleClose = () => {
     setRight(-600);
@@ -81,9 +84,12 @@ export default function App() {
 
       {/* Content */}
       <div className="p-4 flex-1 overflow-y-auto">
-        {activeTab === 'prompts' ? (
+        {!initialized && loading ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="text-muted-foreground">正在加载...</div>
+          </div>
+        ) : activeTab === 'prompts' ? (
           <PromptsTab
-            prompts={prompts}
             onOpenDashboard={handleOpenDashboard}
             onCopyPrompt={copyPrompt}
             onViewPrompt={viewPrompt}
@@ -103,5 +109,14 @@ export default function App() {
         </Button>
       </div>
     </div>
+  );
+}
+
+// 主组件包装 Provider
+export default function App() {
+  return (
+    <PromptProvider>
+      <SidePanelContent />
+    </PromptProvider>
   );
 }

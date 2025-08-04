@@ -18,6 +18,10 @@ export default defineConfig({
   }),
   // https://wxt.dev/guide/essentials/content-scripts.html#iframe
   manifest: {
+    permissions: [
+      "storage",
+      "unlimitedStorage"
+    ],
     web_accessible_resources: [
       {
         resources: ["example-iframe.html", "sidebar-ui.html"],
