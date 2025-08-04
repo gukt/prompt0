@@ -1,4 +1,4 @@
-import { usePrompts } from '@/lib/store/promptStore';
+import { usePrompts } from '@/lib/hooks/prompt';
 import { Prompt } from '@/lib/types';
 import PromptCard from './PromptCard';
 

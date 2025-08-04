@@ -1,6 +1,6 @@
 import '@/assets/tailwind.css';
 import { useApp } from '@/hooks/useApp';
-import { PromptProvider } from '@/lib/store/promptStore';
+import { PromptProvider } from '@/lib/store/prompt';
 import { useState } from 'react';
 import { MainLayout } from './components/layouts/MainLayout';
 import { DashboardPage } from './pages/Dashboard';

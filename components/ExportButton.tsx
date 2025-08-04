@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { usePrompts } from '@/lib/store/promptStore';
+import { usePrompts } from '@/lib/hooks/prompt';
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
 

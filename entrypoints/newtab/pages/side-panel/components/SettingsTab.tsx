@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { usePrompts } from '@/lib/store/promptStore';
+import { usePrompts } from '@/lib/hooks/prompt';
 import { useState } from 'react';
 import { ExportButton } from '../../../../../components/ExportButton';
 import { ImportButton } from '../../../../../components/ImportButton';

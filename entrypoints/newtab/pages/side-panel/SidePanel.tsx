@@ -1,6 +1,6 @@
 import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
-import { PromptProvider } from '@/lib/store/promptStore';
+import { PromptProvider } from '@/lib/store/prompt';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { BrainIcon, XIcon } from 'lucide-react';

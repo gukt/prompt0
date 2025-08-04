@@ -1,4 +1,4 @@
-import { usePrompts } from '@/lib/store/promptStore';
+import { usePrompts } from '@/lib/hooks/prompt';
 import { SidebarMenuItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { FileTextIcon, ListIcon, MailIcon, PinIcon, SettingsIcon } from 'lucide-react';
