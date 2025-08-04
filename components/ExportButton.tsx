@@ -151,7 +151,7 @@ ${prompt.content}
       >
         <div className="flex items-center gap-2">
           <DownloadIcon className="w-4 h-4" />
-          导出数据
+          导出
         </div>
         <ChevronDownIcon className="w-4 h-4" />
       </Button>

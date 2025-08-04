@@ -16,10 +16,10 @@ export interface Tag {
   isPinned?: boolean;
 }
 
-export interface MenuItem {
+export interface SidebarMenuItem {
   id: string;
   name: string;
-  icon?: string;
+  icon?: React.ReactNode;
   count?: number;
   color?: string;
 } 

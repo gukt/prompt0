@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { PlusIcon } from 'lucide-react';
-import { ExportButton } from '../../../../../components/ExportButton';
-import { ImportButton } from '../../../../../components/ImportButton';
 import PromptCard from '../../../components/PromptCard';
 import { usePromptFilter } from '../hooks/usePromptFilter';
 
@@ -33,28 +31,18 @@ export function PromptGrid({
     <div className="px-6">
       {/* 头部操作栏 */}
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold">
+        <div className="flex items-center gap-1">
+          <h1 className="text-lg font-medium">
             {activeItem === 'all' && 'All Prompts'}
             {activeItem === 'frequent' && 'Frequent Prompts'}
             {activeItem !== 'all' && activeItem !== 'frequent' && `${activeItem} Prompts`}
           </h1>
-          <span className="text-sm text-muted-foreground">({filteredPrompts.length})</span>
+          <span>({filteredPrompts.length})</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* 导入按钮 */}
-          <ImportButton variant="outline" size="sm" />
-
-          {/* 导出按钮 */}
-          <ExportButton variant="outline" size="sm" />
-
-          {/* 添加提示词按钮 */}
-          <Button onClick={onAddPrompt} size="sm" className="flex items-center gap-2">
-            <PlusIcon className="w-4 h-4" />
-            添加提示词
-          </Button>
-        </div>
+        <Button variant="outline" onClick={onAddPrompt} size="sm">
+          <PlusIcon className="text-primary font-me" /> 添加提示词
+        </Button>
       </div>
 
       {/* 提示词列表 */}

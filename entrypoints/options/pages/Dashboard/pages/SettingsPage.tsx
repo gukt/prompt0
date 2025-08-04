@@ -5,13 +5,21 @@ import { Switch } from '@/components/ui/switch';
 import { Prompt } from '@/lib/types';
 import { ChevronDownIcon, DownloadIcon, UploadIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { DashboardLayout } from '../components/layouts/DashboardLayout';
 
 interface SettingsPageProps {
   prompts?: Prompt[];
   onImportPrompts?: (prompts: Prompt[]) => void;
+  activeItem?: string;
+  onItemChange?: (itemId: string) => void;
 }
 
-export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProps) {
+export function SettingsPage({
+  prompts = [],
+  onImportPrompts,
+  activeItem = 'all',
+  onItemChange = () => {},
+}: SettingsPageProps) {
   const [autoComplete, setAutoComplete] = useState(true);
   const [notifications, setNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
@@ -233,7 +241,7 @@ export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProp
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full">
+    <DashboardLayout activeItem={activeItem} onItemChange={onItemChange}>
       {/* 隐藏的文件输入 */}
       <input
         ref={fileInputRef}
@@ -249,11 +257,6 @@ export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProp
         onChange={importFromCSV}
         style={{ display: 'none' }}
       />
-
-      {/* Header */}
-      {/* <div className="px-6 py-4 border-b border-border">
-        <h1 className="text-xl font-semibold text-foreground">设置</h1>
-      </div> */}
 
       {/* Content */}
       <section className="flex-1 p-6 overflow-y-auto space-y-8">
@@ -470,6 +473,6 @@ export function SettingsPage({ prompts = [], onImportPrompts }: SettingsPageProp
           </Card>
         </section>
       </section>
-    </div>
+    </DashboardLayout>
   );
 }

@@ -4,15 +4,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { DashboardLayout } from '@/entrypoints/options/components/layouts/DashboardLayout';
 
-export function DocsPage() {
+interface DocsPageProps {
+  activeItem?: string;
+  onItemChange?: (itemId: string) => void;
+}
+
+export function DocsPage({ activeItem = 'all', onItemChange = () => {} }: DocsPageProps) {
   return (
-    <div className="flex-1 flex flex-col h-full">
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-border">
-        <h1 className="text-xl font-semibold text-foreground">文档</h1>
-      </div>
-
+    <DashboardLayout activeItem={activeItem} onItemChange={onItemChange}>
       {/* Content */}
       <div className="flex-1 p-6 overflow-y-auto space-y-8">
         {/* 产品说明 */}
@@ -168,6 +169,6 @@ export function DocsPage() {
           </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

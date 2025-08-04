@@ -2,7 +2,9 @@ import { createContext, Dispatch, ReactNode, useContext, useReducer } from 'reac
 import { PromptStorageService } from '../storage';
 import { Prompt } from '../types';
 
-// 状态接口
+/**
+ * Prompt 状态接口
+ */
 export interface PromptState {
   prompts: Prompt[];
   loading: boolean;
@@ -116,7 +118,6 @@ export function PromptProvider({ children }: PromptProviderProps) {
   return <PromptContext.Provider value={{ state, dispatch }}>{children}</PromptContext.Provider>;
 }
 
-// Hook 来使用 Context
 export function usePromptContext(): PromptContextType {
   const context = useContext(PromptContext);
   if (!context) {
@@ -125,7 +126,7 @@ export function usePromptContext(): PromptContextType {
   return context;
 }
 
-// 高级 Hook - 提供完整的 Prompt 操作
+// 提供完整的 Prompt 操作
 export function usePrompts() {
   const { state, dispatch } = usePromptContext();
 

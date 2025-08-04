@@ -1,11 +1,10 @@
 import '@/assets/tailwind.css';
+import { useApp } from '@/hooks/useApp';
 import { PromptProvider } from '@/lib/store/promptStore';
 import { useState } from 'react';
 import { MainLayout } from './components/layouts/MainLayout';
 import { DashboardPage } from './pages/Dashboard';
 import { DiscoverPage } from './pages/DiscoverPage';
-import { DocsPage } from './pages/DocsPage';
-import { SettingsPage } from './pages/SettingsPage';
 
 function AppContent() {
   // 主要状态
@@ -48,8 +47,6 @@ function AppContent() {
         <DashboardPage activeItem={activeItem} onItemChange={handleItemChange} />
       )}
       {activeMenuItem === 'discover' && <DiscoverPage />}
-      {activeMenuItem === 'docs' && <DocsPage />}
-      {activeMenuItem === 'settings' && <SettingsPage />}
     </MainLayout>
   );
 }
