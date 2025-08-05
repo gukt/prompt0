@@ -1,10 +1,8 @@
-import { Badge } from '@/components/ui/badge';
+import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { mockTags } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import { ArrowLeftIcon, Edit, XIcon } from 'lucide-react';
+import { ArrowLeftIcon, Edit } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface PromptEditorProps {
@@ -22,22 +20,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
   const [titleEditing, setTitleEditing] = useState(false);
   const [titleHovered, setTitleHovered] = useState(false);
 
-  // 智能标签输入相关状态
-  const [tagInput, setTagInput] = useState('');
-  const [filteredTags, setFilteredTags] = useState<string[]>([]);
-  const [selectedTagIndex, setSelectedTagIndex] = useState(-1);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
   const titleInputRef = useRef<HTMLInputElement>(null);
-  const tagInputRef = useRef<HTMLInputElement>(null);
-
-  const availableTags = [
-    ...new Set([
-      ...mockTags.map((cat) => cat.name),
-      // 从现有提示词中提取标签
-      ...mockTags.flatMap((cat) => [cat.name]),
-    ]),
-  ];
 
   useEffect(() => {
     if (prompt) {
@@ -52,21 +35,6 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
       setIsPinned(false);
     }
   }, [prompt]);
-
-  // 过滤标签建议
-  useEffect(() => {
-    if (tagInput.trim()) {
-      const filtered = availableTags
-        .filter((tag) => tag.toLowerCase().includes(tagInput.toLowerCase()) && !tags.includes(tag))
-        .slice(0, 5);
-      setFilteredTags(filtered);
-      setShowSuggestions(filtered.length > 0);
-      setSelectedTagIndex(-1);
-    } else {
-      setShowSuggestions(false);
-      setFilteredTags([]);
-    }
-  }, [tagInput, tags, availableTags]);
 
   // 处理标题编辑
   const handleTitleEdit = () => {
@@ -88,43 +56,6 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
       setTitle(prompt ? prompt.title : 'New Prompt');
       setTitleEditing(false);
     }
-  };
-
-  // Handle tag input
-  const handleTagKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (selectedTagIndex >= 0 && filteredTags[selectedTagIndex]) {
-        addTag(filteredTags[selectedTagIndex]);
-      } else if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-        addTag(tagInput.trim());
-      }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedTagIndex((prev) => (prev < filteredTags.length - 1 ? prev + 1 : prev));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedTagIndex((prev) => (prev > 0 ? prev - 1 : -1));
-    } else if (e.key === 'Escape') {
-      setShowSuggestions(false);
-      setTagInput('');
-    } else if (e.key === 'Backspace' && !tagInput && tags.length > 0) {
-      // 删除最后一个标签
-      setTags((prev) => prev.slice(0, -1));
-    }
-  };
-
-  const addTag = (tag: string) => {
-    if (tag && !tags.includes(tag)) {
-      setTags((prev) => [...prev, tag]);
-    }
-    setTagInput('');
-    setShowSuggestions(false);
-    setSelectedTagIndex(-1);
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   };
 
   const handleSave = () => {
@@ -186,46 +117,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
       />
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <Badge key={tag} variant="outline" className="flex items-center gap-1">
-            {tag}
-            <button
-              onClick={() => removeTag(tag)}
-              className="hover:bg-muted hover:text-muted-foreground rounded-full p-0.5 cursor-pointer"
-            >
-              <XIcon size={12} />
-            </button>
-          </Badge>
-        ))}
-        <div className="relative">
-          <input
-            ref={tagInputRef}
-            type="text"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={handleTagKeyDown}
-            placeholder="添加标签..."
-            className="px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring focus:ring-primary"
-          />
-          {showSuggestions && filteredTags.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 w-full bg-background border rounded-md shadow-lg z-50">
-              {filteredTags.map((tag, index) => (
-                <button
-                  key={tag}
-                  onClick={() => addTag(tag)}
-                  className={cn(
-                    'w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors',
-                    index === selectedTagIndex && 'bg-accent',
-                  )}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <TagInput value={tags} onChange={setTags} placeholder="添加标签" />
 
       {/* Bottom Actions */}
       <div className="flex justify-end gap-2">

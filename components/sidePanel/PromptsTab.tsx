@@ -1,4 +1,3 @@
-import { usePrompts } from '@/lib/hooks/prompt';
 import { Prompt } from '@/lib/types';
 import PromptCard from './PromptCard';
 
