@@ -2,9 +2,9 @@ import '@/assets/tailwind.css';
 import { useApp } from '@/hooks/useApp';
 import { PromptProvider } from '@/lib/store/prompt';
 import { useState } from 'react';
-import { MainLayout } from './components/layouts/MainLayout';
-import { DashboardPage } from './pages/Dashboard';
-import { DiscoverPage } from './pages/DiscoverPage';
+import { AdminLayout } from '../../components/layout/AdminLayout';
+import { DashboardPage } from '../../pages/Dashboard/Dashboard';
+import { DiscoverPage } from '../../pages/Discover/Discover';
 
 function AppContent() {
   // 主要状态
@@ -37,7 +37,7 @@ function AppContent() {
   }
 
   return (
-    <MainLayout
+    <AdminLayout
       activeMenuItem={activeMenuItem}
       onMenuItemChange={handleMenuItemChange}
       contactDialogOpen={contactDialogOpen}
@@ -47,7 +47,7 @@ function AppContent() {
         <DashboardPage activeItem={activeItem} onItemChange={handleItemChange} />
       )}
       {activeMenuItem === 'discover' && <DiscoverPage />}
-    </MainLayout>
+    </AdminLayout>
   );
 }
 

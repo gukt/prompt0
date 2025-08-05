@@ -1,5 +1,5 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { ContactDialog } from '../ContactDialog';
+import { ContactDialog } from '../../features/prompts/components/ContactDialog';
 import { Header } from './Header';
 
 interface MainLayoutProps {
@@ -10,7 +10,7 @@ interface MainLayoutProps {
   onContactDialogChange: (open: boolean) => void;
 }
 
-export const MainLayout = ({
+export const AdminLayout = ({
   activeMenuItem,
   contactDialogOpen,
   children,

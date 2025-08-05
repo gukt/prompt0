@@ -1,9 +1,9 @@
 import { usePrompts } from '@/lib/hooks/prompt';
 import { Prompt } from '@/lib/types';
 import { useState } from 'react';
-import { PromptEditor } from './components/PromptEditor';
-import { PromptGrid } from './components/PromptGrid';
-import { Sidebar } from './components/Sidebar';
+import { PromptEditor } from '../../features/prompts/components/PromptEditor';
+import { PromptGrid } from '../../features/prompts/components/PromptGrid';
+import { Sidebar } from '../../features/prompts/components/Sidebar';
 
 interface DashboardPageProps {
   activeItem: string;

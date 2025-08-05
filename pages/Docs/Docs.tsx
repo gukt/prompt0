@@ -1,10 +1,10 @@
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { DashboardLayout } from '@/entrypoints/options/components/layouts/DashboardLayout';
 
 interface DocsPageProps {
   activeItem?: string;

@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { PlusIcon } from 'lucide-react';
-import PromptCard from '../../../components/PromptCard';
 import { usePromptFilter } from '../hooks/usePromptFilter';
+import PromptCard from './PromptCard';
 
 interface PromptGridProps {
   activeItem: string;

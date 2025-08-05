@@ -1,10 +1,10 @@
 import '@/assets/tailwind.css';
 import { DropdownMenu } from '@/components/ui/dropdown-menu';
+import SidePanel from '@/features/sidePanel/SidePanel';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useRef, useState } from 'react';
-import SidePanel from './pages/side-panel/SidePanel';
 
 interface Message {
   id: string;
@@ -282,12 +282,6 @@ export default function App() {
               style={{ minHeight: 40, maxHeight: 120 }}
             />
 
-            {/* Prompt 下拉选择框 */}
-            {/* 调试信息 */}
-            {console.log('渲染条件检查:', {
-              showPromptDropdown,
-              filteredPromptsLength: filteredPrompts.length,
-            })}
             {showPromptDropdown && filteredPrompts.length > 0 && (
               <div
                 ref={dropdownRef}

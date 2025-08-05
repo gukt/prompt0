@@ -10,7 +10,9 @@ export interface PromptState {
   initialized: boolean;
 }
 
-// Action 类型
+/**
+ * Prompt Action 类型
+ */
 export type PromptAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }

@@ -1,4 +1,4 @@
-import { Sidebar } from '../../pages/Dashboard/components/Sidebar';
+import { Sidebar } from '../../features/prompts/components/Sidebar';
 
 interface DashboardLayoutProps {
   activeItem: string;

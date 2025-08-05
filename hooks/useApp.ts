@@ -1,6 +1,6 @@
+import { usePrompts } from '@/lib/hooks/prompt/usePrompts';
 import { useEffect } from 'react';
 import { mockPrompts } from '../lib/mock-data';
-import { usePrompts } from '../lib/store/promptStore';
 
 /**
  * 应用初始化 Hook。
