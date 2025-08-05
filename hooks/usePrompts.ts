@@ -1,5 +1,5 @@
-import { PromptStorageService } from '@/lib/storage';
 import { Prompt } from '@/lib/types';
+import { PromptStorageService } from '@/services/prompt-service';
 import { usePromptContext } from '@/stores/prompt/context';
 
 // 提供完整的 Prompt 操作
@@ -12,6 +12,9 @@ export function usePrompts() {
 
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
+      // 先尝试迁移旧格式数据
+      await PromptStorageService.migrateFromOldFormat();
+      
       // 如果提供了 mock 数据，先初始化
       if (mockData && mockData.length > 0) {
         await PromptStorageService.initializeWithMockData(mockData);
