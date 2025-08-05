@@ -7,4 +7,5 @@ alwaysApply: true
 - 遵循 React 19+ 状态管理最佳实践。
 - 如果需要检索文档，请使用 Context 7 MCP。
 - 导入 Lucide 图标时都是用 \*Icon 后缀。
+- 始终从 @/components/ui 中导入 shadcn 相关组件，不要从 @radix-ui 中导入
 - 使用 pnpm 管理依赖。

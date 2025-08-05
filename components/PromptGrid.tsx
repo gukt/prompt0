@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { PlusIcon } from 'lucide-react';
-import { usePromptFilter } from '../hooks/usePromptFilter';
-import PromptCard from './prompt/PromptCard';
 
 interface PromptGridProps {
   activeItem: string;
@@ -48,14 +46,7 @@ export function PromptGrid({
       {/* 提示词列表 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {filteredPrompts.map((prompt) => (
-          <PromptCard
-            key={prompt.id}
-            prompt={prompt}
-            onEdit={() => onEditPrompt(prompt)}
-            onDelete={() => onDeletePrompt(prompt.id)}
-            onTogglePin={() => handleTogglePin(prompt.id)}
-            onCopy={() => navigator.clipboard.writeText(prompt.content)}
-          />
+          <PromptCard key={prompt.id} prompt={prompt} onEdit={() => onEditPrompt(prompt)} />
         ))}
       </div>
 
