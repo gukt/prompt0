@@ -9,7 +9,6 @@ export const mockPrompts: Prompt[] = [
     createdAt: new Date(2024, 0, 15),
     usedAt: new Date(2024, 0, 16),
     isPinned: true,
-    isFavorite: true,
   },
   {
     id: '2',
@@ -18,7 +17,7 @@ export const mockPrompts: Prompt[] = [
     tags: ['Documentation', 'API', 'Technical Writing'],
     createdAt: new Date(2024, 0, 14),
     usedAt: new Date(2024, 0, 15),
-    isFavorite: true,
+    isPinned: true,
   },
   {
     id: '3',

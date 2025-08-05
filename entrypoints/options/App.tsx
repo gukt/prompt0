@@ -2,7 +2,7 @@ import '@/assets/tailwind.css';
 import { useApp } from '@/hooks/useApp';
 import { PromptProvider } from '@/lib/store/prompt';
 import { useState } from 'react';
-import { AdminLayout } from '../../components/layout/AdminLayout';
+import { AppLayout } from '../../components/layout/AppLayout';
 import { DashboardPage } from '../../pages/Dashboard/Dashboard';
 import { DiscoverPage } from '../../pages/Discover/Discover';
 
@@ -37,7 +37,7 @@ function AppContent() {
   }
 
   return (
-    <AdminLayout
+    <AppLayout
       activeMenuItem={activeMenuItem}
       onMenuItemChange={handleMenuItemChange}
       contactDialogOpen={contactDialogOpen}
@@ -47,7 +47,7 @@ function AppContent() {
         <DashboardPage activeItem={activeItem} onItemChange={handleItemChange} />
       )}
       {activeMenuItem === 'discover' && <DiscoverPage />}
-    </AdminLayout>
+    </AppLayout>
   );
 }
 

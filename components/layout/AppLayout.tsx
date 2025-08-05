@@ -10,7 +10,7 @@ interface MainLayoutProps {
   onContactDialogChange: (open: boolean) => void;
 }
 
-export const AdminLayout = ({
+export const AppLayout = ({
   activeMenuItem,
   contactDialogOpen,
   children,
