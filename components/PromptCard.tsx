@@ -13,10 +13,15 @@ import { CopyIcon, MoreHorizontalIcon, PinIcon, Trash2Icon } from 'lucide-react'
 
 interface PromptCardProps {
   prompt: Prompt;
+  onEdit?: (prompt: Prompt) => void;
 }
 
-export default function PromptCard({ prompt }: PromptCardProps) {
+export default function PromptCard({ prompt, onEdit }: PromptCardProps) {
   const { togglePin, deletePrompt } = usePrompts();
+
+  const handleCardClick = () => {
+    onEdit?.(prompt);
+  };
 
   const handleTogglePin = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -40,7 +45,10 @@ export default function PromptCard({ prompt }: PromptCardProps) {
   };
 
   return (
-    <div className="flex flex-col gap-3 cursor-pointer rounded-xl p-4 border hover:border-primary transition-all duration-200 group">
+    <div
+      onClick={handleCardClick}
+      className="flex flex-col gap-3 cursor-pointer rounded-xl p-4 border hover:border-primary transition-all duration-200 group"
+    >
       {/* Header/Title */}
       <div className="flex items-start justify-between">
         {/* Title */}

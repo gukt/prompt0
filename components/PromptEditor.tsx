@@ -234,25 +234,12 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
         />
       </div>
 
-      {/* 其他选项 */}
-      <div className="flex items-center gap-4">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={isPinned}
-            onChange={(e) => setIsPinned(e.target.checked)}
-            className="rounded"
-          />
-          <span className="text-sm">置顶</span>
-        </label>
-      </div>
-
       {/* 底部操作 */}
-      <div className="flex justify-end gap-2 pt-4 border-t">
+      <div className="flex justify-end gap-2 pt-4">
         <Button variant="outline" onClick={onBack}>
-          取消
+          Cancel
         </Button>
-        <Button onClick={handleSave}>保存</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );
