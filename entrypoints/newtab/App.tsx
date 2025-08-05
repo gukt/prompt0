@@ -1,6 +1,6 @@
 import '@/assets/tailwind.css';
+import SidePanel from '@/components/sidePanel/SidePanel';
 import { DropdownMenu } from '@/components/ui/dropdown-menu';
-import SidePanel from '@/features/sidePanel/SidePanel';
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';

@@ -1,10 +1,10 @@
 import '@/assets/tailwind.css';
 import { useApp } from '@/hooks/useApp';
-import { PromptProvider } from '@/lib/store/prompt';
+import { PromptProvider } from '@/stores/prompt';
 import { useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
-import { DashboardPage } from '../../pages/Dashboard/Dashboard';
-import { DiscoverPage } from '../../pages/Discover/Discover';
+import { DashboardPage } from '../../pages/DashboardPage';
+import { DiscoverPage } from '../../pages/DiscoverPage';
 
 function AppContent() {
   // 主要状态

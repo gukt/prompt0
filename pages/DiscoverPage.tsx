@@ -6,11 +6,7 @@ import { Prompt } from '@/lib/types';
 import { SearchIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-interface PublicPromptsPageProps {
-  onImportPrompt?: (prompt: Prompt) => void;
-}
-
-export function DiscoverPage({ onImportPrompt }: PublicPromptsPageProps) {
+export function DiscoverPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string>('');
   const [publicPrompts, setPublicPrompts] = useState<Prompt[]>(sampleAgents);
@@ -37,57 +33,6 @@ export function DiscoverPage({ onImportPrompt }: PublicPromptsPageProps) {
 
     return filtered;
   }, [publicPrompts, searchQuery, selectedTag]);
-
-  const handleCopyPrompt = async (prompt: Prompt) => {
-    try {
-      await navigator.clipboard.writeText(prompt.content);
-      // 这里可以添加一个 toast 提示
-    } catch (error) {
-      console.error('复制失败:', error);
-    }
-  };
-
-  const handleImportPrompt = (prompt: Prompt) => {
-    if (onImportPrompt) {
-      // 创建一个新的 prompt 对象，去掉 cherry- 前缀
-      const newPrompt: Prompt = {
-        ...prompt,
-        id: Date.now().toString(),
-        createdAt: new Date(),
-      };
-      onImportPrompt(newPrompt);
-    }
-  };
-
-  const handleImportFromFile = async () => {
-    try {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json';
-      input.onchange = async (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file) {
-          const text = await file.text();
-          const agentsData = JSON.parse(text);
-
-          // 转换数据格式
-          const convertedPrompts: Prompt[] = agentsData.map((agent: any) => ({
-            id: `cherry-${agent.id}`,
-            title: agent.name,
-            content: agent.prompt,
-            tags: agent.group || [],
-            createdAt: new Date('2024-01-01'),
-            isPinned: false,
-          }));
-
-          setPublicPrompts(convertedPrompts);
-        }
-      };
-      input.click();
-    } catch (error) {
-      console.error('导入文件失败:', error);
-    }
-  };
 
   return (
     <div className="space-y-6">

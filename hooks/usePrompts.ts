@@ -1,6 +1,6 @@
 import { PromptStorageService } from '@/lib/storage';
-import { usePromptContext } from '@/lib/store/prompt/context';
 import { Prompt } from '@/lib/types';
+import { usePromptContext } from '@/stores/prompt/context';
 
 // 提供完整的 Prompt 操作
 export function usePrompts() {

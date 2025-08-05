@@ -1,5 +1,5 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { ContactDialog } from '../../features/prompts/components/ContactDialog';
+import { ContactDialog } from '../ContactDialog';
 import { Header } from './Header';
 
 interface MainLayoutProps {

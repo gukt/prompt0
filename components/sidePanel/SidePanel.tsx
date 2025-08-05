@@ -1,12 +1,12 @@
 import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
-import { PromptProvider } from '@/lib/store/prompt';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { PromptProvider } from '@/stores/prompt';
 import { BrainIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
-import { PromptsTab } from './components/PromptsTab';
-import { SettingsTab } from './components/SettingsTab';
+import { PromptsTab } from './PromptsTab';
+import { SettingsTab } from './SettingsTab';
 
 function SidePanelContent() {
   const [activeTab, setActiveTab] = useState<'prompts' | 'settings'>('prompts');

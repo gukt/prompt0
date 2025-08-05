@@ -1,4 +1,4 @@
-import { usePrompts } from '@/lib/hooks/prompt/usePrompts';
+import { usePrompts } from '@/hooks/usePrompts';
 import { useEffect } from 'react';
 import { mockPrompts } from '../lib/mock-data';
 

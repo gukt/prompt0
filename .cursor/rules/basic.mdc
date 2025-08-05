@@ -3,8 +3,8 @@ alwaysApply: true
 ---
 
 - 我在使用 WXT + React + Shadcn + TailwindCSS 开发一个浏览器扩展。
-- 请使用 React 19+ 进行开发，不要使用过时的语法。
+- 遵循 React 19+ 最佳实践，不要使用过时的语法。
 - 遵循 React 19+ 状态管理最佳实践。
 - 如果需要检索文档，请使用 Context 7 MCP。
-- 导入 Lucide 图标时都是用 *Icon 后缀。
+- 导入 Lucide 图标时都是用 \*Icon 后缀。
 - 使用 pnpm 管理依赖。
