@@ -2,14 +2,23 @@ import { createContext, ReactNode, useContext, useReducer } from 'react';
 import { initialState, promptReducer } from './reducer';
 import { PromptContextType } from './types';
 
-// 创建 Context
+/**
+ * Prompt Context
+ */
 const PromptContext = createContext<PromptContextType | null>(null);
 
-// Provider 组件
+/**
+ * Prompt Provider 组件属性
+ */
 interface PromptProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Prompt Provider 组件
+ * @param children - 子组件
+ * @returns
+ */
 export function PromptProvider({ children }: PromptProviderProps) {
   const [state, dispatch] = useReducer(promptReducer, initialState);
 

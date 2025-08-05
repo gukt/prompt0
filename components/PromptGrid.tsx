@@ -12,11 +12,6 @@ interface PromptGridProps {
 export function PromptGrid({ activeItem, prompts, onEditPrompt, onAddPrompt }: PromptGridProps) {
   const { filteredPrompts } = usePromptFilter(prompts, activeItem);
 
-  const handleTogglePin = (promptId: string) => {
-    // TODO: Implement toggle pin functionality
-    console.log('Toggle pin for prompt:', promptId);
-  };
-
   return (
     <div className="px-6">
       {/* Header */}

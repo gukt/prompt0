@@ -13,8 +13,7 @@ export const DashboardPage = ({ activeItem, onItemChange }: DashboardPageProps) 
   const [currentView, setCurrentView] = useState<'list' | 'edit'>('list');
   const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
 
-  // 使用新的状态管理
-  const { prompts, addPrompt, updatePrompt, deletePrompt, importPrompts } = usePrompts();
+  const { prompts, addPrompt, updatePrompt } = usePrompts();
 
   const handleAddPrompt = () => {
     setEditingPrompt(null);
@@ -57,9 +56,7 @@ export const DashboardPage = ({ activeItem, onItemChange }: DashboardPageProps) 
           activeItem={activeItem}
           prompts={prompts}
           onEditPrompt={handleEditPrompt}
-          onDeletePrompt={deletePrompt}
           onAddPrompt={handleAddPrompt}
-          onImportPrompts={importPrompts}
         />
       )}
     </div>

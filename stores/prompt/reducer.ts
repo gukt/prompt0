@@ -1,6 +1,8 @@
 import { PromptAction, PromptState } from './types';
 
-// 初始状态
+/**
+ * Prompt 初始状态
+ */
 export const initialState: PromptState = {
   prompts: [],
   loading: false,
@@ -8,7 +10,12 @@ export const initialState: PromptState = {
   initialized: false,
 };
 
-// Prompt Reducer 函数
+/**
+ * Prompt Reducer 函数
+ * @param state - 当前状态
+ * @param action - 动作
+ * @returns 新的状态
+ */
 export function promptReducer(state: PromptState, action: PromptAction): PromptState {
   switch (action.type) {
     case 'SET_LOADING':

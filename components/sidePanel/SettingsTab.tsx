@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { usePrompts } from '@/lib/hooks/prompt';
 import { useState } from 'react';
 
 interface SettingsTabProps {}

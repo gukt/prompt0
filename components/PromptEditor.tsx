@@ -90,7 +90,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
     }
   };
 
-  // 处理标签输入
+  // Handle tag input
   const handleTagKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -144,14 +144,14 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
 
   return (
     <div className="max-w-4xl mx-auto px-6 space-y-6">
-      {/* 头部 */}
+      {/* Header */}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm" onClick={onBack} className="flex items-center gap-2">
           <ArrowLeftIcon /> Back
         </Button>
       </div>
 
-      {/* 标题编辑 */}
+      {/* Title */}
       <div className="space-y-2">
         {titleEditing ? (
           <input
@@ -162,7 +162,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
             onBlur={handleTitleSubmit}
             onKeyDown={handleTitleKeyDown}
             className="text-3xl font-bold bg-transparent border-none outline-none focus:ring-0 w-full"
-            placeholder="输入标题..."
+            placeholder="Enter title..."
           />
         ) : (
           <div
@@ -177,7 +177,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
         )}
       </div>
 
-      {/* 内容编辑 */}
+      {/* Content */}
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -227,7 +227,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
         </div>
       </div>
 
-      {/* 底部操作 */}
+      {/* Bottom Actions */}
       <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={onBack}>
           Cancel
