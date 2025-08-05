@@ -4,7 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { mockTags } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { ArrowLeftIcon, Edit, X } from 'lucide-react';
+import { ArrowLeftIcon, Edit, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 interface PromptEditorProps {
@@ -147,8 +147,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
       {/* 头部 */}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm" onClick={onBack} className="flex items-center gap-2">
-          <ArrowLeftIcon className="w-4 h-4" />
-          返回
+          <ArrowLeftIcon /> Back
         </Button>
       </div>
 
@@ -178,64 +177,58 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
         )}
       </div>
 
-      {/* 标签管理 */}
-      <div className="space-y-3">
-        <label className="text-sm font-medium">标签</label>
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="flex items-center gap-1">
-              {tag}
-              <button
-                onClick={() => removeTag(tag)}
-                className="ml-1 hover:bg-destructive hover:text-destructive-foreground rounded-full p-0.5"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </Badge>
-          ))}
-          <div className="relative">
-            <input
-              ref={tagInputRef}
-              type="text"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleTagKeyDown}
-              placeholder="添加标签..."
-              className="px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            {showSuggestions && filteredTags.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-full bg-background border rounded-md shadow-lg z-50">
-                {filteredTags.map((tag, index) => (
-                  <button
-                    key={tag}
-                    onClick={() => addTag(tag)}
-                    className={cn(
-                      'w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors',
-                      index === selectedTagIndex && 'bg-accent',
-                    )}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* 内容编辑 */}
+      <Textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="输入提示词内容..."
+        className="min-h-[300px] resize-none"
+      />
+
+      {/* Tags */}
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <Badge key={tag} variant="outline" className="flex items-center gap-1">
+            {tag}
+            <button
+              onClick={() => removeTag(tag)}
+              className="hover:bg-muted hover:text-muted-foreground rounded-full p-0.5 cursor-pointer"
+            >
+              <XIcon size={12} />
+            </button>
+          </Badge>
+        ))}
+        <div className="relative">
+          <input
+            ref={tagInputRef}
+            type="text"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={handleTagKeyDown}
+            placeholder="添加标签..."
+            className="px-3 py-1 text-sm border rounded-md focus:outline-none focus:ring focus:ring-primary"
+          />
+          {showSuggestions && filteredTags.length > 0 && (
+            <div className="absolute top-full left-0 mt-1 w-full bg-background border rounded-md shadow-lg z-50">
+              {filteredTags.map((tag, index) => (
+                <button
+                  key={tag}
+                  onClick={() => addTag(tag)}
+                  className={cn(
+                    'w-full px-3 py-2 text-left text-sm hover:bg-accent transition-colors',
+                    index === selectedTagIndex && 'bg-accent',
+                  )}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* 内容编辑 */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">内容</label>
-        <Textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="输入提示词内容..."
-          className="min-h-[300px] resize-none"
-        />
-      </div>
-
       {/* 底部操作 */}
-      <div className="flex justify-end gap-2 pt-4">
+      <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={onBack}>
           Cancel
         </Button>
