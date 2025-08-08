@@ -2,31 +2,17 @@ import '@/assets/tailwind.css';
 import { useApp } from '@/hooks/useApp';
 import { PromptProvider } from '@/stores/prompt';
 import { useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { DashboardPage } from '../../pages/DashboardPage';
 import { DiscoverPage } from '../../pages/DiscoverPage';
 
 function AppContent() {
-  // 主要状态
-  const [activeItem, setActiveItem] = useState('all');
-  const [activeMenuItem, setActiveMenuItem] = useState('dashboard');
+  // 状态管理
   const [contactDialogOpen, setContactDialogOpen] = useState(false);
 
   // 使用应用初始化 Hook
   const { initialized, loading } = useApp();
-
-  // 导航处理
-  const handleMenuItemChange = (menuItem: string) => {
-    setActiveMenuItem(menuItem);
-  };
-
-  const handleItemChange = (itemId: string) => {
-    if (itemId === 'contact') {
-      setContactDialogOpen(true);
-    } else {
-      setActiveItem(itemId);
-    }
-  };
 
   if (!initialized && loading) {
     return (
@@ -37,17 +23,15 @@ function AppContent() {
   }
 
   return (
-    <AppLayout
-      activeMenuItem={activeMenuItem}
-      onMenuItemChange={handleMenuItemChange}
-      contactDialogOpen={contactDialogOpen}
-      onContactDialogChange={setContactDialogOpen}
-    >
-      {activeMenuItem === 'dashboard' && (
-        <DashboardPage activeItem={activeItem} onItemChange={handleItemChange} />
-      )}
-      {activeMenuItem === 'discover' && <DiscoverPage />}
-    </AppLayout>
+    <BrowserRouter>
+      <AppLayout contactDialogOpen={contactDialogOpen} onContactDialogChange={setContactDialogOpen}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/prompts" replace />} />
+          <Route path="/prompts" element={<DashboardPage />} />
+          <Route path="/discover" element={<DiscoverPage />} />
+        </Routes>
+      </AppLayout>
+    </BrowserRouter>
   );
 }
 

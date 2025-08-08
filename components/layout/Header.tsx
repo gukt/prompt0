@@ -7,43 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
 import { BrainIcon, LogOutIcon } from 'lucide-react';
 
-interface HeaderProps {
-  activeMenuItem: string;
-  onMenuItemChange: (item: string) => void;
-}
-
-export const Header = ({ activeMenuItem, onMenuItemChange }: HeaderProps) => {
+export const Header = () => {
   return (
-    <header className="grid grid-cols-3 items-center px-16 w-full h-16 mt-4 mb-16">
+    <header className="flex items-center justify-between px-16 w-full h-16 mt-4 mb-16">
       <BrainIcon />
 
-      {/* Dashboard & Discover Tabs */}
-      <div className="flex items-center justify-center gap-8">
-        <div
-          onClick={() => onMenuItemChange('dashboard')}
-          className={cn(
-            'cursor-pointer hover:text-primary',
-            activeMenuItem === 'dashboard' ? '' : 'text-muted-foreground',
-          )}
-        >
-          Dashboard
-        </div>
-        <div
-          onClick={() => onMenuItemChange('discover')}
-          className={cn(
-            'cursor-pointer hover:text-primary',
-            activeMenuItem === 'discover' ? '' : 'text-muted-foreground',
-          )}
-        >
-          Discover
-        </div>
-      </div>
-
       {/* User Dropdown */}
-      <div className="ml-auto">
+      <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
