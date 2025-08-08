@@ -1,8 +1,5 @@
 import { Prompt } from '@/lib/types';
 
-/**
- * Prompt 状态接口
- */
 export interface PromptState {
   prompts: Prompt[];
   loading: boolean;
@@ -10,9 +7,6 @@ export interface PromptState {
   initialized: boolean;
 }
 
-/**
- * Prompt Action 类型
- */
 export type PromptAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
@@ -24,7 +18,6 @@ export type PromptAction =
   | { type: 'SET_INITIALIZED'; payload: boolean }
   | { type: 'CLEAR_ALL' };
 
-// Context 类型
 export interface PromptContextType {
   state: PromptState;
   dispatch: React.Dispatch<PromptAction>;
