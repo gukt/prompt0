@@ -1,7 +1,9 @@
+import { usePrompts } from '@/hooks/usePrompts';
 import { SidebarMenuItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { FileTextIcon, ListIcon, MailIcon, PinIcon, SettingsIcon } from 'lucide-react';
+import { FileTextIcon, ListIcon, MailIcon, SearchIcon, SettingsIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 
 interface SidebarProps {
   activeItem: string;
@@ -11,6 +13,8 @@ interface SidebarProps {
 export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // 使用 prompts store 获取数据
   const { prompts } = usePrompts();
@@ -38,10 +42,23 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
     };
   }, []);
 
+  // 处理菜单项点击
+  const handleMenuClick = (item: SidebarMenuItem) => {
+    if (item.id === 'discover') {
+      navigate('/discover');
+    } else if (item.id === 'contact') {
+      onItemChange('contact');
+    } else {
+      // 处理其他 Prompt 相关的导航
+      navigate('/prompts');
+      onItemChange(item.id);
+    }
+  };
+
   // 菜单项定义
   const menuItems: SidebarMenuItem[] = [
-    { id: 'all', name: 'All Prompts', icon: <ListIcon />, count: stats.totalCount },
-    { id: 'frequent', name: 'Frequent', icon: <PinIcon />, count: stats.pinnedCount },
+    { id: 'all', name: 'My Prompts', icon: <ListIcon />, count: stats.totalCount },
+    { id: 'discover', name: 'Discover', icon: <SearchIcon /> },
     { id: 'settings', name: 'Settings', icon: <SettingsIcon /> },
     { id: 'docs', name: 'Docs', icon: <FileTextIcon /> },
     { id: 'contact', name: 'Contact Us', icon: <MailIcon /> },
@@ -51,37 +68,47 @@ export function Sidebar({ activeItem, onItemChange }: SidebarProps) {
     <div className="space-y-8 text-sm">
       {/* 菜单项列表 */}
       <div className="space-y-1">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onItemChange(item.id)}
-            className={cn(
-              'w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 group',
-              activeItem === item.id
-                ? 'bg-accent text-accent-foreground'
-                : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-            )}
-          >
-            <div className="flex items-center gap-3">
-              <div className="text-muted-foreground">
-                {React.cloneElement(item.icon as React.ReactElement<any>, { size: 16 })}
+        {menuItems.map((item) => {
+          // 判断当前菜单项是否激活
+          const isActive =
+            (item.id === 'discover' && location.pathname === '/discover') ||
+            (item.id === 'all' &&
+              location.pathname.startsWith('/prompts') &&
+              activeItem === 'all') ||
+            (item.id !== 'discover' && item.id !== 'all' && activeItem === item.id);
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleMenuClick(item)}
+              className={cn(
+                'w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-all duration-200 group',
+                isActive
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <div className="text-muted-foreground">
+                  {React.cloneElement(item.icon as React.ReactElement<any>, { size: 16 })}
+                </div>
+                <span className="font-medium">{item.name}</span>
               </div>
-              <span className="font-medium">{item.name}</span>
-            </div>
-            {item.count && (
-              <div
-                className={cn(
-                  'text-xs font-semibold',
-                  activeItem === item.id
-                    ? 'text-muted-foreground'
-                    : 'text-muted-foreground/70 group-hover:text-muted-foreground',
-                )}
-              >
-                {item.count}
-              </div>
-            )}
-          </button>
-        ))}
+              {item.count && (
+                <div
+                  className={cn(
+                    'text-xs font-semibold',
+                    isActive
+                      ? 'text-muted-foreground'
+                      : 'text-muted-foreground/70 group-hover:text-muted-foreground',
+                  )}
+                >
+                  {item.count}
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* 标签分组 */}

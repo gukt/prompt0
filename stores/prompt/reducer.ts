@@ -1,8 +1,5 @@
 import { PromptAction, PromptState } from './types';
 
-/**
- * Prompt 初始状态
- */
 export const initialState: PromptState = {
   prompts: [],
   loading: false,
@@ -12,9 +9,11 @@ export const initialState: PromptState = {
 
 /**
  * Prompt Reducer 函数
+ * 
  * @param state - 当前状态
  * @param action - 动作
  * @returns 新的状态
+ * @see {@link https://react.dev/learn/extracting-state-logic-into-a-reducer}
  */
 export function promptReducer(state: PromptState, action: PromptAction): PromptState {
   switch (action.type) {

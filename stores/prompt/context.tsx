@@ -2,27 +2,19 @@ import { createContext, ReactNode, useContext, useReducer } from 'react';
 import { initialState, promptReducer } from './reducer';
 import { PromptContextType } from './types';
 
-/**
- * Prompt Context
- */
 const PromptContext = createContext<PromptContextType | null>(null);
 
-/**
- * Prompt Provider 组件属性
- */
 interface PromptProviderProps {
   children: ReactNode;
 }
 
-/**
- * Prompt Provider 组件
- * @param children - 子组件
- * @returns
- */
 export function PromptProvider({ children }: PromptProviderProps) {
   const [state, dispatch] = useReducer(promptReducer, initialState);
 
-  return <PromptContext.Provider value={{ state, dispatch }}>{children}</PromptContext.Provider>;
+  // New Context providers can use <Context> and we will be publishing a codemod to convert existing providers.
+  // In future versions we will deprecate <Context.Provider>.
+  // https://react.dev/blog/2024/12/05/react-19#context-as-a-provider
+  return <PromptContext value={{ state, dispatch }}>{children}</PromptContext>;
 }
 
 export function usePromptContext(): PromptContextType {
