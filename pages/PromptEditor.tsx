@@ -1,17 +1,16 @@
 import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Prompt } from '@/lib/types';
+import { usePrompts } from '@/hooks/usePrompts';
 import { ArrowLeftIcon, Edit } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 
-interface PromptEditorProps {
-  prompt?: Prompt | null;
-  onSave: (prompt: Omit<Prompt, 'id' | 'createdAt' | 'updatedAt'>) => void;
-  onBack: () => void;
-}
+export function PromptEditor() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { prompts, addPrompt, updatePrompt } = usePrompts();
 
-export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -22,19 +21,22 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
 
   const titleInputRef = useRef<HTMLInputElement>(null);
 
+  // 获取当前编辑的 prompt
+  const editingPrompt = id ? prompts.find((p) => p.id === id) : null;
+
   useEffect(() => {
-    if (prompt) {
-      setTitle(prompt.title);
-      setContent(prompt.content);
-      setTags(prompt.tags);
-      setIsPinned(prompt.isPinned || false);
+    if (editingPrompt) {
+      setTitle(editingPrompt.title);
+      setContent(editingPrompt.content);
+      setTags(editingPrompt.tags);
+      setIsPinned(editingPrompt.isPinned || false);
     } else {
       setTitle('New Prompt');
       setContent('');
       setTags([]);
       setIsPinned(false);
     }
-  }, [prompt]);
+  }, [editingPrompt]);
 
   // 处理标题编辑
   const handleTitleEdit = () => {
@@ -45,7 +47,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
   const handleTitleSubmit = () => {
     setTitleEditing(false);
     if (!title.trim()) {
-      setTitle(prompt ? prompt.title : 'New Prompt');
+      setTitle(editingPrompt ? editingPrompt.title : 'New Prompt');
     }
   };
 
@@ -53,31 +55,46 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
     if (e.key === 'Enter') {
       handleTitleSubmit();
     } else if (e.key === 'Escape') {
-      setTitle(prompt ? prompt.title : 'New Prompt');
+      setTitle(editingPrompt ? editingPrompt.title : 'New Prompt');
       setTitleEditing(false);
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim() || !content.trim()) {
       alert('请填写标题和内容');
       return;
     }
 
-    onSave({
-      title: title.trim(),
-      content: content.trim(),
-      tags,
-      isPinned,
-    });
-    onBack();
+    try {
+      const promptData = {
+        title: title.trim(),
+        content: content.trim(),
+        tags,
+        isPinned,
+      };
+
+      if (editingPrompt?.id) {
+        await updatePrompt(editingPrompt.id, promptData);
+      } else {
+        await addPrompt(promptData);
+      }
+
+      navigate('/prompts');
+    } catch (error) {
+      console.error('保存失败:', error);
+    }
+  };
+
+  const handleBack = () => {
+    navigate('/prompts');
   };
 
   return (
     <div className="max-w-4xl mx-auto px-6 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={onBack} className="flex items-center gap-2">
+        <Button variant="ghost" size="sm" onClick={handleBack} className="flex items-center gap-2">
           <ArrowLeftIcon /> Back
         </Button>
       </div>
@@ -121,7 +138,7 @@ export function PromptEditor({ prompt, onSave, onBack }: PromptEditorProps) {
 
       {/* Bottom Actions */}
       <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={onBack}>
+        <Button variant="outline" onClick={handleBack}>
           Cancel
         </Button>
         <Button onClick={handleSave}>Save Changes</Button>

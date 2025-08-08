@@ -1,14 +1,16 @@
 import '@/assets/tailwind.css';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { useApp } from '@/hooks/useApp';
+import { DiscoverPage } from '@/pages/DiscoverPage';
+import { DocsPage } from '@/pages/DocsPage';
+import { PromptEditor } from '@/pages/PromptEditor';
+import { PromptGallery } from '@/pages/PromptGallery';
+import { SettingsPage } from '@/pages/SettingsPage';
 import { PromptProvider } from '@/stores/prompt';
-import { useState } from 'react';
 import { HashRouter, Navigate, Route, Routes } from 'react-router';
-import { AppLayout } from '../../components/layout/AppLayout';
-import { DashboardPage } from '../../pages/DashboardPage';
-import { DiscoverPage } from '../../pages/DiscoverPage';
 
 function AppContent() {
-  const [contactDialogOpen, setContactDialogOpen] = useState(false);
   const { initialized, loading } = useApp();
 
   if (!initialized && loading) {
@@ -21,11 +23,36 @@ function AppContent() {
 
   return (
     <HashRouter>
-      <AppLayout contactDialogOpen={contactDialogOpen} onContactDialogChange={setContactDialogOpen}>
+      <AppLayout>
         <Routes>
           <Route path="/" element={<Navigate to="/prompts" replace />} />
-          <Route path="/prompts" element={<DashboardPage />} />
+          <Route
+            path="/prompts"
+            element={
+              <SidebarLayout>
+                <PromptGallery />
+              </SidebarLayout>
+            }
+          />
+          <Route path="/prompts/new" element={<PromptEditor />} />
+          <Route path="/prompts/:id/edit" element={<PromptEditor />} />
           <Route path="/discover" element={<DiscoverPage />} />
+          <Route
+            path="/docs"
+            element={
+              <SidebarLayout>
+                <DocsPage />
+              </SidebarLayout>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <SidebarLayout>
+                <SettingsPage />
+              </SidebarLayout>
+            }
+          />
         </Routes>
       </AppLayout>
     </HashRouter>

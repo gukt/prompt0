@@ -3,8 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getSampleTags, sampleAgents } from '@/lib/sample-agents';
 import { Prompt } from '@/lib/types';
-import { SearchIcon } from 'lucide-react';
+import { ArrowLeftIcon, SearchIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 
 export function DiscoverPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,6 +37,12 @@ export function DiscoverPage() {
 
   return (
     <div className="space-y-6">
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeftIcon size={16} /> Back
+      </Link>
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>
