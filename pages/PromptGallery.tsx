@@ -2,14 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { PlusIcon } from 'lucide-react';
 
-interface PromptGridProps {
+interface PromptGalleryProps {
   activeItem: string;
   prompts: Prompt[];
   onEditPrompt: (prompt: Prompt) => void;
   onAddPrompt: () => void;
 }
 
-export function PromptGrid({ activeItem, prompts, onEditPrompt, onAddPrompt }: PromptGridProps) {
+export function PromptGallery({
+  activeItem,
+  prompts,
+  onEditPrompt,
+  onAddPrompt,
+}: PromptGalleryProps) {
   const { filteredPrompts } = usePromptFilter(prompts, activeItem);
 
   return (
