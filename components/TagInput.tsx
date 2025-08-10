@@ -22,14 +22,10 @@ export function TagInput({
   const [highlightedTagIndex, setHighlightedTagIndex] = useState(-1);
   const [isComposing, setIsComposing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // 使用标签管理 Hook
   const { filterTags, getRecentTags } = useTag();
 
-  // 更新过滤的标签列表
   useEffect(() => {
     const filtered = filterTags(inputValue, value);
     setFilteredTags(filtered);

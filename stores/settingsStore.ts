@@ -1,38 +1,40 @@
 import { storage } from '#imports';
 import { create } from 'zustand';
 
-interface Settings {
+interface AppSidebarSetting {
+  isOpen: boolean;
+  pinnedTags: string[];
+  isTagGroupExpanded?: boolean;
+}
+
+interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   fontSize: number;
   language: string;
   autoSave: boolean;
-  sidebarOpen: boolean;
 }
 
-interface SettingsState {
-  settings: Settings;
+interface AppSettingsState {
+  settings: AppSettings;
   loading: boolean;
   error: string | null;
 
   // 操作方法
   initialize: () => Promise<void>;
-  updateSettings: (updates: Partial<Settings>) => Promise<void>;
+  updateSettings: (updates: Partial<AppSettings>) => Promise<void>;
   resetSettings: () => Promise<void>;
-  toggleSidebar: () => void;
-  setTheme: (theme: 'light' | 'dark' | 'system') => Promise<void>;
 }
 
-const DEFAULT_SETTINGS: Settings = {
+const DEFAULT_SETTINGS: AppSettings = {
   theme: 'system',
   fontSize: 14,
   language: 'zh-CN',
   autoSave: true,
-  sidebarOpen: true,
 };
 
 const SETTINGS_STORAGE_KEY = 'local:settings';
 
-export const useSettingsStore = create<SettingsState>((set, get) => ({
+export const useSettingsStore = create<AppSettingsState>((set, get) => ({
   settings: DEFAULT_SETTINGS,
   loading: false,
   error: null,
@@ -41,7 +43,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   initialize: async () => {
     set({ loading: true });
     try {
-      const savedSettings = await storage.getItem<Settings>(SETTINGS_STORAGE_KEY);
+      const savedSettings = await storage.getItem<AppSettings>(SETTINGS_STORAGE_KEY);
       if (savedSettings) {
         set({ settings: { ...DEFAULT_SETTINGS, ...savedSettings }, loading: false });
       } else {
@@ -58,7 +60,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   },
 
   // 更新设置
-  updateSettings: async (updates: Partial<Settings>) => {
+  updateSettings: async (updates: Partial<AppSettings>) => {
     set({ loading: true });
     try {
       const currentSettings = get().settings;
@@ -88,30 +90,6 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         error: error instanceof Error ? error.message : '重置设置失败',
         loading: false
       });
-    }
-  },
-
-  // 切换侧边栏
-  toggleSidebar: () => {
-    const currentSettings = get().settings;
-    const sidebarOpen = !currentSettings.sidebarOpen;
-
-    // 直接更新状态，不保存到存储（临时状态）
-    set({ settings: { ...currentSettings, sidebarOpen } });
-
-    // 如果需要持久化这个设置，可以取消下面的注释
-    // get().updateSettings({ sidebarOpen });
-  },
-
-  // 设置主题
-  setTheme: async (theme: 'light' | 'dark' | 'system') => {
-    await get().updateSettings({ theme });
-
-    // 应用主题到 DOM
-    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
     }
   },
 }));

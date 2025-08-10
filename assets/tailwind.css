@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @import './global.css';
+@import './sidebar.css';
 
 @layer base {
   * {

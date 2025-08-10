@@ -2,7 +2,6 @@ import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { PromptProvider } from '@/stores/prompt';
 import { BrainIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PromptsTab } from './PromptsTab';
@@ -113,9 +112,5 @@ function SidePanelContent() {
 
 // 主组件包装 Provider
 export default function App() {
-  return (
-    <PromptProvider>
-      <SidePanelContent />
-    </PromptProvider>
-  );
+  return <SidePanelContent />;
 }
