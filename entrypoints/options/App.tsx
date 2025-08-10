@@ -37,22 +37,8 @@ function AppContent() {
           <Route path="/prompts/new" element={<PromptEditor />} />
           <Route path="/prompts/:id/edit" element={<PromptEditor />} />
           <Route path="/discover" element={<DiscoverPage />} />
-          <Route
-            path="/docs"
-            element={
-              <SidebarLayout>
-                <DocsPage />
-              </SidebarLayout>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <SidebarLayout>
-                <SettingsPage />
-              </SidebarLayout>
-            }
-          />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </AppLayout>
     </HashRouter>

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { BrainIcon, LogOutIcon } from 'lucide-react';
 
-export function Header() {
+export function AppHeader() {
   return (
     <header className="flex items-center justify-between px-16 w-full h-16 my-4">
       <BrainIcon />

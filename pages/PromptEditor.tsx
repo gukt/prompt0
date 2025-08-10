@@ -1,3 +1,4 @@
+import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -91,58 +92,65 @@ export function PromptEditor() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" onClick={handleBack} className="flex items-center gap-2">
-          <ArrowLeftIcon /> Back
-        </Button>
-      </div>
-
-      {/* Title */}
-      <div className="space-y-2">
-        {titleEditing ? (
-          <input
-            ref={titleInputRef}
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={handleTitleSubmit}
-            onKeyDown={handleTitleKeyDown}
-            className="text-3xl font-bold bg-transparent border-none outline-none focus:ring-0 w-full"
-            placeholder="Enter title..."
-          />
-        ) : (
-          <div
-            className="flex items-center gap-2 group cursor-pointer"
-            onMouseEnter={() => setTitleHovered(true)}
-            onMouseLeave={() => setTitleHovered(false)}
-            onClick={handleTitleEdit}
+    <SidebarLayout>
+      <div className="max-w-4xl mx-auto px-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBack}
+            className="flex items-center gap-2"
           >
-            <h1 className="text-3xl font-bold">{title}</h1>
-            {titleHovered && <Edit className="w-4 h-4 text-muted-foreground" />}
-          </div>
-        )}
+            <ArrowLeftIcon /> Back
+          </Button>
+        </div>
+
+        {/* Title */}
+        <div className="space-y-2">
+          {titleEditing ? (
+            <input
+              ref={titleInputRef}
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={handleTitleSubmit}
+              onKeyDown={handleTitleKeyDown}
+              className="text-3xl font-bold bg-transparent border-none outline-none focus:ring-0 w-full"
+              placeholder="Enter title..."
+            />
+          ) : (
+            <div
+              className="flex items-center gap-2 group cursor-pointer"
+              onMouseEnter={() => setTitleHovered(true)}
+              onMouseLeave={() => setTitleHovered(false)}
+              onClick={handleTitleEdit}
+            >
+              <h1 className="text-3xl font-bold">{title}</h1>
+              {titleHovered && <Edit className="w-4 h-4 text-muted-foreground" />}
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <Textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="输入提示词内容..."
+          className="min-h-[300px] resize-none"
+        />
+
+        {/* Tags */}
+        <TagInput value={tags} onChange={setTags} placeholder="添加标签" />
+
+        {/* Bottom Actions */}
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" onClick={handleBack}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>Save Changes</Button>
+        </div>
       </div>
-
-      {/* Content */}
-      <Textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="输入提示词内容..."
-        className="min-h-[300px] resize-none"
-      />
-
-      {/* Tags */}
-      <TagInput value={tags} onChange={setTags} placeholder="添加标签" />
-
-      {/* Bottom Actions */}
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={handleBack}>
-          Cancel
-        </Button>
-        <Button onClick={handleSave}>Save Changes</Button>
-      </div>
-    </div>
+    </SidebarLayout>
   );
 }
