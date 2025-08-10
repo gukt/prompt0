@@ -8,6 +8,7 @@ import {
   ListIcon,
   SearchIcon,
   SettingsIcon,
+  Trash2Icon,
 } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { NavLink } from 'react-router';
@@ -15,7 +16,8 @@ import { TagList } from '../TagList';
 
 export function AppSidebar() {
   const { prompts } = usePromptStore();
-  const { pinnedTags: pinnedTagNames, getPromptCountForTag } = useSidebar();
+  const { pinnedTags: pinnedTagNames } = useSidebar();
+  const { getPromptCountForTag } = useTag(prompts);
   const stats = useMemo(
     () => ({
       totalCount: prompts.length,
@@ -26,7 +28,8 @@ export function AppSidebar() {
 
   const fixedMenuItems = [
     { id: 'all', name: 'My Prompts', to: '/', icon: <ListIcon />, count: stats.totalCount },
-    { id: 'recent', name: 'Recent', to: '/', icon: <ClockFadingIcon />, count: 0 },
+    { id: 'recent', name: 'Recently Used', to: '/', icon: <ClockFadingIcon />, count: 0 },
+    { id: 'trash', name: 'Recently Deleted', to: '/trash', icon: <Trash2Icon />, count: 0 },
   ];
 
   const pinnedTags = pinnedTagNames.map((tag) => ({

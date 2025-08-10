@@ -77,6 +77,17 @@ export function useTag(prompts: Prompt[] = mockPrompts) {
     return PREDEFINED_TAGS.includes(tag as PredefinedTag);
   }, []);
 
+  /** 
+   * 获取使用该标签的提示词数量 
+   * 
+   * @param tag - 标签
+   * @returns 使用该标签的提示词数量
+  */
+  const getPromptCountForTag = useCallback((tag: string | null) => {
+    if (!tag) return 0;
+    return prompts.filter((prompt) => prompt.tags.includes(tag)).length;
+  }, [prompts]);
+
   return {
     availableTags,
     predefinedTags: PREDEFINED_TAGS,
@@ -84,5 +95,6 @@ export function useTag(prompts: Prompt[] = mockPrompts) {
     filterTags,
     getRecentTags,
     isPredefinedTag,
+    getPromptCountForTag,
   };
 }

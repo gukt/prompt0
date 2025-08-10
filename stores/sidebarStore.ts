@@ -53,6 +53,11 @@ export const useSidebarStore = create<SidebarStore>((set, get) => ({
     }
   },
 
+  /** 
+   * 切换侧边栏显示/隐藏状态。
+   * 
+   * 如果当前侧边栏是显示的，则切换为隐藏；反之亦然
+   */
   toggle: () => {
     const currentSidebar = get().sidebar;
     const newState = { ...currentSidebar, isOpen: !currentSidebar.isOpen };
@@ -61,6 +66,11 @@ export const useSidebarStore = create<SidebarStore>((set, get) => ({
     get().setOpen(newState.isOpen);
   },
 
+  /** 
+   * 设置侧边栏显示/隐藏状态。
+   * 
+   * @param open - 是否显示侧边栏，true 显示，false 隐藏
+   */
   setOpen: async (open: boolean) => {
     set({ loading: true });
     try {
@@ -76,6 +86,11 @@ export const useSidebarStore = create<SidebarStore>((set, get) => ({
     }
   },
 
+  /** 
+   * 更新固定标签列表。
+   * 
+   * @param tags - 新的固定标签列表
+   */
   updatePinnedTags: async (tags: string[]) => {
     set({ loading: true });
     try {
@@ -91,6 +106,11 @@ export const useSidebarStore = create<SidebarStore>((set, get) => ({
     }
   },
 
+  /** 
+   * 切换标签组显示/隐藏状态。
+   * 
+   * 如果当前标签组是显示的，则切换为隐藏；反之亦然
+   */
   toggleTagGroup: async () => {
     set({ loading: true });
     try {
@@ -109,6 +129,9 @@ export const useSidebarStore = create<SidebarStore>((set, get) => ({
     }
   },
 
+  /** 
+   * 重置侧边栏设置。
+   */
   reset: async () => {
     set({ loading: true });
     try {

@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { usePromptFilter } from '@/hooks/usePromptFilter';
-import { Prompt } from '@/lib/types';
 import { usePromptStore } from '@/stores/promptStore';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -10,12 +9,13 @@ import PromptCard from '../components/PromptCard';
 export function PromptGallery() {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('all');
+
   const { prompts } = usePromptStore();
   const { filteredPrompts } = usePromptFilter(prompts, activeItem);
 
-  const handleEditPrompt = (prompt: Prompt) => {
-    navigate(`/prompts/${prompt.id}/edit`);
-  };
+  // const handleEditPrompt = (prompt: Prompt) => {
+  //   navigate(`/prompts/${prompt.id}/edit`);
+  // };
 
   const handleAddPrompt = () => {
     navigate('/prompts/new');
@@ -41,7 +41,7 @@ export function PromptGallery() {
       {/* Prompt Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {filteredPrompts.map((prompt) => (
-          <PromptCard key={prompt.id} prompt={prompt} onEdit={handleEditPrompt} />
+          <PromptCard key={prompt.id} prompt={prompt} />
         ))}
       </div>
 
