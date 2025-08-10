@@ -7,7 +7,6 @@ import { DocsPage } from '@/pages/DocsPage';
 import { PromptEditor } from '@/pages/PromptEditor';
 import { PromptGallery } from '@/pages/PromptGallery';
 import { SettingsPage } from '@/pages/SettingsPage';
-import { PromptProvider } from '@/stores/prompt';
 import { HashRouter, Navigate, Route, Routes } from 'react-router';
 
 function AppContent() {
@@ -46,9 +45,5 @@ function AppContent() {
 }
 
 export default function App() {
-  return (
-    <PromptProvider>
-      <AppContent />
-    </PromptProvider>
-  );
+  return <AppContent />;
 }
