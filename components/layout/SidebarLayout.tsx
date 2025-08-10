@@ -2,7 +2,7 @@ import { AppSidebar } from './AppSidebar';
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-[16rem_1fr] gap-6">
+    <div className="px-4 grid grid-cols-[16rem_1fr] gap-6">
       {/* Sidebar */}
       <AppSidebar />
       {/* Right Content */}

@@ -3,10 +3,11 @@ export interface Prompt {
   title: string;
   content: string;
   tags: string[];
+  isPinned: boolean;
   createdAt: Date;
-  updatedAt?: Date;
-  usedAt?: Date;
-  isPinned?: boolean;
+  updatedAt: Date;
+  deletedAt?: Date; // 新增：删除时间，用于软删除
+  isDeleted?: boolean; // 新增：是否已删除
 }
 
 export interface Tag {

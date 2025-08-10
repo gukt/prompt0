@@ -3,7 +3,7 @@ import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { usePromptStore } from '@/stores/promptStore';
-import { ArrowLeftIcon, Edit } from 'lucide-react';
+import { PencilIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -73,6 +73,7 @@ export function PromptEditor() {
         content: content.trim(),
         tags,
         isPinned,
+        updatedAt: new Date(),
       };
 
       if (editingPrompt?.id) {
@@ -95,7 +96,7 @@ export function PromptEditor() {
     <SidebarLayout>
       <div className="max-w-4xl mx-auto px-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="sm"
@@ -104,7 +105,7 @@ export function PromptEditor() {
           >
             <ArrowLeftIcon /> Back
           </Button>
-        </div>
+        </div> */}
 
         {/* Title */}
         <div className="space-y-2">
@@ -116,8 +117,8 @@ export function PromptEditor() {
               onChange={(e) => setTitle(e.target.value)}
               onBlur={handleTitleSubmit}
               onKeyDown={handleTitleKeyDown}
-              className="text-3xl font-bold bg-transparent border-none outline-none focus:ring-0 w-full"
-              placeholder="Enter title..."
+              className="text-base bg-transparent border-none outline-none focus:ring-0 w-full"
+              placeholder="New Prompt"
             />
           ) : (
             <div
@@ -126,8 +127,8 @@ export function PromptEditor() {
               onMouseLeave={() => setTitleHovered(false)}
               onClick={handleTitleEdit}
             >
-              <h1 className="text-3xl font-bold">{title}</h1>
-              {titleHovered && <Edit className="w-4 h-4 text-muted-foreground" />}
+              <h1 className="text-base">{title}</h1>
+              {titleHovered && <PencilIcon size={14} className="text-muted-foreground" />}
             </div>
           )}
         </div>

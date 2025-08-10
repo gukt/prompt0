@@ -15,7 +15,7 @@ import { NavLink } from 'react-router';
 import { TagList } from '../TagList';
 
 export function AppSidebar() {
-  const { prompts } = usePromptStore();
+  const { prompts, deletedPrompts } = usePromptStore();
   const { pinnedTags: pinnedTagNames } = useSidebar();
   const { getPromptCountForTag } = useTag(prompts);
   const stats = useMemo(
@@ -27,17 +27,23 @@ export function AppSidebar() {
   );
 
   const fixedMenuItems = [
-    { id: 'all', name: 'My Prompts', to: '/', icon: <ListIcon />, count: stats.totalCount },
-    { id: 'recent', name: 'Recently Used', to: '/', icon: <ClockFadingIcon />, count: 0 },
-    { id: 'trash', name: 'Recently Deleted', to: '/trash', icon: <Trash2Icon />, count: 0 },
+    { id: 'all', name: 'All', to: '/', icon: <ListIcon />, count: stats.totalCount },
+    { id: 'recent', name: 'Recent', to: '/prompts/recent', icon: <ClockFadingIcon /> },
+    {
+      id: 'trash',
+      name: 'Trash',
+      to: '/prompts/trash',
+      icon: <Trash2Icon />,
+    },
+    { id: 'discover', name: 'Discover', to: '/discover', icon: <SearchIcon /> },
   ];
 
   const pinnedTags = pinnedTagNames.map((tag) => ({
     id: tag,
     name: tag,
-    to: `/tags/${tag}`,
+    to: `/prompts/tags/${tag}`,
     icon: <HashIcon />,
-    count: getPromptCountForTag(tag),
+    count: 0,
   }));
 
   const otherItems = [
@@ -58,7 +64,7 @@ export function AppSidebar() {
             to={item.to}
             className={({ isActive }) =>
               cn(
-                'sidebar-menu-item',
+                'sidebar-menu-item justify-between',
                 isActive
                   ? 'bg-accent text-accent-foreground'
                   : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
@@ -69,7 +75,10 @@ export function AppSidebar() {
               {React.cloneElement(item.icon as React.ReactElement<any>, { size: 16 })}
               <span className="font-medium">{item.name}</span>
             </div>
-            {item.count && <div className="ml-auto p-1 text-xs font-semibold">{item.count}</div>}
+            {/* 仅当 count 大于 0 时才显示 */}
+            {item.count && item.count > 0 && (
+              <div className="ml-auto p-2 text-xs font-semibold">{item.count}</div>
+            )}
           </NavLink>
         ))}
       </div>

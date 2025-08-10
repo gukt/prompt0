@@ -7,6 +7,7 @@ import { DocsPage } from '@/pages/DocsPage';
 import { PromptEditor } from '@/pages/PromptEditor';
 import { PromptGallery } from '@/pages/PromptGallery';
 import { SettingsPage } from '@/pages/SettingsPage';
+import { TrashPage } from '@/pages/TrashPage';
 import { HashRouter, Navigate, Route, Routes } from 'react-router';
 
 function AppContent() {
@@ -30,6 +31,30 @@ function AppContent() {
             element={
               <SidebarLayout>
                 <PromptGallery />
+              </SidebarLayout>
+            }
+          />
+          <Route
+            path="/prompts/tags/:tagName"
+            element={
+              <SidebarLayout>
+                <PromptGallery />
+              </SidebarLayout>
+            }
+          />
+          <Route
+            path="/prompts/recent"
+            element={
+              <SidebarLayout>
+                <PromptGallery />
+              </SidebarLayout>
+            }
+          />
+          <Route
+            path="/prompts/trash"
+            element={
+              <SidebarLayout>
+                <TrashPage />
               </SidebarLayout>
             }
           />

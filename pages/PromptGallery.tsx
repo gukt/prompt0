@@ -2,20 +2,15 @@ import { Button } from '@/components/ui/button';
 import { usePromptFilter } from '@/hooks/usePromptFilter';
 import { usePromptStore } from '@/stores/promptStore';
 import { PlusIcon } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import PromptCard from '../components/PromptCard';
 
 export function PromptGallery() {
   const navigate = useNavigate();
-  const [activeItem, setActiveItem] = useState('all');
-
   const { prompts } = usePromptStore();
-  const { filteredPrompts } = usePromptFilter(prompts, activeItem);
-
-  // const handleEditPrompt = (prompt: Prompt) => {
-  //   navigate(`/prompts/${prompt.id}/edit`);
-  // };
+  const { tagName } = useParams();
+  const effectiveTag = tagName || 'all';
+  const { filteredPrompts } = usePromptFilter(prompts, effectiveTag);
 
   const handleAddPrompt = () => {
     navigate('/prompts/new');
@@ -27,8 +22,8 @@ export function PromptGallery() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-1">
           <h1 className="text-lg font-medium">
-            {activeItem === 'all' && 'My Prompts'}
-            {activeItem !== 'all' && `${activeItem} Prompts`}
+            {effectiveTag === 'all' && 'All Prompts'}
+            {effectiveTag !== 'all' && `#${effectiveTag}`}
           </h1>
           <span>({filteredPrompts.length})</span>
         </div>

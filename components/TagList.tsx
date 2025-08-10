@@ -181,11 +181,11 @@ export function TagList() {
               )}
             </ContextMenuTrigger>
             <ContextMenuContent>
-              <ContextMenuItem onClick={() => handleStartEdit(tag)}>重命名标签</ContextMenuItem>
-              <ContextMenuItem onClick={() => handleDelete(tag)}>删除此标签</ContextMenuItem>
+              <ContextMenuItem onClick={() => handleStartEdit(tag)}>Rename</ContextMenuItem>
+              <ContextMenuItem onClick={() => handleDelete(tag)}>Delete</ContextMenuItem>
               <ContextMenuSeparator />
               <ContextMenuItem disabled={isTagPinned(tag)} onClick={() => addPinnedTag(tag)}>
-                {isTagPinned(tag) ? '已在列表中' : '添加到列表'}
+                <span className="flex items-center gap-2">Add to list</span>
               </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>

@@ -7,12 +7,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { BrainIcon, LogOutIcon } from 'lucide-react';
+import { BirdIcon, LogOutIcon } from 'lucide-react';
 
 export function AppHeader() {
   return (
-    <header className="flex items-center justify-between px-16 w-full h-16 my-4">
-      <BrainIcon />
+    <header className="flex items-center justify-between px-4 xl:px-16 w-full h-20">
+      {/* Logo */}
+      <div className="flex items-center gap-2">
+        <BirdIcon />
+        <span className="text-sm font-semibold">Prompt0</span>
+      </div>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

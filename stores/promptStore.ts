@@ -4,6 +4,7 @@ import { create } from 'zustand';
 
 interface PromptState {
   prompts: Prompt[];
+  deletedPrompts: Prompt[]; // 新增：已删除的提示词
   loading: boolean;
   error: string | null;
   initialized: boolean;
@@ -13,7 +14,9 @@ interface PromptState {
   refresh: () => Promise<void>;
   addPrompt: (promptData: Omit<Prompt, 'id' | 'createdAt'>) => Promise<void>;
   updatePrompt: (id: string, updates: Partial<Prompt>) => Promise<void>;
-  deletePrompt: (id: string) => Promise<void>;
+  deletePrompt: (id: string) => Promise<void>; // 改为软删除
+  restorePrompt: (id: string) => Promise<void>; // 新增：恢复提示词
+  permanentlyDeletePrompt: (id: string) => Promise<void>; // 新增：永久删除
   togglePin: (id: string) => Promise<void>;
   importPrompts: (importedPrompts: Prompt[]) => Promise<void>;
   clearAll: () => Promise<void>;
@@ -23,6 +26,7 @@ interface PromptState {
 
 export const usePromptStore = create<PromptState>((set, get) => ({
   prompts: [],
+  deletedPrompts: [], // 新增
   loading: false,
   error: null,
   initialized: false,
@@ -103,19 +107,87 @@ export const usePromptStore = create<PromptState>((set, get) => ({
     }
   },
 
-  // 删除提示词
+  // 修改删除方法为软删除
   deletePrompt: async (id: string) => {
     set({ loading: true });
     try {
-      await PromptStorageService.deletePrompt(id);
+      const prompt = get().prompts.find(p => p.id === id);
+      if (!prompt) return;
+
+      // 软删除：标记为已删除并设置删除时间
+      const deletedPrompt = {
+        ...prompt,
+        isDeleted: true,
+        deletedAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      await PromptStorageService.updatePrompt(id, {
+        isDeleted: true,
+        deletedAt: new Date()
+      });
+
       set(state => ({
         prompts: state.prompts.filter((prompt) => prompt.id !== id),
+        deletedPrompts: [deletedPrompt, ...state.deletedPrompts],
         loading: false,
         error: null
       }));
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : '删除失败',
+        loading: false
+      });
+    }
+  },
+
+  // 新增：恢复提示词
+  restorePrompt: async (id: string) => {
+    set({ loading: true });
+    try {
+      const deletedPrompt = get().deletedPrompts.find(p => p.id === id);
+      if (!deletedPrompt) return;
+
+      // 恢复：移除删除标记
+      const restoredPrompt = {
+        ...deletedPrompt,
+        isDeleted: false,
+        deletedAt: undefined,
+        updatedAt: new Date()
+      };
+
+      await PromptStorageService.updatePrompt(id, {
+        isDeleted: false,
+        deletedAt: undefined
+      });
+
+      set(state => ({
+        deletedPrompts: state.deletedPrompts.filter((prompt) => prompt.id !== id),
+        prompts: [restoredPrompt, ...state.prompts],
+        loading: false,
+        error: null
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : '恢复失败',
+        loading: false
+      });
+    }
+  },
+
+  // 新增：永久删除
+  permanentlyDeletePrompt: async (id: string) => {
+    set({ loading: true });
+    try {
+      await PromptStorageService.deletePrompt(id);
+      set(state => ({
+        deletedPrompts: state.deletedPrompts.filter((prompt) => prompt.id !== id),
+        loading: false,
+        error: null
+      }));
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : '永久删除失败',
         loading: false
       });
     }
