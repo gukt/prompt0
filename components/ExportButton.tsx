@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { usePromptStore } from '@/stores/promptStore';
 
 interface ExportButtonProps {
   className?: string;
@@ -13,7 +14,7 @@ export function ExportButton({
   variant = 'outline',
   size = 'default',
 }: ExportButtonProps) {
-  const { prompts } = usePrompts();
+  const { prompts } = usePromptStore();
   const [showMenu, setShowMenu] = useState(false);
 
   // 下载文件工具函数

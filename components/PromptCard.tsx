@@ -6,10 +6,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { usePrompts } from '@/hooks/usePrompts';
 import { Prompt } from '@/lib/types';
-import { CopyIcon, MoreHorizontalIcon, PinIcon, Trash2Icon } from 'lucide-react';
+import { usePromptStore } from '@/stores/promptStore';
+import { CopyIcon, MoreHorizontalIcon, PinIcon, PinOffIcon, Trash2Icon } from 'lucide-react';
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -17,7 +16,7 @@ interface PromptCardProps {
 }
 
 export default function PromptCard({ prompt, onEdit }: PromptCardProps) {
-  const { togglePin, deletePrompt } = usePrompts();
+  const { togglePin, deletePrompt } = usePromptStore();
 
   const handleCardClick = () => {
     onEdit?.(prompt);
@@ -44,6 +43,11 @@ export default function PromptCard({ prompt, onEdit }: PromptCardProps) {
     }
   };
 
+  function getPinIcon() {
+    // prompt.isPinned ? 'text-primary fill-current' : 'text-muted-foreground'
+    return prompt.isPinned ? <PinIcon /> : <PinOffIcon />;
+  }
+
   return (
     <div
       onClick={handleCardClick}
@@ -51,31 +55,14 @@ export default function PromptCard({ prompt, onEdit }: PromptCardProps) {
     >
       {/* Header/Title */}
       <div className="flex items-start justify-between">
-        {/* Title */}
-        <span className="truncate font-medium text-sm">{prompt.title}</span>
+        {/* Title and Pin Icon (if pinned) */}
+        <div className="flex items-center gap-1 font-medium text-sm">
+          <span className="truncate line-clamp-1">{prompt.title}</span>
+          {prompt.isPinned ? <PinIcon size={14} className="text-muted-foreground" /> : null}
+        </div>
 
-        {/* Action Icons */}
-        <div className="flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
-          {/* Pin Action */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 hover:bg-accent cursor-pointer"
-                onClick={handleTogglePin}
-              >
-                <PinIcon
-                  className={
-                    prompt.isPinned ? 'text-primary fill-current' : 'text-muted-foreground'
-                  }
-                />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{prompt.isPinned ? 'Unpin' : 'Pin'}</TooltipContent>
-          </Tooltip>
-
-          {/* More Actions */}
+        {/* Actions */}
+        <div className="ml-auto flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-6 w-6 hover:bg-accent cursor-pointer">
@@ -85,6 +72,12 @@ export default function PromptCard({ prompt, onEdit }: PromptCardProps) {
             <DropdownMenuContent className="w-32" align="end">
               <DropdownMenuItem onClick={handleCopy}>
                 <CopyIcon /> Copy
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleTogglePin}>
+                <>
+                  {prompt.isPinned ? <PinOffIcon /> : <PinIcon />}
+                  {prompt.isPinned ? 'Unpin' : 'Pin'}
+                </>
               </DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={handleDelete}>
                 <Trash2Icon /> Delete

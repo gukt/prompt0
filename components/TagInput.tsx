@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { useTagManager } from '@/hooks/useTagManager';
+import { useTag } from '@/hooks/useTag';
 import { cn } from '@/lib/utils';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -27,7 +27,7 @@ export function TagInput({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 使用标签管理 Hook
-  const { filterTags, getRecentTags } = useTagManager();
+  const { filterTags, getRecentTags } = useTag();
 
   // 更新过滤的标签列表
   useEffect(() => {

@@ -2,7 +2,7 @@ import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { usePrompts } from '@/hooks/usePrompts';
+import { usePromptStore } from '@/stores/promptStore';
 import { ArrowLeftIcon, Edit } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -10,7 +10,7 @@ import { useNavigate, useParams } from 'react-router';
 export function PromptEditor() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { prompts, addPrompt, updatePrompt } = usePrompts();
+  const { prompts, addPrompt, updatePrompt } = usePromptStore();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');

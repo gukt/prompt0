@@ -1,4 +1,5 @@
 import { Prompt } from '@/lib/types';
+import { usePromptStore } from '@/stores/promptStore';
 import PromptCard from './PromptCard';
 
 interface PromptsTabProps {
@@ -9,7 +10,7 @@ interface PromptsTabProps {
 
 export function PromptsTab({ onOpenDashboard, onCopyPrompt, onViewPrompt }: PromptsTabProps) {
   // 使用新的状态管理
-  const { prompts, loading, error, togglePin, deletePrompt } = usePrompts();
+  const { prompts, loading, error, togglePin, deletePrompt } = usePromptStore();
 
   // 处理置顶切换
   const handleTogglePin = async (promptId: string) => {

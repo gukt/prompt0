@@ -1,4 +1,3 @@
-// hooks/useTagManager.ts
 import { mockPrompts } from '@/lib/mock-data';
 import { Prompt } from '@/lib/types';
 import { useCallback, useMemo } from 'react';
@@ -13,13 +12,13 @@ const PREDEFINED_TAGS = [
 
 export type PredefinedTag = typeof PREDEFINED_TAGS[number];
 
-export function useTagManager(prompts: Prompt[] = mockPrompts) {
+export function useTag(prompts: Prompt[] = mockPrompts) {
   // 获取所有可用标签
   const availableTags = useMemo(() => {
     const allTags = new Set<string>();
 
     // 添加预定义标签
-    PREDEFINED_TAGS.forEach(tag => allTags.add(tag));
+    // PREDEFINED_TAGS.forEach(tag => allTags.add(tag));
 
     // 从提示词中提取标签
     prompts.forEach(prompt => {
@@ -79,11 +78,9 @@ export function useTagManager(prompts: Prompt[] = mockPrompts) {
   }, []);
 
   return {
-    // 数据
     availableTags,
     predefinedTags: PREDEFINED_TAGS,
 
-    // 方法
     filterTags,
     getRecentTags,
     isPredefinedTag,

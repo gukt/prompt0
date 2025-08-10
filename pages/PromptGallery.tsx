@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { usePromptFilter } from '@/hooks/usePromptFilter';
-import { usePrompts } from '@/hooks/usePrompts';
 import { Prompt } from '@/lib/types';
+import { usePromptStore } from '@/stores/promptStore';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -10,8 +10,7 @@ import PromptCard from '../components/PromptCard';
 export function PromptGallery() {
   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState('all');
-
-  const { prompts } = usePrompts();
+  const { prompts } = usePromptStore();
   const { filteredPrompts } = usePromptFilter(prompts, activeItem);
 
   const handleEditPrompt = (prompt: Prompt) => {

@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { ChevronDownIcon, UploadIcon } from 'lucide-react';
 import { useCallback, useRef, useState } from 'react';
+import { usePromptStore } from '@/stores/promptStore';
 
 interface ImportButtonProps {
   className?: string;
@@ -14,7 +15,7 @@ export function ImportButton({
   variant = 'outline',
   size = 'default',
 }: ImportButtonProps) {
-  const { importPrompts: importPromptsAction } = usePrompts();
+  const { importPrompts: importPromptsAction } = usePromptStore();
   const [showMenu, setShowMenu] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const csvInputRef = useRef<HTMLInputElement>(null);

@@ -2,13 +2,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { usePromptStore } from '@/stores/promptStore';
 import { useState } from 'react';
 
 interface SettingsTabProps {}
 
 export function SettingsTab({}: SettingsTabProps) {
   // 使用新的状态管理
-  const { prompts, getStorageStats, clearAll } = usePrompts();
+  const { prompts, getStorageStats, clearAll } = usePromptStore();
 
   // 本地设置状态
   const [autoComplete, setAutoComplete] = useState(true);
