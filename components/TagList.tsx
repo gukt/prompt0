@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { usePromptStore } from '@/stores/promptStore';
-import { AlertTriangleIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 /** 显示在侧边栏的标签列表组件 */
 export function TagList() {
@@ -131,6 +131,12 @@ export function TagList() {
       setDeleteDialogOpen(false);
       setTagToDelete(null);
 
+      // 显示删除成功提示
+      toast.success(`Tag '${tagToDelete}' deleted successfully.`, {
+        position: 'top-center',
+        duration: 800,
+      });
+
       // 如果当前选中的标签被删除，清除选择
       if (selectedTag === tagToDelete) {
         setSelectedTag(null);
@@ -196,36 +202,20 @@ export function TagList() {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <AlertTriangleIcon className="w-5 h-5 text-destructive" />
-              删除 '{tagToDelete}' 标签？
-            </DialogTitle>
-            <DialogDescription className="pt-2">
+            <DialogTitle>删除标签</DialogTitle>
+            <DialogDescription>
               <p className="text-sm text-muted-foreground">
-                此标签正用于{' '}
-                <span className="font-medium text-foreground">
-                  {getPromptCountForTag(tagToDelete)}
-                </span>{' '}
-                个提示词。
+                {`此标签正用于 ${getPromptCountForTag(
+                  tagToDelete,
+                )} 个提示词。删除标签不会删除相关的提示词，只会从这些提示词中移除该标签。`}
               </p>
             </DialogDescription>
           </DialogHeader>
-
-          <div className="space-y-3 py-2">
-            <div className="bg-muted/50 rounded-lg p-3">
-              <p className="text-sm text-muted-foreground mt-1">
-                <strong>注意：</strong>删除标签不会删除相关的提示词，只会从这些提示词中移除该标签。
-              </p>
-            </div>
-          </div>
-
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={handleCancelDelete}>
-              取消
+              Cancel
             </Button>
-            <Button variant="destructive" onClick={handleConfirmDelete}>
-              确认删除
-            </Button>
+            <Button onClick={handleConfirmDelete}>Delete</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
