@@ -3,7 +3,7 @@ import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { usePromptStore } from '@/stores/promptStore';
-import { PencilIcon } from 'lucide-react';
+import { ArrowLeftIcon, PencilIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -89,48 +89,43 @@ export function PromptEditor() {
   };
 
   const handleBack = () => {
-    navigate('/prompts');
+    navigate(-1);
   };
 
   return (
     <SidebarLayout>
       <div className="max-w-4xl mx-auto px-6 space-y-6">
-        {/* Header */}
-        {/* <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleBack}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeftIcon /> Back
-          </Button>
-        </div> */}
-
         {/* Title */}
-        <div className="space-y-2">
-          {titleEditing ? (
-            <input
-              ref={titleInputRef}
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onBlur={handleTitleSubmit}
-              onKeyDown={handleTitleKeyDown}
-              className="text-base bg-transparent border-none outline-none focus:ring-0 w-full"
-              placeholder="New Prompt"
-            />
-          ) : (
-            <div
-              className="flex items-center gap-2 group cursor-pointer"
-              onMouseEnter={() => setTitleHovered(true)}
-              onMouseLeave={() => setTitleHovered(false)}
-              onClick={handleTitleEdit}
-            >
-              <h1 className="text-base">{title}</h1>
-              {titleHovered && <PencilIcon size={14} className="text-muted-foreground" />}
-            </div>
-          )}
+        <div className="flex items-center gap-2">
+          <a onClick={handleBack} className="rounded p-1.5 hover:bg-muted cursor-pointer">
+            <ArrowLeftIcon size={16} />
+          </a>
+
+          {/* 添加 flex-1 是为了防止 hover 时标题抖动 */}
+          <div className="flex-1 space-y-2">
+            {titleEditing ? (
+              <input
+                ref={titleInputRef}
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                onBlur={handleTitleSubmit}
+                onKeyDown={handleTitleKeyDown}
+                className="text-base bg-transparent border-none outline-none focus:ring-0 w-full"
+                placeholder="New Prompt"
+              />
+            ) : (
+              <div
+                className="flex items-center gap-2 group cursor-pointer"
+                onMouseEnter={() => setTitleHovered(true)}
+                onMouseLeave={() => setTitleHovered(false)}
+                onClick={handleTitleEdit}
+              >
+                <h1 className="text-base">{title}</h1>
+                {titleHovered && <PencilIcon size={14} className="text-muted-foreground" />}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content */}
