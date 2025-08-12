@@ -110,9 +110,9 @@ export default function App() {
 
     setInputValue(value);
 
-    // 检查是否输入了 @
+    // 检查是否输入了 /
     const textBeforeCursor = value.substring(0, cursorPos);
-    const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+    const lastAtIndex = textBeforeCursor.lastIndexOf('/');
 
     if (lastAtIndex !== -1) {
       const textAfterAt = textBeforeCursor.substring(lastAtIndex + 1);
@@ -172,7 +172,7 @@ export default function App() {
           if (atPosition !== -1) {
             const beforeAt = inputValue.substring(0, atPosition);
             const afterAtQuery = inputValue.substring(atPosition + 1 + searchQuery.length);
-            const newValue = beforeAt + '@' + afterAtQuery;
+            const newValue = beforeAt + '/' + afterAtQuery;
             setInputValue(newValue);
 
             // 设置光标位置到 @ 后面
@@ -259,7 +259,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-4 m-auto w-240 mt-[500px]">
+    <div className="flex flex-col gap-y-4 m-auto w-180 mt-[500px]">
       {/* 聊天输入框区域 */}
       <form
         className="flex items-end gap-2 mt-2 relative"
@@ -274,7 +274,7 @@ export default function App() {
               ref={textareaRef}
               className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
               rows={5}
-              placeholder="请输入你的问题… (输入 @ 搜索 prompts)"
+              placeholder="Writing, Typing '/' for prompts..."
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}

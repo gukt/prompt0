@@ -55,43 +55,47 @@ export function AppSidebar() {
   const finalMenuItems = [...fixedMenuItems, ...pinnedTags];
 
   return (
-    <div className="space-y-8 text-sm">
-      {/* 菜单项列表 */}
-      <div className="space-y-1">
+    <aside className="w-64 flex flex-col space-y-8">
+      {/* Nav Items */}
+      <ul className="space-y-1">
         {finalMenuItems.map((item) => (
-          <NavLink
-            key={item.id}
-            to={item.to}
-            className={({ isActive }) =>
-              cn(
-                'sidebar-menu-item justify-between',
-                isActive
-                  ? 'bg-accent text-accent-foreground'
-                  : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-              )
-            }
-          >
-            <div className="flex items-center gap-2">
-              {React.cloneElement(item.icon as React.ReactElement<any>, { size: 16 })}
-              <span className="font-medium">{item.name}</span>
-            </div>
-            {/* 仅当 count 大于 0 时才显示 */}
-            {item.count && item.count > 0 && (
-              <div className="ml-auto p-2 text-xs font-semibold">{item.count}</div>
-            )}
-          </NavLink>
+          <li>
+            <NavLink
+              key={item.id}
+              to={item.to}
+              className={({ isActive }) =>
+                cn(
+                  'sidebar-menu-item justify-between',
+                  isActive
+                    ? 'bg-accent text-accent-foreground'
+                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                )
+              }
+            >
+              <div className="flex items-center gap-2">
+                {React.cloneElement(item.icon as React.ReactElement<any>, { size: 16 })}
+                <span className="font-medium">{item.name}</span>
+              </div>
+              {/* 仅当 count 大于 0 时才显示 */}
+              {item.count && item.count > 0 && (
+                <div className="ml-auto p-2 text-xs font-semibold">{item.count}</div>
+              )}
+            </NavLink>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {/* 标签分组 */}
-      <div>
+      {/* Tag Groups */}
+      <div className="flex-1">
         <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-          标签
+          Tags
         </h3>
         <div className="px-2 py-2 flex flex-wrap gap-2">
           <TagList />
         </div>
       </div>
-    </div>
+
+      <div className="px-2 py-2">aaa</div>
+    </aside>
   );
 }

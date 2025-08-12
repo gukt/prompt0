@@ -175,7 +175,7 @@ export function TagList() {
                 <button
                   onClick={() => handleTagClick(tag)}
                   className={cn(
-                    'px-2 py-1 text-xs rounded-md border transition-colors cursor-pointer',
+                    'px-2 py-1 text-sm rounded-md border transition-colors cursor-pointer',
                     selectedTag === tag
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-background hover:bg-accent border-border text-muted-foreground hover:text-foreground',

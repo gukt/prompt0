@@ -5,9 +5,12 @@ import { AppHeader } from './AppHeader';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background text-base">
+      <div className="h-screen flex flex-col">
+        {/* Header */}
         <AppHeader />
-        <main className="max-w-6xl mx-auto min-h-[calc(100vh-80px)]">{children}</main>
+
+        {/* Main Content Area */}
+        <div className="flex-1 mx-auto max-w-6xl min-h-[calc(100vh-80px)]">{children}</div>
       </div>
       <Toaster />
     </TooltipProvider>
