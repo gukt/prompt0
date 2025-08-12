@@ -1,7 +1,7 @@
 import { SidebarLayout } from '@/components/layout/SidebarLayout';
 import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { VariableTextarea } from '@/components/VariableTextarea';
 import { usePromptStore } from '@/stores/promptStore';
 import { ArrowLeftIcon, PencilIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -129,9 +129,9 @@ export function PromptEditor() {
         </div>
 
         {/* Content */}
-        <Textarea
+        <VariableTextarea
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={setContent}
           placeholder="输入提示词内容..."
           className="min-h-[300px] resize-none"
         />
