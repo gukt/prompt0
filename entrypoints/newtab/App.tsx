@@ -313,17 +313,6 @@ export default function App() {
             )}
           </DropdownMenu>
         </div>
-
-        <button
-          type="submit"
-          className={cn(
-            'shadcn-btn shadcn-btn-primary px-4 py-2 rounded-lg',
-            isLoading || !inputValue.trim() ? 'opacity-60 cursor-not-allowed' : '',
-          )}
-          disabled={isLoading || !inputValue.trim()}
-        >
-          {isLoading ? '发送中…' : '发送'}
-        </button>
       </form>
       <SidePanel />
     </div>

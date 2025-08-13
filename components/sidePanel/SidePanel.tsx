@@ -103,7 +103,7 @@ function SidePanelContent() {
           Shortcut: ^ + M
         </Button>
         <Button variant="outline" size="sm">
-          Logout
+          Settings
         </Button>
       </div>
     </div>
