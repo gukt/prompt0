@@ -9,6 +9,11 @@ interface PromptsTabProps {
   onViewPrompt: (prompt: Prompt) => void;
 }
 
+// TODO 将 copy 按钮放出来比较明显一点
+// TODO 考虑直接拷贝，直接插入，变量复制进行插入的交互方式
+// TODO 考虑如何进行编辑
+// TODO 考虑如何区分有变量时的拷贝与设置变量的交互
+// TODO 考虑支持变量的 PromptEditor 的交互与实现
 export function PromptsTab({ onCopyPrompt, onViewPrompt }: PromptsTabProps) {
   // 使用新的状态管理
   const { prompts, loading, error, deletePrompt } = usePromptStore();
