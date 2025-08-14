@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { usePromptFilter } from '@/hooks/usePromptFilter';
 import { usePromptStore } from '@/stores/promptStore';
 import { PlusIcon } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
@@ -10,7 +9,6 @@ export function PromptGallery() {
   const { prompts } = usePromptStore();
   const { tagName } = useParams();
   const effectiveTag = tagName || 'all';
-  const { filteredPrompts } = usePromptFilter(prompts, effectiveTag);
 
   const handleAddPrompt = () => {
     navigate('/prompts/new');
@@ -25,7 +23,7 @@ export function PromptGallery() {
             {effectiveTag === 'all' && 'All Prompts'}
             {effectiveTag !== 'all' && `#${effectiveTag}`}
           </h1>
-          <span>({filteredPrompts.length})</span>
+          <span>({prompts.length})</span>
         </div>
 
         <Button variant="ghost" onClick={handleAddPrompt} size="sm" className="cursor-pointer">
@@ -35,13 +33,13 @@ export function PromptGallery() {
 
       {/* Prompt Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        {filteredPrompts.map((prompt) => (
+        {prompts.map((prompt) => (
           <PromptCard key={prompt.id} prompt={prompt} />
         ))}
       </div>
 
       {/* Empty State */}
-      {filteredPrompts.length === 0 && (
+      {prompts.length === 0 && (
         <div className="text-muted-foreground text-center my-10">No prompts found</div>
       )}
     </>

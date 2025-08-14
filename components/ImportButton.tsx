@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
+import { usePromptStore } from '@/stores/promptStore';
 import { ChevronDownIcon, UploadIcon } from 'lucide-react';
 import { useCallback, useRef, useState } from 'react';
-import { usePromptStore } from '@/stores/promptStore';
 
 interface ImportButtonProps {
   className?: string;
@@ -88,9 +88,7 @@ export function ImportButton({
             id: values[0] || Date.now().toString(),
             title: values[1] || `导入的提示词 ${index + 1}`,
             content: values[2]?.replace(/\\n/g, '\n') || '',
-            tags: values[3] ? values[3].split(';').map((t) => t.trim()) : [],
             createdAt: values[4] ? new Date(values[4]) : new Date(),
-            isPinned: values[5] === '是',
           };
 
           return prompt;

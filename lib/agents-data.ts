@@ -33,19 +33,3 @@ export function getPublicPrompts(): Prompt[] {
     return [];
   }
 }
-
-// 根据标签筛选提示词
-export function getPromptsByTag(tag: string): Prompt[] {
-  const allPrompts = getPublicPrompts();
-  return allPrompts.filter((prompt) => prompt.tags.includes(tag));
-}
-
-// 获取所有标签
-export function getAllTags(): string[] {
-  const allPrompts = getPublicPrompts();
-  const tagSet = new Set<string>();
-  allPrompts.forEach((prompt) => {
-    prompt.tags.forEach((tag) => tagSet.add(tag));
-  });
-  return Array.from(tagSet).sort();
-} 

@@ -6,9 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { usePromptVariable } from '@/hooks/use-prompt-variable';
 import { Prompt } from '@/lib/types';
 import { usePromptStore } from '@/stores/promptStore';
-import { CopyIcon, MoreHorizontalIcon, PinIcon, PinOffIcon, Trash2Icon } from 'lucide-react';
+import { CopyIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner'; // 使用 sonner 的 toast
 
@@ -18,15 +19,11 @@ interface PromptCardProps {
 
 export default function PromptCard({ prompt }: PromptCardProps) {
   const navigate = useNavigate();
-  const { togglePin, deletePrompt } = usePromptStore();
+  const { deletePrompt } = usePromptStore();
+  const { variableNames } = usePromptVariable(prompt);
 
   const handleCardClick = () => {
     navigate(`/prompts/${prompt.id}/edit`);
-  };
-
-  const handleTogglePin = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    togglePin(prompt.id);
   };
 
   const handleCopy = async () => {
@@ -56,11 +53,8 @@ export default function PromptCard({ prompt }: PromptCardProps) {
     >
       {/* Header/Title */}
       <div className="flex items-start justify-between">
-        {/* Title and Pin Icon (if pinned) */}
-        <div className="flex items-center gap-1 font-medium text-sm">
-          <span className="truncate line-clamp-1">{prompt.title}</span>
-          {prompt.isPinned ? <PinIcon size={14} className="text-muted-foreground" /> : null}
-        </div>
+        {/* Title */}
+        <span className="truncate line-clamp-1">{prompt.title}</span>
 
         {/* Actions */}
         <div className="ml-auto flex items-center gap-1 opacity-100 group-hover:opacity-100 transition-opacity">
@@ -73,12 +67,6 @@ export default function PromptCard({ prompt }: PromptCardProps) {
             <DropdownMenuContent className="w-32" align="end">
               <DropdownMenuItem onClick={handleCopy}>
                 <CopyIcon /> Copy
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleTogglePin}>
-                <>
-                  {prompt.isPinned ? <PinOffIcon /> : <PinIcon />}
-                  {prompt.isPinned ? 'Unpin' : 'Pin'}
-                </>
               </DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={handleDelete}>
                 <Trash2Icon /> Delete
@@ -93,19 +81,23 @@ export default function PromptCard({ prompt }: PromptCardProps) {
         {prompt.content}
       </div>
 
-      {/* Footer - Only Tags */}
-      <div className="flex items-center justify-between">
-        <div className="flex flex-wrap gap-1">
-          {prompt.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} className="bg-muted/50 text-muted-foreground">
-              {tag}
-            </Badge>
-          ))}
-          {prompt.tags.length > 3 && (
-            <Badge className="bg-muted/50 text-muted-foreground">+{prompt.tags.length - 3}</Badge>
-          )}
+      {/* Variables */}
+      {variableNames && variableNames.length > 0 && (
+        <div className="flex items-center justify-between">
+          <div className="flex flex-wrap gap-1">
+            {variableNames.slice(0, 3).map((v) => (
+              <Badge key={v} className="bg-muted/50 text-muted-foreground">
+                {v}
+              </Badge>
+            ))}
+            {variableNames.length > 3 && (
+              <Badge className="bg-muted/50 text-muted-foreground">
+                +{variableNames.length - 3}
+              </Badge>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

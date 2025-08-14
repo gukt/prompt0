@@ -17,7 +17,6 @@ interface PromptState {
   deletePrompt: (id: string) => Promise<void>; // 改为软删除
   restorePrompt: (id: string) => Promise<void>; // 新增：恢复提示词
   permanentlyDeletePrompt: (id: string) => Promise<void>; // 新增：永久删除
-  togglePin: (id: string) => Promise<void>;
   importPrompts: (importedPrompts: Prompt[]) => Promise<void>;
   clearAll: () => Promise<void>;
   getStorageStats: () => Promise<{ count: number; totalSize: number }>;
@@ -123,7 +122,6 @@ export const usePromptStore = create<PromptState>((set, get) => ({
       };
 
       await PromptStorageService.updatePrompt(id, {
-        isDeleted: true,
         deletedAt: new Date()
       });
 
@@ -157,7 +155,6 @@ export const usePromptStore = create<PromptState>((set, get) => ({
       };
 
       await PromptStorageService.updatePrompt(id, {
-        isDeleted: false,
         deletedAt: undefined
       });
 
@@ -190,23 +187,6 @@ export const usePromptStore = create<PromptState>((set, get) => ({
         error: error instanceof Error ? error.message : '永久删除失败',
         loading: false
       });
-    }
-  },
-
-  // 切换置顶
-  togglePin: async (id: string) => {
-    try {
-      await PromptStorageService.togglePin(id);
-      set(state => ({
-        prompts: state.prompts.map((prompt) =>
-          prompt.id === id
-            ? { ...prompt, isPinned: !prompt.isPinned, updatedAt: new Date() }
-            : prompt
-        ),
-        error: null
-      }));
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '操作失败' });
     }
   },
 

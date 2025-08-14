@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { usePromptStore } from '@/stores/promptStore';
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { usePromptStore } from '@/stores/promptStore';
 
 interface ExportButtonProps {
   className?: string;
@@ -71,13 +71,6 @@ export function ExportButton({
     <div class="prompt">
         <div class="title">${prompt.title}</div>
         <div class="content">${prompt.content}</div>
-        <div class="tags">
-            ${prompt.tags.map((tag) => `<span class="tag">${tag}</span>`).join('')}
-        </div>
-        <div class="meta">
-            创建时间: ${new Date(prompt.createdAt).toLocaleString('zh-CN')}
-            ${prompt.isPinned ? ' | 📌 已置顶' : ''}
-        </div>
     </div>`,
       )
       .join('')}
@@ -103,11 +96,7 @@ ${prompts
 
 ${prompt.content}
 
-**标签:** ${prompt.tags.join(', ')}
-
-**创建时间:** ${new Date(prompt.createdAt).toLocaleString('zh-CN')}${
-      prompt.isPinned ? ' | 📌 已置顶' : ''
-    }
+**创建时间:** ${new Date(prompt.createdAt).toLocaleString('zh-CN')}
 
 ---`,
   )
@@ -127,9 +116,7 @@ ${prompt.content}
           prompt.id,
           `"${prompt.title.replace(/"/g, '""')}"`,
           `"${prompt.content.replace(/"/g, '""').replace(/\n/g, '\\n')}"`,
-          `"${prompt.tags.join('; ')}"`,
           new Date(prompt.createdAt).toISOString(),
-          prompt.isPinned ? '是' : '否',
         ].join(','),
       ),
     ].join('\n');

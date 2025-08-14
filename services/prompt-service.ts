@@ -67,14 +67,14 @@ export class PromptStorageService {
     try {
       const ids = await this.getPromptIds();
       const prompts: Prompt[] = [];
-      
+
       for (const id of ids) {
         const prompt = await this.getPrompt(id);
         if (prompt) {
           prompts.push(prompt);
         }
       }
-      
+
       // 按创建时间倒序排列
       return prompts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     } catch (error) {
@@ -91,15 +91,15 @@ export class PromptStorageService {
         id: Date.now().toString(),
         createdAt: new Date(),
       };
-      
+
       // 保存提示词
       await this.savePrompt(newPrompt);
-      
+
       // 添加到索引
       const ids = await this.getPromptIds();
       ids.unshift(newPrompt.id); // 添加到开头
       await this.savePromptIds(ids);
-      
+
       return newPrompt;
     } catch (error) {
       console.error('添加提示词失败:', error);
@@ -114,29 +114,16 @@ export class PromptStorageService {
       if (!prompt) {
         throw new Error('提示词不存在');
       }
-      
+
       const updatedPrompt: Prompt = {
         ...prompt,
         ...updates,
         updatedAt: new Date(),
       };
-      
+
       await this.savePrompt(updatedPrompt);
     } catch (error) {
       console.error('更新提示词失败:', error);
-      throw error;
-    }
-  }
-
-  // 切换置顶状态
-  static async togglePin(id: string): Promise<void> {
-    try {
-      const prompt = await this.getPrompt(id);
-      if (prompt) {
-        await this.updatePrompt(id, { isPinned: !prompt.isPinned });
-      }
-    } catch (error) {
-      console.error('切换置顶状态失败:', error);
       throw error;
     }
   }
@@ -146,7 +133,7 @@ export class PromptStorageService {
     try {
       const existingIds = await this.getPromptIds();
       const existingIdsSet = new Set(existingIds);
-      
+
       // 过滤重复的 ID，为重复的提示词生成新 ID
       const uniquePrompts = importedPrompts.map(prompt => {
         if (existingIdsSet.has(prompt.id)) {
@@ -178,7 +165,7 @@ export class PromptStorageService {
   static async initializeWithMockData(mockPrompts: Prompt[]): Promise<void> {
     try {
       const existingIds = await this.getPromptIds();
-      
+
       // 只有在没有数据时才初始化
       if (existingIds.length === 0) {
         for (const prompt of mockPrompts) {
@@ -198,12 +185,12 @@ export class PromptStorageService {
   static async clearAll(): Promise<void> {
     try {
       const ids = await this.getPromptIds();
-      
+
       // 删除所有提示词
       for (const id of ids) {
         await storage.removeItem(`local:${this.PROMPTS_PREFIX}${id}`);
       }
-      
+
       // 删除索引
       await storage.removeItem(`local:${this.PROMPTS_INDEX_KEY}`);
     } catch (error) {
@@ -217,14 +204,14 @@ export class PromptStorageService {
     try {
       const ids = await this.getPromptIds();
       let totalSize = 0;
-      
+
       for (const id of ids) {
         const prompt = await this.getPrompt(id);
         if (prompt) {
           totalSize += JSON.stringify(prompt).length;
         }
       }
-      
+
       return {
         count: ids.length,
         totalSize,
@@ -242,19 +229,19 @@ export class PromptStorageService {
       const oldPrompts = await storage.getItem<Prompt[]>(`local:prompts`);
       if (oldPrompts && oldPrompts.length > 0) {
         console.log('检测到旧格式数据，开始迁移...');
-        
+
         // 保存每个提示词到新格式
         for (const prompt of oldPrompts) {
           await this.savePrompt(prompt);
         }
-        
+
         // 创建索引
         const ids = oldPrompts.map(p => p.id);
         await this.savePromptIds(ids);
-        
+
         // 删除旧数据
         await storage.removeItem(`local:prompts`);
-        
+
         console.log('数据迁移完成');
       }
     } catch (error) {
@@ -268,43 +255,42 @@ export class PromptStorageService {
     try {
       // 清空测试数据
       await this.clearAll();
-      
+
       // 测试添加
       const testPrompt = await this.addPrompt({
         title: '测试提示词',
         content: '这是一个测试提示词',
-        tags: ['测试'],
       });
-      
+
       // 测试获取单个
       const retrieved = await this.getPrompt(testPrompt.id);
       if (!retrieved || retrieved.title !== '测试提示词') {
         throw new Error('获取单个提示词失败');
       }
-      
+
       // 测试获取所有
       const allPrompts = await this.getPrompts();
       if (allPrompts.length !== 1) {
         throw new Error('获取所有提示词失败');
       }
-      
+
       // 测试更新
       await this.updatePrompt(testPrompt.id, { title: '更新的测试提示词' });
       const updated = await this.getPrompt(testPrompt.id);
       if (updated?.title !== '更新的测试提示词') {
         throw new Error('更新提示词失败');
       }
-      
+
       // 测试删除
       await this.deletePrompt(testPrompt.id);
       const deleted = await this.getPrompt(testPrompt.id);
       if (deleted !== null) {
         throw new Error('删除提示词失败');
       }
-      
+
       // 清理
       await this.clearAll();
-      
+
       console.log('存储测试通过');
       return true;
     } catch (error) {

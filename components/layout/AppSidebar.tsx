@@ -1,27 +1,17 @@
-import { useSidebar } from '@/hooks/useSidebar';
+import { useSidebar } from '@/hooks/use-sidebar';
 import { cn } from '@/lib/utils';
 import { usePromptStore } from '@/stores/promptStore';
-import {
-  ClockFadingIcon,
-  FileTextIcon,
-  HashIcon,
-  ListIcon,
-  SearchIcon,
-  SettingsIcon,
-  Trash2Icon,
-} from 'lucide-react';
+import { ClockFadingIcon, HashIcon, ListIcon, SearchIcon, Trash2Icon } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { NavLink } from 'react-router';
 import { TagList } from '../TagList';
 
 export function AppSidebar() {
-  const { prompts, deletedPrompts } = usePromptStore();
+  const { prompts } = usePromptStore();
   const { pinnedTags: pinnedTagNames } = useSidebar();
-  const { getPromptCountForTag } = useTag(prompts);
   const stats = useMemo(
     () => ({
       totalCount: prompts.length,
-      pinnedCount: prompts.filter((prompt) => prompt.isPinned).length,
     }),
     [prompts],
   );
@@ -45,12 +35,6 @@ export function AppSidebar() {
     icon: <HashIcon />,
     count: 0,
   }));
-
-  const otherItems = [
-    { id: 'discover', name: 'Discover', to: '/discover', icon: <SearchIcon /> },
-    { id: 'settings', name: 'Settings', to: '/settings', icon: <SettingsIcon /> },
-    { id: 'docs', name: 'Docs', to: '/docs', icon: <FileTextIcon /> },
-  ];
 
   const finalMenuItems = [...fixedMenuItems, ...pinnedTags];
 
