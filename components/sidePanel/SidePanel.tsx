@@ -2,7 +2,7 @@ import '@/assets/tailwind.css';
 import { Button } from '@/components/ui/button';
 import { Prompt } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { BrainIcon, XIcon } from 'lucide-react';
+import { BirdIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { PromptsTab } from './PromptsTab';
 import { SettingsTab } from './SettingsTab';
@@ -36,14 +36,14 @@ function SidePanelContent() {
 
   return (
     <div
-      className="flex flex-col fixed top-15 text-base w-120 h-[85vh] max-h-[85vh] rounded-2xl border shadow-lg overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
+      className="flex flex-col fixed top-15 text-base h-[85vh] w-md max-h-[85vh] rounded-2xl border shadow-lg overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
       style={{ right: `${right}px` }}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-2">
-          <BrainIcon className="w-6 h-6" />
-          <h1 className="text-[20px] font-semibold">OpenPrompt</h1>
+          <BirdIcon className="w-5 h-5 text-green-400" />
+          <h1 className="text-sm font-semibold">Open Prompt</h1>
         </div>
         <button
           onClick={handleClose}
@@ -99,7 +99,7 @@ function SidePanelContent() {
       {/* Footer */}
       <div className="p-4 flex items-center justify-between">
         <Button variant="outline" size="sm" className="text-primary/50">
-          Shortcut: ^ + M
+          Shortcut: ^ + P
         </Button>
         <Button variant="outline" size="sm">
           Settings
