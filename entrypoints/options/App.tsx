@@ -55,8 +55,7 @@ export default function App() {
       .filter(
         (prompt) =>
           prompt.title.toLowerCase().includes(query.toLowerCase()) ||
-          prompt.content.toLowerCase().includes(query.toLowerCase()) ||
-          prompt.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase())),
+          prompt.content.toLowerCase().includes(query.toLowerCase()),
       )
       .slice(0, 8);
   };

@@ -1,5 +1,3 @@
-import { SidebarLayout } from '@/components/layout/SidebarLayout';
-import { TagInput } from '@/components/TagInput';
 import { Button } from '@/components/ui/button';
 import { VariableTextarea } from '@/components/VariableTextarea';
 import { usePromptStore } from '@/stores/promptStore';
@@ -29,8 +27,6 @@ export function PromptEditor() {
     if (editingPrompt) {
       setTitle(editingPrompt.title);
       setContent(editingPrompt.content);
-      setTags(editingPrompt.tags);
-      setIsPinned(editingPrompt.isPinned || false);
     } else {
       setTitle('New Prompt');
       setContent('');
@@ -93,60 +89,55 @@ export function PromptEditor() {
   };
 
   return (
-    <SidebarLayout>
-      <div className="max-w-4xl mx-auto px-6 space-y-6">
-        {/* Title */}
-        <div className="flex items-center gap-2">
-          <a onClick={handleBack} className="rounded p-1.5 hover:bg-muted cursor-pointer">
-            <ArrowLeftIcon size={16} />
-          </a>
+    <div className="max-w-4xl mx-auto px-6 space-y-6">
+      {/* Title */}
+      <div className="flex items-center gap-2">
+        <a onClick={handleBack} className="rounded p-1.5 hover:bg-muted cursor-pointer">
+          <ArrowLeftIcon size={16} />
+        </a>
 
-          {/* 添加 flex-1 是为了防止 hover 时标题抖动 */}
-          <div className="flex-1 space-y-2">
-            {titleEditing ? (
-              <input
-                ref={titleInputRef}
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onBlur={handleTitleSubmit}
-                onKeyDown={handleTitleKeyDown}
-                className="text-base bg-transparent border-none outline-none focus:ring-0 w-full"
-                placeholder="New Prompt"
-              />
-            ) : (
-              <div
-                className="flex items-center gap-2 group cursor-pointer"
-                onMouseEnter={() => setTitleHovered(true)}
-                onMouseLeave={() => setTitleHovered(false)}
-                onClick={handleTitleEdit}
-              >
-                <h1 className="text-base">{title}</h1>
-                {titleHovered && <PencilIcon size={14} className="text-muted-foreground" />}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Content */}
-        <VariableTextarea
-          value={content}
-          onChange={setContent}
-          placeholder="输入提示词内容..."
-          className="min-h-[300px] resize-none"
-        />
-
-        {/* Tags */}
-        <TagInput value={tags} onChange={setTags} placeholder="添加标签" />
-
-        {/* Bottom Actions */}
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={handleBack}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
+        {/* 添加 flex-1 是为了防止 hover 时标题抖动 */}
+        <div className="flex-1 space-y-2">
+          {titleEditing ? (
+            <input
+              ref={titleInputRef}
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={handleTitleSubmit}
+              onKeyDown={handleTitleKeyDown}
+              className="text-base bg-transparent border-none outline-none focus:ring-0 w-full"
+              placeholder="New Prompt"
+            />
+          ) : (
+            <div
+              className="flex items-center gap-2 group cursor-pointer"
+              onMouseEnter={() => setTitleHovered(true)}
+              onMouseLeave={() => setTitleHovered(false)}
+              onClick={handleTitleEdit}
+            >
+              <h1 className="text-base">{title}</h1>
+              {titleHovered && <PencilIcon size={14} className="text-muted-foreground" />}
+            </div>
+          )}
         </div>
       </div>
-    </SidebarLayout>
+
+      {/* Content */}
+      <VariableTextarea
+        value={content}
+        onChange={setContent}
+        placeholder="输入提示词内容..."
+        className="min-h-[300px] resize-none"
+      />
+
+      {/* Bottom Actions */}
+      <div className="flex justify-end gap-2">
+        <Button variant="outline" onClick={handleBack}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave}>Save Changes</Button>
+      </div>
+    </div>
   );
 }

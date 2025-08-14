@@ -4,7 +4,7 @@ import { create } from 'zustand';
 
 interface PromptState {
   prompts: Prompt[];
-  deletedPrompts: Prompt[]; // 新增：已删除的提示词
+  deletedPrompts: Prompt[];
   loading: boolean;
   error: string | null;
   initialized: boolean;

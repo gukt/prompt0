@@ -1,5 +1,6 @@
 import { Prompt } from '@/lib/types';
 import { usePromptStore } from '@/stores/promptStore';
+import { EmptyState } from './EmptyState';
 import PromptCard from './PromptCard';
 
 interface PromptsTabProps {
@@ -8,18 +9,9 @@ interface PromptsTabProps {
   onViewPrompt: (prompt: Prompt) => void;
 }
 
-export function PromptsTab({ onOpenDashboard, onCopyPrompt, onViewPrompt }: PromptsTabProps) {
+export function PromptsTab({ onCopyPrompt, onViewPrompt }: PromptsTabProps) {
   // 使用新的状态管理
-  const { prompts, loading, error, togglePin, deletePrompt } = usePromptStore();
-
-  // 处理置顶切换
-  const handleTogglePin = async (promptId: string) => {
-    try {
-      await togglePin(promptId);
-    } catch (error) {
-      console.error('切换置顶失败:', error);
-    }
-  };
+  const { prompts, loading, error, deletePrompt } = usePromptStore();
 
   // 处理删除
   const handleDelete = async (promptId: string) => {
@@ -50,9 +42,8 @@ export function PromptsTab({ onOpenDashboard, onCopyPrompt, onViewPrompt }: Prom
 
   return (
     <div className="space-y-4 overflow-y-auto">
-      <h3 className="text-lg font-medium">Recent Prompts</h3>
       {prompts.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">还没有提示词，去创建第一个吧！</div>
+        <EmptyState onAction={() => {}} />
       ) : (
         prompts.map((prompt) => (
           <PromptCard
@@ -61,7 +52,6 @@ export function PromptsTab({ onOpenDashboard, onCopyPrompt, onViewPrompt }: Prom
             onCopy={onCopyPrompt}
             onEdit={onViewPrompt}
             onDelete={handleDelete}
-            onTogglePin={handleTogglePin}
           />
         ))
       )}

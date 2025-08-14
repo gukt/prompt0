@@ -14,6 +14,11 @@
     @apply bg-background text-foreground;
   }
 
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
   /* 现代化的滚动条样式 */
   ::-webkit-scrollbar {
     width: 6px;

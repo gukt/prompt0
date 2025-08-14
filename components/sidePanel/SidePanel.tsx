@@ -9,7 +9,6 @@ import { SettingsTab } from './SettingsTab';
 
 function SidePanelContent() {
   const [activeTab, setActiveTab] = useState<'prompts' | 'settings'>('prompts');
-  const [isVisible, setIsVisible] = useState(true);
   const [right, setRight] = useState(0);
 
   // 使用应用初始化 Hook
@@ -37,7 +36,7 @@ function SidePanelContent() {
 
   return (
     <div
-      className="flex flex-col fixed top-15 text-base w-120 h-[85vh] max-h-[85vh] rounded-2xl border shadow-lg z-[2147483647] overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
+      className="flex flex-col fixed top-15 text-base w-120 h-[85vh] max-h-[85vh] rounded-2xl border shadow-lg overflow-hidden font-sans transition-[right] duration-300 ease-in-out"
       style={{ right: `${right}px` }}
     >
       {/* Header */}
@@ -110,7 +109,6 @@ function SidePanelContent() {
   );
 }
 
-// 主组件包装 Provider
 export default function App() {
   return <SidePanelContent />;
 }
